@@ -1,0 +1,37 @@
+//! [Nested aggregation](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-nested-aggregation.html)
+
+use serde::{Deserialize, Serialize};
+
+/// A special single [*bucketing*] aggregation that enables aggregating [nested]
+/// documents.
+///
+/// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+/// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+#[async_graphql::InputObject]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
+#[derive(Serialize, Clone, Debug)]
+pub struct NestedAggregationInput {
+    #[cfg_attr(feature = "builder", builder(setter(into)))]
+    pub path: String,
+}
+
+/// A special single [*bucketing*] aggregation that enables aggregating [nested]
+/// documents.
+///
+/// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+/// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+#[async_graphql::SimpleObject]
+#[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct NestedAggregation {
+    #[cfg_attr(feature = "builder", builder(setter(into)))]
+    pub path: String,
+}
+
+impl From<NestedAggregationInput> for NestedAggregation {
+    #[inline]
+    fn from(input: NestedAggregationInput) -> Self {
+        NestedAggregation { path: input.path }
+    }
+}
