@@ -1,5 +1,7 @@
 # elastiql
 
+![CI](https://github.com/mwilliammyers/elastiql/workflows/CI/badge.svg)
+
 > Opinionated [Elasticsearch] query language for [Rust].
 
 This library pairs nicely with the official Elasticsearch [crate] and the
