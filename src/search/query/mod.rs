@@ -1,8 +1,6 @@
-#![allow(clippy::missing_docs_in_private_items)]
-
-//! Facilitates [filtering] documents in the database.
+//! Elasticsearch [Query DSL] types.
 //!
-//! [filtering]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
+//! [Query DSL]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
 
 use std::default::Default;
 
@@ -13,17 +11,15 @@ pub use self::types::*;
 mod types;
 
 // TODO: make this file smaller!
-// TODO: improve filter UX regarding builders/into
 
 /// [Compound queries] wrap other compound or leaf queries, either to combine
 /// their results and scores, to change their behavior, or to switch from query
 /// to filter context.
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
-
 #[async_graphql::InputObject]
 #[derive(Serialize, Default, Clone, Debug)]
-pub struct CompoundFilterInput {
+pub struct CompoundQueryInput {
     /// The default query for combining multiple leaf or compound query clauses,
     /// as must, should, must_not, or filter clauses. The must and should
     /// clauses have their scores combined — the more matching clauses, the
@@ -31,11 +27,11 @@ pub struct CompoundFilterInput {
     /// context.
     #[field(name = "bool")]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
-    pub boolean: Option<BooleanFilterInput>,
+    pub boolean: Option<BooleanQueryInput>,
 }
 
-impl CompoundFilterInput {
-    /// Returns `true` if this `CompoundFilterInput` is empty.
+impl CompoundQueryInput {
+    /// Returns `true` if this `CompoundQueryInput` is empty.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.boolean
@@ -45,11 +41,11 @@ impl CompoundFilterInput {
 
     /// Appends a `filter` on to the current list of filters.
     #[inline]
-    pub fn push(&mut self, filter: impl Into<FilterInput>) {
+    pub fn push(&mut self, filter: impl Into<QueryInput>) {
         if let Some(ref mut boolean) = self.boolean {
             boolean.push(filter)
         } else {
-            self.boolean = Some(BooleanFilterInput {
+            self.boolean = Some(BooleanQueryInput {
                 must: vec![],
                 filter: vec![filter.into()],
                 should: vec![],
@@ -61,17 +57,17 @@ impl CompoundFilterInput {
     }
 }
 
-impl From<Option<CompoundFilterInput>> for CompoundFilterInput {
+impl From<Option<CompoundQueryInput>> for CompoundQueryInput {
     #[inline]
-    fn from(filter: Option<CompoundFilterInput>) -> CompoundFilterInput {
+    fn from(filter: Option<CompoundQueryInput>) -> CompoundQueryInput {
         filter.unwrap_or_default()
     }
 }
 
-impl<T: Into<BooleanFilterInput>> From<T> for CompoundFilterInput {
+impl<T: Into<BooleanQueryInput>> From<T> for CompoundQueryInput {
     #[inline]
-    fn from(filter: T) -> CompoundFilterInput {
-        CompoundFilterInput {
+    fn from(filter: T) -> CompoundQueryInput {
+        CompoundQueryInput {
             boolean: Some(filter.into()),
         }
     }
@@ -86,7 +82,7 @@ impl<T: Into<BooleanFilterInput>> From<T> for CompoundFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
-pub struct CompoundFilter {
+pub struct CompoundQuery {
     /// The default query for combining multiple leaf or compound query clauses,
     /// as must, should, must_not, or filter clauses. The must and should
     /// clauses have their scores combined — the more matching clauses, the
@@ -95,12 +91,12 @@ pub struct CompoundFilter {
     // #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
-    pub boolean: Option<BooleanFilter>,
+    pub boolean: Option<BooleanQuery>,
 }
 
 #[cfg(feature = "builder")]
-impl CompoundFilter {
-    /// Returns `true` if this `CompoundFilter` is empty.
+impl CompoundQuery {
+    /// Returns `true` if this `CompoundQuery` is empty.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.boolean
@@ -109,10 +105,10 @@ impl CompoundFilter {
     }
 }
 
-impl<T: Into<CompoundFilterInput>> From<T> for CompoundFilter {
+impl<T: Into<CompoundQueryInput>> From<T> for CompoundQuery {
     #[inline]
-    fn from(input: T) -> CompoundFilter {
-        CompoundFilter {
+    fn from(input: T) -> CompoundQuery {
+        CompoundQuery {
             boolean: Some(input.into().boolean.unwrap_or_default().into()),
         }
     }
@@ -127,16 +123,16 @@ impl<T: Into<CompoundFilterInput>> From<T> for CompoundFilter {
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Default, Clone, Debug)]
-pub struct BooleanFilterInput {
+pub struct BooleanQueryInput {
     /// The clause (query) must appear in matching documents and will
     /// contribute to the score of this query.
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub must: Vec<FilterInput>,
+    pub must: Vec<QueryInput>,
 
     /// The clause (query) must appear in matching documents. However unlike
-    /// must, the score of the query will be ignored. Filter clauses are executed
+    /// must, the score of the query will be ignored. Query clauses are executed
     /// in [filter context], meaning that scoring is ignored and clauses are
     /// considered for caching.
     ///
@@ -144,13 +140,13 @@ pub struct BooleanFilterInput {
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub filter: Vec<FilterInput>,
+    pub filter: Vec<QueryInput>,
 
     /// The clause (query) should appear in the matching document.
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub should: Vec<FilterInput>,
+    pub should: Vec<QueryInput>,
 
     /// The clause (query) must not appear in the matching documents. Clauses
     /// are executed in [filter context] meaning that scoring is ignored and
@@ -161,7 +157,7 @@ pub struct BooleanFilterInput {
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub must_not: Vec<FilterInput>,
+    pub must_not: Vec<QueryInput>,
 
     /// [Controls] how many optional (`should`) parameters must match.
     ///
@@ -195,8 +191,8 @@ pub struct BooleanFilterInput {
     pub boost: Option<f64>,
 }
 
-impl BooleanFilterInput {
-    /// Returns `true` if this `BooleanFilterInput` is empty.
+impl BooleanQueryInput {
+    /// Returns `true` if this `BooleanQueryInput` is empty.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.must.is_empty()
@@ -207,16 +203,16 @@ impl BooleanFilterInput {
 
     /// Appends a `filter` to the current list of filters.
     #[inline]
-    pub fn push(&mut self, filter: impl Into<FilterInput>) {
+    pub fn push(&mut self, filter: impl Into<QueryInput>) {
         // TODO: should we always default to `filter` context?
         self.filter.push(filter.into())
     }
 }
 
-impl<T: Into<FilterInput>> From<T> for BooleanFilterInput {
+impl<T: Into<QueryInput>> From<T> for BooleanQueryInput {
     #[inline]
-    fn from(filter: T) -> BooleanFilterInput {
-        BooleanFilterInput {
+    fn from(filter: T) -> BooleanQueryInput {
+        BooleanQueryInput {
             must: vec![],
             filter: vec![filter.into()],
             should: vec![],
@@ -236,27 +232,27 @@ impl<T: Into<FilterInput>> From<T> for BooleanFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
-pub struct BooleanFilter {
+pub struct BooleanQuery {
     /// The clause (query) **must** appear in matching documents and *will
     /// contribute to the score* of this query.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub must: Vec<Filter>,
+    pub must: Vec<Query>,
 
     /// The clause (query) **must** appear in matching documents. However unlike
-    /// `must`, the *score of the query will be ignored*. Filter clauses are
+    /// `must`, the *score of the query will be ignored*. Query clauses are
     /// executed in [filter context], meaning that scoring is ignored and
     /// clauses are considered for caching.
     ///
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub filter: Vec<Filter>,
+    pub filter: Vec<Query>,
 
     /// The clause (query) **should** appear in the matching document.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub should: Vec<Filter>,
+    pub should: Vec<Query>,
 
     /// The clause (query) **must not** appear in the matching documents. Clauses
     /// are executed in [filter context] meaning that *scoring is ignored* and
@@ -266,7 +262,7 @@ pub struct BooleanFilter {
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    pub must_not: Vec<Filter>,
+    pub must_not: Vec<Query>,
 
     /// [Controls] how many optional (`should`) parameters must match.
     ///
@@ -301,8 +297,8 @@ pub struct BooleanFilter {
 }
 
 #[cfg(feature = "builder")]
-impl BooleanFilter {
-    /// Returns `true` if this `BooleanFilter` is empty.
+impl BooleanQuery {
+    /// Returns `true` if this `BooleanQuery` is empty.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.must.is_empty()
@@ -312,11 +308,11 @@ impl BooleanFilter {
     }
 }
 
-impl From<BooleanFilterInput> for BooleanFilter {
+impl From<BooleanQueryInput> for BooleanQuery {
     #[inline]
-    fn from(input: BooleanFilterInput) -> BooleanFilter {
+    fn from(input: BooleanQueryInput) -> BooleanQuery {
         // TODO: why isn't the blanket impl in the std library auto impl these?
-        BooleanFilter {
+        BooleanQuery {
             must: input.must.into_iter().map(Into::into).collect(),
             filter: input.filter.into_iter().map(Into::into).collect(),
             should: input.should.into_iter().map(Into::into).collect(),
@@ -327,10 +323,10 @@ impl From<BooleanFilterInput> for BooleanFilter {
     }
 }
 
-impl<T: Into<Filter>> From<T> for BooleanFilter {
+impl<T: Into<Query>> From<T> for BooleanQuery {
     #[inline]
-    fn from(filter: T) -> BooleanFilter {
-        BooleanFilter {
+    fn from(filter: T) -> BooleanQuery {
+        BooleanQuery {
             must: vec![],
             filter: vec![filter.into()],
             should: vec![],
@@ -344,7 +340,7 @@ impl<T: Into<Filter>> From<T> for BooleanFilter {
 /// A single query to perform for this search request.
 ///
 /// **Note**: If a filter over a list of objects does not return the
-/// expected results, try a `NestedFilterInput`.
+/// expected results, try a `NestedQueryInput`.
 ///
 /// **Note**: Specifying more than one field will result in an error.
 ///
@@ -356,55 +352,55 @@ impl<T: Into<Filter>> From<T> for BooleanFilter {
 #[allow(missing_docs)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
-pub struct FilterInput {
+pub struct QueryInput {
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub exists: Option<ExistsFilterInput>,
+    pub exists: Option<ExistsQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub term: Option<TermFilterInput>,
+    pub term: Option<TermQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub terms: Option<TermsFilterInput>,
+    pub terms: Option<TermsQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub range: Option<RangeFilterInput>,
+    pub range: Option<RangeQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub regexp: Option<RegexpFilterInput>,
+    pub regexp: Option<RegexpQueryInput>,
 
     #[field(name = "match")]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
-    pub match_: Option<MatchFilterInput>,
+    pub match_: Option<MatchQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub simple_query_string: Option<SimpleQueryStringFilterInput>,
+    pub simple_query_string: Option<SimpleQueryStringQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub query_string: Option<QueryStringFilterInput>,
+    pub query_string: Option<QueryStringQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub nested: Option<NestedFilterInput>,
+    pub nested: Option<NestedQueryInput>,
 
     /// A nested bool query.
     #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
-    pub boolean: Option<BooleanFilterInput>,
+    pub boolean: Option<BooleanQueryInput>,
 }
 
-impl From<ExistsFilterInput> for FilterInput {
+impl From<ExistsQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: ExistsFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: ExistsQueryInput) -> QueryInput {
+        QueryInput {
             exists: Some(filter),
             term: None,
             terms: None,
@@ -419,10 +415,10 @@ impl From<ExistsFilterInput> for FilterInput {
     }
 }
 
-impl From<TermFilterInput> for FilterInput {
+impl From<TermQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: TermFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: TermQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: Some(filter),
             terms: None,
@@ -437,10 +433,10 @@ impl From<TermFilterInput> for FilterInput {
     }
 }
 
-impl From<TermsFilterInput> for FilterInput {
+impl From<TermsQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: TermsFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: TermsQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: Some(filter),
@@ -455,10 +451,10 @@ impl From<TermsFilterInput> for FilterInput {
     }
 }
 
-impl From<RangeFilterInput> for FilterInput {
+impl From<RangeQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: RangeFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: RangeQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -473,10 +469,10 @@ impl From<RangeFilterInput> for FilterInput {
     }
 }
 
-impl From<RegexpFilterInput> for FilterInput {
+impl From<RegexpQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: RegexpFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: RegexpQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -491,10 +487,10 @@ impl From<RegexpFilterInput> for FilterInput {
     }
 }
 
-impl From<MatchFilterInput> for FilterInput {
+impl From<MatchQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: MatchFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: MatchQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -509,10 +505,10 @@ impl From<MatchFilterInput> for FilterInput {
     }
 }
 
-impl From<SimpleQueryStringFilterInput> for FilterInput {
+impl From<SimpleQueryStringQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: SimpleQueryStringFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: SimpleQueryStringQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -527,10 +523,10 @@ impl From<SimpleQueryStringFilterInput> for FilterInput {
     }
 }
 
-impl From<QueryStringFilterInput> for FilterInput {
+impl From<QueryStringQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: QueryStringFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: QueryStringQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -545,10 +541,10 @@ impl From<QueryStringFilterInput> for FilterInput {
     }
 }
 
-impl From<NestedFilterInput> for FilterInput {
+impl From<NestedQueryInput> for QueryInput {
     #[inline]
-    fn from(filter: NestedFilterInput) -> FilterInput {
-        FilterInput {
+    fn from(filter: NestedQueryInput) -> QueryInput {
+        QueryInput {
             exists: None,
             term: None,
             terms: None,
@@ -571,54 +567,54 @@ impl From<NestedFilterInput> for FilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct Filter {
+pub struct Query {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub exists: Option<ExistsFilter>,
+    pub exists: Option<ExistsQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub term: Option<TermFilter>,
+    pub term: Option<TermQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub terms: Option<TermsFilter>,
+    pub terms: Option<TermsQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub range: Option<RangeFilter>,
+    pub range: Option<RangeQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub regexp: Option<RegexpFilter>,
+    pub regexp: Option<RegexpQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
-    pub match_: Option<MatchFilter>,
+    pub match_: Option<MatchQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub simple_query_string: Option<SimpleQueryStringFilter>,
+    pub simple_query_string: Option<SimpleQueryStringQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub query_string: Option<QueryStringFilter>,
+    pub query_string: Option<QueryStringQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub nested: Option<NestedFilter>,
+    pub nested: Option<NestedQuery>,
 
     /// A nested bool query.
     #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
-    pub boolean: Option<BooleanFilter>,
+    pub boolean: Option<BooleanQuery>,
 }
 
-impl From<FilterInput> for Filter {
+impl From<QueryInput> for Query {
     #[inline]
-    fn from(input: FilterInput) -> Filter {
-        Filter {
+    fn from(input: QueryInput) -> Query {
+        Query {
             exists: input.exists.map(Into::into),
             term: input.term.map(Into::into),
             terms: input.terms.map(Into::into),
@@ -636,7 +632,7 @@ impl From<FilterInput> for Filter {
 /// Describes a field that can be queried and its type.
 #[async_graphql::SimpleObject]
 #[derive(Debug)]
-pub struct FilterField {
+pub struct QueryField {
     /// The field name.
     pub field: String,
 
@@ -646,8 +642,8 @@ pub struct FilterField {
     pub ty: String,
 }
 
-impl FilterField {
-    /// Create a new `FilterField`.
+impl QueryField {
+    /// Create a new `QueryField`.
     #[inline]
     pub fn new(field: impl Into<String>, ty: impl Into<String>) -> Self {
         Self {

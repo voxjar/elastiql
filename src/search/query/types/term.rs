@@ -10,7 +10,7 @@ use serde::{
 
 #[allow(clippy::missing_docs_in_private_items)]
 #[derive(Serialize, Deserialize)]
-struct InnerTermFilter {
+struct InnerTermQuery {
     value: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     boost: Option<f64>,
@@ -22,7 +22,7 @@ struct InnerTermFilter {
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct TermFilterInput {
+pub struct TermQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -51,11 +51,11 @@ pub struct TermFilterInput {
     pub boost: Option<f64>,
 }
 
-impl TermFilterInput {
-    /// Create a new `TermFilterInput`.
+impl TermQueryInput {
+    /// Create a new `TermQueryInput`.
     #[inline]
     pub fn new(field: impl Into<String>, value: impl Into<String>) -> Self {
-        TermFilterInput {
+        TermQueryInput {
             field: field.into(),
             value: value.into(),
             boost: None,
@@ -63,12 +63,12 @@ impl TermFilterInput {
     }
 }
 
-impl Serialize for TermFilterInput {
+impl Serialize for TermQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
 
-        let inner = InnerTermFilter {
+        let inner = InnerTermQuery {
             value: self.value.to_owned(),
             boost: self.boost,
         };
@@ -86,7 +86,7 @@ impl Serialize for TermFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct TermFilter {
+pub struct TermQuery {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -115,10 +115,10 @@ pub struct TermFilter {
     pub boost: Option<f64>,
 }
 
-impl From<TermFilterInput> for TermFilter {
+impl From<TermQueryInput> for TermQuery {
     #[inline]
-    fn from(input: TermFilterInput) -> TermFilter {
-        TermFilter {
+    fn from(input: TermQueryInput) -> TermQuery {
+        TermQuery {
             field: input.field,
             value: input.value,
             boost: input.boost,
@@ -127,12 +127,12 @@ impl From<TermFilterInput> for TermFilter {
 }
 
 // TODO: re-use the serializer from the input type
-impl Serialize for TermFilter {
+impl Serialize for TermQuery {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
 
-        let inner = InnerTermFilter {
+        let inner = InnerTermQuery {
             value: self.value.to_owned(),
             boost: self.boost,
         };
@@ -143,24 +143,24 @@ impl Serialize for TermFilter {
     }
 }
 
-/// Visits a `TermFilter` during deserialization.
-struct TermFilterVisitor;
+/// Visits a `TermQuery` during deserialization.
+struct TermQueryVisitor;
 
-impl<'de> serde::Deserialize<'de> for TermFilter {
+impl<'de> serde::Deserialize<'de> for TermQuery {
     #[inline]
-    fn deserialize<D>(deserializer: D) -> Result<TermFilter, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<TermQuery, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        deserializer.deserialize_map(TermFilterVisitor)
+        deserializer.deserialize_map(TermQueryVisitor)
     }
 }
 
-impl<'de> Visitor<'de> for TermFilterVisitor {
-    type Value = TermFilter;
+impl<'de> Visitor<'de> for TermQueryVisitor {
+    type Value = TermQuery;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a `TermFilter`")
+        formatter.write_str("a `TermQuery`")
     }
 
     fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
@@ -171,9 +171,9 @@ impl<'de> Visitor<'de> for TermFilterVisitor {
             .next_key::<String>()?
             .ok_or_else(|| de::Error::missing_field("field"))?;
 
-        let inner: InnerTermFilter = map.next_value()?;
+        let inner: InnerTermQuery = map.next_value()?;
 
-        Ok(TermFilter {
+        Ok(TermQuery {
             field,
             value: inner.value.to_owned(),
             boost: inner.boost,
@@ -200,7 +200,7 @@ mod tests {
 
                 #[test]
                 fn can_deserialize() {
-                    assert_eq!(serde_json::from_value::<TermFilter>($j).unwrap(), $f);
+                    assert_eq!(serde_json::from_value::<TermQuery>($j).unwrap(), $f);
                 }
             }
         };
@@ -208,7 +208,7 @@ mod tests {
 
     test_case!(
         simple:
-        TermFilter {
+        TermQuery {
             field: "userProfile".to_string(),
             value: "Kimchy".to_string(),
             boost: None,
@@ -218,7 +218,7 @@ mod tests {
 
     test_case!(
         with_boost:
-        TermFilter {
+        TermQuery {
             field: "user".to_string(),
             value: "Kimchy".to_string(),
             boost: Some(1.1),
@@ -228,7 +228,7 @@ mod tests {
 
     test_case!(
         without_boost:
-        TermFilter {
+        TermQuery {
             field: "user".to_string(),
             value: "Kimchy".to_string(),
             boost: None,
@@ -239,64 +239,64 @@ mod tests {
     #[test]
     fn deserialize_invalid_boost_is_err() {
         let j = r#"{ "user": { "value": "Kimchy", "boost": "nan" } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": "Kimchy", "boost": "asdf" } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": "Kimchy", "boost": "1.x" } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": "Kimchy", "boost": "x1" } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": "Kimchy", "boost": 2.0, "boost": "x1" } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
     }
 
     #[test]
     fn deserialize_missing_values_is_err() {
         // TODO: should we support this Elasticsearch schema?
         let j = r#"{ "user": "missing" }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": null }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user" }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
     }
 
     #[test]
     fn deserialize_invalid_values_is_err() {
         let j = r#"{ "user": { "value": null } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": 1.1 } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": 1 } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": 999 } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": [null] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": ["Kimchy"] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": ["Kimchy", "elasticsearch"] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": [1.1] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": [1] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": [999] } }"#;
-        assert!(serde_json::from_str::<TermFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<TermQuery>(j).is_err(), "{}", &j);
     }
 }

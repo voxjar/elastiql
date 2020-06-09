@@ -1,10 +1,11 @@
-//! Facilitates [searching] an Elasticsearch cluster.
+//! Request, response and [Query DSL] types used when [searching] an Elasticsearch cluster.
 //!
 //! [searching]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-search.html
+//! [Query DSL]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
 
-pub use self::{filter::*, request::*, response::*, script::*, sort::*};
+pub use self::{query::*, request::*, response::*, script::*, sort::*};
 
-mod filter;
+mod query;
 mod request;
 mod response;
 mod script;

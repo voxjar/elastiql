@@ -10,7 +10,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
-pub struct ExistsFilterInput {
+pub struct ExistsQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -24,15 +24,15 @@ pub struct ExistsFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct ExistsFilter {
+pub struct ExistsQuery {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 }
 
-impl From<ExistsFilterInput> for ExistsFilter {
+impl From<ExistsQueryInput> for ExistsQuery {
     #[inline]
-    fn from(input: ExistsFilterInput) -> ExistsFilter {
-        ExistsFilter { field: input.field }
+    fn from(input: ExistsQueryInput) -> ExistsQuery {
+        ExistsQuery { field: input.field }
     }
 }

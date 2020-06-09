@@ -20,7 +20,7 @@ use serde::{
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct RegexpFilterInput {
+pub struct RegexpQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -44,7 +44,7 @@ pub struct RegexpFilterInput {
     pub flags: Option<String>,
 }
 
-impl Serialize for RegexpFilterInput {
+impl Serialize for RegexpQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
@@ -77,7 +77,7 @@ impl Serialize for RegexpFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct RegexpFilter {
+pub struct RegexpQuery {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -101,10 +101,10 @@ pub struct RegexpFilter {
     pub flags: Option<String>,
 }
 
-impl From<RegexpFilterInput> for RegexpFilter {
+impl From<RegexpQueryInput> for RegexpQuery {
     #[inline]
-    fn from(input: RegexpFilterInput) -> RegexpFilter {
-        RegexpFilter {
+    fn from(input: RegexpQueryInput) -> RegexpQuery {
+        RegexpQuery {
             field: input.field,
             value: input.value,
             flags: input.flags,
@@ -113,7 +113,7 @@ impl From<RegexpFilterInput> for RegexpFilter {
 }
 
 // TODO: re-use the serializer from the input type
-impl Serialize for RegexpFilter {
+impl Serialize for RegexpQuery {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
@@ -133,24 +133,24 @@ impl Serialize for RegexpFilter {
     }
 }
 
-/// Visits a `RegexpFilter` during deserialization.
-struct RegexpFilterVisitor;
+/// Visits a `RegexpQuery` during deserialization.
+struct RegexpQueryVisitor;
 
-impl<'de> serde::Deserialize<'de> for RegexpFilter {
+impl<'de> serde::Deserialize<'de> for RegexpQuery {
     #[inline]
-    fn deserialize<D>(deserializer: D) -> Result<RegexpFilter, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<RegexpQuery, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        deserializer.deserialize_map(RegexpFilterVisitor)
+        deserializer.deserialize_map(RegexpQueryVisitor)
     }
 }
 
-impl<'de> Visitor<'de> for RegexpFilterVisitor {
-    type Value = RegexpFilter;
+impl<'de> Visitor<'de> for RegexpQueryVisitor {
+    type Value = RegexpQuery;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a `RegexpFilter`")
+        formatter.write_str("a `RegexpQuery`")
     }
 
     fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
@@ -171,7 +171,7 @@ impl<'de> Visitor<'de> for RegexpFilterVisitor {
         // TODO: should we check for invalid flags?
         let flags = values.get("flags").cloned();
 
-        Ok(RegexpFilter {
+        Ok(RegexpQuery {
             field,
             value,
             flags,
@@ -198,7 +198,7 @@ mod tests {
 
                 #[test]
                 fn can_deserialize() {
-                    assert_eq!(serde_json::from_value::<RegexpFilter>($j).unwrap(), $f);
+                    assert_eq!(serde_json::from_value::<RegexpQuery>($j).unwrap(), $f);
                 }
             }
         };
@@ -206,7 +206,7 @@ mod tests {
 
     test_case!(
         simple:
-        RegexpFilter {
+        RegexpQuery {
             field: "userProfile".to_string(),
             value: "k.*y".to_string(),
             flags: None,
@@ -216,7 +216,7 @@ mod tests {
 
     test_case!(
         with_flags:
-        RegexpFilter {
+        RegexpQuery {
             field: "user".to_string(),
             value: "k.*y".to_string(),
             flags: Some("ALL".to_string()),
@@ -226,7 +226,7 @@ mod tests {
 
     test_case!(
         without_flags:
-        RegexpFilter {
+        RegexpQuery {
             field: "user".to_string(),
             value: "k.*y".to_string(),
             flags: None,
@@ -238,16 +238,16 @@ mod tests {
     fn deserialize_missing_values_is_err() {
         // TODO: should we support this Elasticsearch schema?
         let j = r#"{ "user": "missing" }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": null }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user" }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": null } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
     }
 
     #[test]
@@ -255,30 +255,30 @@ mod tests {
         // TODO: should we support this Elasticsearch schema?
 
         let j = r#"{ "user": { "value": 1.1 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": 1 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": 999 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "value": null } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
     }
 
     #[test]
     fn deserialize_invalid_flags_is_err() {
         let j = r#"{ "user": { "flags": 1.1 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "flags": 1 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "flags": 999 } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "user": { "flags": null } }"#;
-        assert!(serde_json::from_str::<RegexpFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<RegexpQuery>(j).is_err(), "{}", &j);
     }
 }

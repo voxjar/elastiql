@@ -9,7 +9,7 @@ use serde::{
 };
 
 use super::*;
-use crate::search::CompoundFilter;
+use crate::search::CompoundQuery;
 
 impl Serialize for AggregationInput {
     #[inline]
@@ -52,7 +52,7 @@ pub(super) struct SubAggregation {
 
     // Bucketing aggregations
     #[serde(default, rename = "filter", skip_serializing_if = "Option::is_none")]
-    filters: Option<CompoundFilter>,
+    filters: Option<CompoundQuery>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     terms: Option<InnerAggregation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -521,8 +521,9 @@ pub(super) mod serde_sub_aggregations {
 mod tests {
     use super::*;
 
-    use crate::search::TermsFilterInput;
     use serde_json::json;
+
+    use crate::search::TermsQueryInput;
 
     /// Simple smoke test. This also makes it so editors pick up this test mod as runnable.
     #[test]
@@ -596,7 +597,7 @@ mod tests {
             simple_with_nest:
             Aggregation::builder()
                 .name("SPECIFIC_AGENTS")
-                .filters(Some(TermsFilterInput::new("agents", vec!["123", "456", "789"]).into(),))
+                .filters(Some(TermsQueryInput::new("agents", vec!["123", "456", "789"]).into(),))
                 .aggregations(vec![Aggregation::builder()
                     .name("PER_AGENT")
                     .terms(Some("agents".into()))

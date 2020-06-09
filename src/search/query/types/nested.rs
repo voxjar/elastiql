@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::super::{CompoundFilter, CompoundFilterInput};
+use super::super::{CompoundQuery, CompoundQueryInput};
 
 /// A [Nested query] wraps another query to search [nested] fields.
 ///
@@ -16,7 +16,7 @@ use super::super::{CompoundFilter, CompoundFilterInput};
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
-pub struct NestedFilterInput {
+pub struct NestedQueryInput {
     /// Path to the nested object to search.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
@@ -31,7 +31,7 @@ pub struct NestedFilterInput {
     /// in an inner nested query to automatically match the relevant nesting
     /// level, rather than root, if it exists within another nested query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
-    pub query: CompoundFilterInput,
+    pub query: CompoundQueryInput,
 
     /// Indicates whether to ignore an unmapped path and not return any
     /// documents instead of an error.
@@ -40,11 +40,11 @@ pub struct NestedFilterInput {
     pub ignore_unmapped: bool,
 }
 
-impl NestedFilterInput {
-    /// Constructs a new `NestedFilterInput`.
+impl NestedQueryInput {
+    /// Constructs a new `NestedQueryInput`.
     #[inline]
-    pub fn new(path: impl Into<String>, query: impl Into<CompoundFilterInput>) -> Self {
-        NestedFilterInput {
+    pub fn new(path: impl Into<String>, query: impl Into<CompoundQueryInput>) -> Self {
+        NestedQueryInput {
             path: path.into(),
             query: query.into(),
             ignore_unmapped: true,
@@ -64,7 +64,7 @@ impl NestedFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct NestedFilter {
+pub struct NestedQuery {
     /// Path to the nested object to search.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
@@ -79,7 +79,7 @@ pub struct NestedFilter {
     /// in an inner nested query to automatically match the relevant nesting
     /// level, rather than root, if it exists within another nested query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
-    pub query: CompoundFilter,
+    pub query: CompoundQuery,
 
     /// Indicates whether to ignore an unmapped path and not return any
     /// documents instead of an error.
@@ -87,10 +87,10 @@ pub struct NestedFilter {
     pub ignore_unmapped: bool,
 }
 
-impl From<NestedFilterInput> for NestedFilter {
+impl From<NestedQueryInput> for NestedQuery {
     #[inline]
-    fn from(input: NestedFilterInput) -> NestedFilter {
-        NestedFilter {
+    fn from(input: NestedQueryInput) -> NestedQuery {
+        NestedQuery {
             path: input.path,
             query: input.query.into(),
             ignore_unmapped: input.ignore_unmapped,

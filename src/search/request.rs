@@ -2,12 +2,12 @@
 //!
 //! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 
-use std::{default::Default, str, string::ToString};
+use std::{default::Default, str};
 
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Value as JsonValue};
+use serde_json::Value as JsonValue;
 
-use crate::search::{CompoundFilterInput, SortInput};
+use crate::search::{CompoundQueryInput, SortInput};
 
 /// The [request body] for an Elasticsearch search request.
 ///
@@ -15,10 +15,10 @@ use crate::search::{CompoundFilterInput, SortInput};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct Request {
-    /// Filters the search results.
+    /// Querys the search results.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    #[serde(skip_serializing_if = "CompoundFilterInput::is_empty")]
-    pub query: CompoundFilterInput,
+    #[serde(skip_serializing_if = "CompoundQueryInput::is_empty")]
+    pub query: CompoundQueryInput,
 
     /// Sorts the results.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
@@ -65,9 +65,9 @@ pub struct Request {
 }
 
 impl Request {
-    /// Get a mutable reference to the [`CompoundFilterInput`].
+    /// Get a mutable reference to the [`CompoundQueryInput`].
     #[inline]
-    pub fn query_mut(&mut self) -> &mut CompoundFilterInput {
+    pub fn query_mut(&mut self) -> &mut CompoundQueryInput {
         &mut self.query
     }
 }

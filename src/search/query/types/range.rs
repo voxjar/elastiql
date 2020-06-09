@@ -12,7 +12,7 @@ use serde::{
 
 #[allow(clippy::missing_docs_in_private_items)]
 #[derive(Serialize, Deserialize)]
-struct InnerRangeFilter {
+struct InnerRangeQuery {
     #[serde(rename = "gt", default, skip_serializing_if = "Option::is_none")]
     greater_than: Option<String>,
 
@@ -35,7 +35,7 @@ struct InnerRangeFilter {
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct RangeFilterInput {
+pub struct RangeQueryInput {
     /// The name of the field to query.
     pub field: String,
 
@@ -86,12 +86,12 @@ pub struct RangeFilterInput {
     pub boost: Option<f64>,
 }
 
-impl Serialize for RangeFilterInput {
+impl Serialize for RangeQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
 
-        let inner = InnerRangeFilter {
+        let inner = InnerRangeQuery {
             greater_than: self.greater_than.as_ref().map(|v| v.to_owned()),
             greater_than_or_equal_to: self.greater_than_or_equal_to.as_ref().map(|v| v.to_owned()),
             less_than: self.less_than.as_ref().map(|v| v.to_owned()),
@@ -112,7 +112,7 @@ impl Serialize for RangeFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct RangeFilter {
+pub struct RangeQuery {
     /// The name of the field to query.
     pub field: String,
 
@@ -163,10 +163,10 @@ pub struct RangeFilter {
     pub boost: Option<f64>,
 }
 
-impl From<RangeFilterInput> for RangeFilter {
+impl From<RangeQueryInput> for RangeQuery {
     #[inline]
-    fn from(input: RangeFilterInput) -> RangeFilter {
-        RangeFilter {
+    fn from(input: RangeQueryInput) -> RangeQuery {
+        RangeQuery {
             field: input.field,
             greater_than: input.greater_than,
             greater_than_or_equal_to: input.greater_than_or_equal_to,
@@ -178,12 +178,12 @@ impl From<RangeFilterInput> for RangeFilter {
 }
 
 // TODO: re-use the serializer from the input type
-impl Serialize for RangeFilter {
+impl Serialize for RangeQuery {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
 
-        let inner = InnerRangeFilter {
+        let inner = InnerRangeQuery {
             greater_than: self.greater_than.as_ref().map(|v| v.to_owned()),
             greater_than_or_equal_to: self.greater_than_or_equal_to.as_ref().map(|v| v.to_owned()),
             less_than: self.less_than.as_ref().map(|v| v.to_owned()),
@@ -197,24 +197,24 @@ impl Serialize for RangeFilter {
     }
 }
 
-/// Visits a `RangeFilter` during deserialization.
-struct RangeFilterVisitor;
+/// Visits a `RangeQuery` during deserialization.
+struct RangeQueryVisitor;
 
-impl<'de> serde::Deserialize<'de> for RangeFilter {
+impl<'de> serde::Deserialize<'de> for RangeQuery {
     #[inline]
-    fn deserialize<D>(deserializer: D) -> Result<RangeFilter, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<RangeQuery, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        deserializer.deserialize_map(RangeFilterVisitor)
+        deserializer.deserialize_map(RangeQueryVisitor)
     }
 }
 
-impl<'de> Visitor<'de> for RangeFilterVisitor {
-    type Value = RangeFilter;
+impl<'de> Visitor<'de> for RangeQueryVisitor {
+    type Value = RangeQuery;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a `RangeFilter`")
+        formatter.write_str("a `RangeQuery`")
     }
 
     fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
@@ -225,9 +225,9 @@ impl<'de> Visitor<'de> for RangeFilterVisitor {
             .next_key::<String>()?
             .ok_or_else(|| de::Error::missing_field("field"))?;
 
-        let inner: InnerRangeFilter = map.next_value()?;
+        let inner: InnerRangeQuery = map.next_value()?;
 
-        let filter = RangeFilter {
+        let filter = RangeQuery {
             field,
             greater_than: inner.greater_than,
             greater_than_or_equal_to: inner.greater_than_or_equal_to,
@@ -259,7 +259,7 @@ mod tests {
 
                 #[test]
                 fn can_deserialize() {
-                    assert_eq!(serde_json::from_value::<RangeFilter>($j).unwrap(), $f);
+                    assert_eq!(serde_json::from_value::<RangeQuery>($j).unwrap(), $f);
                 }
             }
         };
@@ -267,7 +267,7 @@ mod tests {
 
     test_case!(
         simple:
-        RangeFilter {
+        RangeQuery {
             field: "currentAge".to_string(),
             greater_than: None,
             greater_than_or_equal_to: Some("10".to_string()),
@@ -280,7 +280,7 @@ mod tests {
 
     test_case!(
         with_boost:
-        RangeFilter {
+        RangeQuery {
             field: "age".to_string(),
             greater_than: None,
             greater_than_or_equal_to: Some("10".to_string()),
@@ -293,7 +293,7 @@ mod tests {
 
     test_case!(
         without_boost:
-        RangeFilter {
+        RangeQuery {
             field: "age".to_string(),
             greater_than: None,
             greater_than_or_equal_to: Some("10".to_string()),
@@ -308,35 +308,35 @@ mod tests {
     fn deserialize_invalid_boost_is_err() {
         let j = r#"{ "age": { "gte": "10", "lte": "20", "boost": "nan" } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "gte": "10", "lte": "20", "boost": "asdf" } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "gte": "10", "lte": "20", "boost": "1.x" } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "gte": "10", "lte": "20", "boost": "x1" } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "gte": "10", "lte": "20", "boost": "2.0", "boost": "x1" } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
@@ -346,21 +346,21 @@ mod tests {
     fn deserialize_missing_all_ranges_is_err() {
         let j = r#"{ "age": "missing" }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": null }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age" }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
@@ -371,21 +371,21 @@ mod tests {
         // TODO: should we support this Elasticsearch schema?
         let j = r#"{ "age": { "gt": 1.1 } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "gte": 1 } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );
 
         let j = r#"{ "age": { "lt": 999 } }"#;
         assert!(
-            serde_json::from_str::<RangeFilter>(j).is_err(),
+            serde_json::from_str::<RangeQuery>(j).is_err(),
             "test case: {}",
             &j
         );

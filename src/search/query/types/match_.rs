@@ -18,7 +18,7 @@ use serde::{
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct MatchFilterInput {
+pub struct MatchQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -35,7 +35,7 @@ pub struct MatchFilterInput {
     pub query: String,
 }
 
-impl Serialize for MatchFilterInput {
+impl Serialize for MatchQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
@@ -61,7 +61,7 @@ impl Serialize for MatchFilterInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
-pub struct MatchFilter {
+pub struct MatchQuery {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
@@ -78,10 +78,10 @@ pub struct MatchFilter {
     pub query: String,
 }
 
-impl From<MatchFilterInput> for MatchFilter {
+impl From<MatchQueryInput> for MatchQuery {
     #[inline]
-    fn from(input: MatchFilterInput) -> MatchFilter {
-        MatchFilter {
+    fn from(input: MatchQueryInput) -> MatchQuery {
+        MatchQuery {
             field: input.field,
             query: input.query,
         }
@@ -89,7 +89,7 @@ impl From<MatchFilterInput> for MatchFilter {
 }
 
 // TODO: re-use the serializer from the input type
-impl Serialize for MatchFilter {
+impl Serialize for MatchQuery {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
         let mut map = serializer.serialize_map(Some(1))?;
@@ -103,24 +103,24 @@ impl Serialize for MatchFilter {
     }
 }
 
-/// Visits a `MatchFilter` during deserialization.
-struct MatchFilterVisitor;
+/// Visits a `MatchQuery` during deserialization.
+struct MatchQueryVisitor;
 
-impl<'de> serde::Deserialize<'de> for MatchFilter {
+impl<'de> serde::Deserialize<'de> for MatchQuery {
     #[inline]
-    fn deserialize<D>(deserializer: D) -> Result<MatchFilter, D::Error>
+    fn deserialize<D>(deserializer: D) -> Result<MatchQuery, D::Error>
     where
         D: serde::Deserializer<'de>,
     {
-        deserializer.deserialize_map(MatchFilterVisitor)
+        deserializer.deserialize_map(MatchQueryVisitor)
     }
 }
 
-impl<'de> Visitor<'de> for MatchFilterVisitor {
-    type Value = MatchFilter;
+impl<'de> Visitor<'de> for MatchQueryVisitor {
+    type Value = MatchQuery;
 
     fn expecting(&self, formatter: &mut fmt::Formatter) -> fmt::Result {
-        formatter.write_str("a `MatchFilter`")
+        formatter.write_str("a `MatchQuery`")
     }
 
     fn visit_map<A>(self, mut map: A) -> Result<Self::Value, A::Error>
@@ -138,7 +138,7 @@ impl<'de> Visitor<'de> for MatchFilterVisitor {
             .ok_or_else(|| de::Error::missing_field("query"))?
             .to_string();
 
-        Ok(MatchFilter { field, query })
+        Ok(MatchQuery { field, query })
     }
 }
 
@@ -161,7 +161,7 @@ mod tests {
 
                 #[test]
                 fn can_deserialize() {
-                    assert_eq!(serde_json::from_value::<MatchFilter>($j).unwrap(), $f);
+                    assert_eq!(serde_json::from_value::<MatchQuery>($j).unwrap(), $f);
                 }
             }
         };
@@ -169,7 +169,7 @@ mod tests {
 
     test_case!(
         simple:
-        MatchFilter { field: "testMessage".to_string(), query: "this is a test".to_string() },
+        MatchQuery { field: "testMessage".to_string(), query: "this is a test".to_string() },
         json!({ "testMessage": { "query": "this is a test" } })
     );
 
@@ -177,13 +177,13 @@ mod tests {
     fn missing_query_is_err() {
         // TODO: should we support this Elasticsearch schema?
         let j = r#"{ "message": "missing" }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "message": null }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "message" }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
     }
 
     #[test]
@@ -191,15 +191,15 @@ mod tests {
         // TODO: should we support this Elasticsearch schema?
 
         let j = r#"{ "message": { "query": 1.1 } }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "message": { "query": 1 } }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "message": { "query": 999 } }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
 
         let j = r#"{ "message": { "query": null } }"#;
-        assert!(serde_json::from_str::<MatchFilter>(j).is_err(), "{}", &j);
+        assert!(serde_json::from_str::<MatchQuery>(j).is_err(), "{}", &j);
     }
 }

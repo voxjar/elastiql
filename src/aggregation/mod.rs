@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 
 pub(crate) use self::serialization_deserialization::*;
 use self::types::*;
-use crate::search::CompoundFilterInput;
+use crate::search::CompoundQueryInput;
 
 mod serialization_deserialization;
 mod types;
@@ -180,7 +180,7 @@ pub struct AggregationInput {
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    pub filters: Option<CompoundFilterInput>,
+    pub filters: Option<CompoundQueryInput>,
 
     /// A [*multi-bucketing*] value source based aggregation where buckets are
     /// dynamically built - one per unique value.
@@ -460,7 +460,7 @@ pub struct Aggregation {
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    pub filters: Option<crate::search::CompoundFilter>,
+    pub filters: Option<crate::search::CompoundQuery>,
 
     /// A [*multi-bucketing*] value source based aggregation where buckets are
     /// dynamically built - one per unique value.

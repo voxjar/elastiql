@@ -1,23 +1,27 @@
-//! [Query string query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html)
+//! [Simple query string query](elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html)
 
 use serde::{Deserialize, Serialize};
 
 // TODO: add additional options
-/// [Query string] returns documents based on a provided query string, using a
-/// parser with a strict syntax.
+/// A [Simple query string] returns documents based on a provided query string,
+/// using a parser with a limited but fault-tolerant syntax.
 ///
-/// This query uses a [syntax] to parse and split the provided query string
-/// based on operators, such as `AND` or `NOT`. The query then [analyzes] each
-/// split text independently before returning matching documents.
+/// This query uses a [simple syntax] to parse and split the provided query
+/// string into terms based on special operators. The query then analyzes each
+/// term independently before returning matching documents.
 ///
-/// [Query string]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
-/// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
-/// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
+/// While its syntax is more limited than the [`query_string` query], the
+/// simple_query_string query does not return errors for invalid syntax.
+/// Instead, it ignores any invalid parts of the query string.
+///
+/// [Simple query string]: elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html
+/// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+/// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
-pub struct QueryStringFilterInput {
+pub struct SimpleQueryStringQueryInput {
     /// The name of the fields to query.
     ///
     /// Defaults to all field that have full text search enabled.
@@ -38,21 +42,25 @@ pub struct QueryStringFilterInput {
 }
 
 // TODO: add additional options
-/// [Query string] returns documents based on a provided query string, using a
-/// parser with a strict syntax.
+/// A [Simple query string] returns documents based on a provided query string,
+/// using a parser with a limited but fault-tolerant syntax.
 ///
-/// This query uses a [syntax] to parse and split the provided query string
-/// based on operators, such as `AND` or `NOT`. The query then [analyzes] each
-/// split text independently before returning matching documents.
+/// This query uses a [simple syntax] to parse and split the provided query
+/// string into terms based on special operators. The query then analyzes each
+/// term independently before returning matching documents.
 ///
-/// [Query string]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
-/// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
-/// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
+/// While its syntax is more limited than the [`query_string` query], the
+/// simple_query_string query does not return errors for invalid syntax.
+/// Instead, it ignores any invalid parts of the query string.
+///
+/// [Simple query string]: elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html
+/// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
+/// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 #[async_graphql::SimpleObject]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
-pub struct QueryStringFilter {
+pub struct SimpleQueryStringQuery {
     /// The name of the fields to query.
     ///
     /// Defaults to all field that have full text search enabled.
@@ -71,10 +79,10 @@ pub struct QueryStringFilter {
     pub query: String,
 }
 
-impl From<QueryStringFilterInput> for QueryStringFilter {
+impl From<SimpleQueryStringQueryInput> for SimpleQueryStringQuery {
     #[inline]
-    fn from(input: QueryStringFilterInput) -> QueryStringFilter {
-        QueryStringFilter {
+    fn from(input: SimpleQueryStringQueryInput) -> SimpleQueryStringQuery {
+        SimpleQueryStringQuery {
             fields: input.fields,
             query: input.query,
         }
