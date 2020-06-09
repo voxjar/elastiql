@@ -6,23 +6,24 @@
 
 This library pairs nicely with the official Elasticsearch [crate] and the
 [async-graphql] crate. It is meant to be a more batteries included approach to
-working with [Elasticsearch] in [Rust], than the official [crate] (see:
-https://github.com/elastic/elasticsearch-rs/issues/75).
+working with [Elasticsearch] in [Rust] than the official [crate] (see:
+[elastic/elasticsearch-rs#75]).
+
+### project status
+
+This project has not yet reached `v1.0.0`. As such, you can expect some amount
+of breaking changes.
+
+We have defined types (optionally with [`builder`] methods) for most
+Elasticsearch [aggregations], [query DSL] and other miscellaneous
+request/response types.
+
+### differences between the Elasticsearch REST API
 
 Because this project is expected to mainly be used via [GraphQL] some
 concessions had to be made to balance idiomatic [Rust], [Elasticsearch] and
 [GraphQL]. For example, the structure of aggregation responses is not true to
 [Elasticsearch] and is vastly simplified.
-
-## project status
-
-This project has not yet reached `v1.0.0`. As such, you can expect breaking
-changes. That being said, we expect most of the breaking changes to be related
-to naming and the import/module structure...
-
-We have defined types (optionally with [`builder`] methods) for most
-Elasticsearch [aggregations], [query DSL] and other miscellaneous
-request/response types.
 
 #### License
 
@@ -47,3 +48,4 @@ dual licensed as above, without any additional terms or conditions.
 [graphql]: https://graphql.org/
 [query dsl]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl.html
 [rust]: https://www.rust-lang.org/
+[elastic/elasticsearch-rs#75]: https://github.com/elastic/elasticsearch-rs/issues/75
