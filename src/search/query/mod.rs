@@ -18,7 +18,7 @@ mod types;
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "CompoundFilterInput")]
 #[derive(Serialize, Default, Clone, Debug)]
 pub struct CompoundQueryInput {
     /// The default query for combining multiple leaf or compound query clauses,
@@ -82,7 +82,7 @@ impl<T: Into<BooleanQueryInput>> From<T> for CompoundQueryInput {
 /// to filter context.
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "CompoundFilter")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
@@ -245,7 +245,7 @@ impl<T: Into<QueryInput>> From<T> for BooleanQueryInput {
 /// typed occurrence.
 ///
 /// [query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "BooleanFilter")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
@@ -590,7 +590,7 @@ impl From<NestedQueryInput> for QueryInput {
 /// A single query to perform for this search request.
 ///
 /// **Note**: This will *never* have more than *one* defined (and non-null) field.
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "Filter")]
 #[allow(missing_docs)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -821,7 +821,7 @@ impl From<NestedQuery> for Query {
 }
 
 /// Describes a field that can be queried and its type.
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "FilterField")]
 #[derive(Debug)]
 pub struct QueryField {
     /// The field name.

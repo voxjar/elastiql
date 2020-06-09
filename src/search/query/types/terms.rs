@@ -12,7 +12,7 @@ use serde::{
 ///
 /// [Terms query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "TermsFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
 pub struct TermsQueryInput {
@@ -78,7 +78,7 @@ impl Serialize for TermsQueryInput {
 /// in a provided field.
 ///
 /// [Terms query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "TermsFilter")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]

@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// [Exists query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "ExistsFilterInput")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -21,7 +21,7 @@ pub struct ExistsQueryInput {
 /// (e.g. `[]`) value for a field.
 ///
 /// [Exists query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "ExistsFilter")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]

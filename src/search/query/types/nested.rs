@@ -16,7 +16,7 @@ use super::super::CompoundQueryInput;
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "NestedFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct NestedQueryInput {
@@ -64,7 +64,7 @@ impl NestedQueryInput {
 ///
 /// [Nested query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "NestedFilterInput")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]

@@ -19,7 +19,7 @@ use serde::{Deserialize, Serialize};
 /// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "SimpleQueryStringFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct SimpleQueryStringQueryInput {
@@ -57,7 +57,7 @@ pub struct SimpleQueryStringQueryInput {
 /// [Simple query string]: elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html
 /// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
 /// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
-#[async_graphql::SimpleObject]
+#[async_graphql::SimpleObject(name = "SimpleQueryStringFilter")]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
