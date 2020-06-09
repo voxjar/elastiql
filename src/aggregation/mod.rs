@@ -32,7 +32,7 @@ pub struct AggregationInput {
     /// **NOTE**: this must be unique otherwise the query will only return
     /// results for the last one with this name.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
-    name: String,
+    pub name: String,
 
     /// A `single-value` [*metrics*] aggregation that computes the average of
     /// numeric values that are extracted from the aggregated documents. These
@@ -41,7 +41,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    avg: Option<InnerAggregationInput>,
+    pub avg: Option<InnerAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation that computes the weighted average
     /// of numeric values that are extracted from the aggregated documents. These
@@ -61,7 +61,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    weighted_avg: Option<WeightedAverageAggregationInput>,
+    pub weighted_avg: Option<WeightedAverageAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation that calculates an approximate
     /// count of distinct values. Values can be extracted either from specific
@@ -69,7 +69,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    cardinality: Option<InnerAggregationInput>,
+    pub cardinality: Option<InnerAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation that keeps track and returns
     /// the maximum value among the numeric values extracted from the aggregated
@@ -77,7 +77,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    max: Option<InnerAggregationInput>,
+    pub max: Option<InnerAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation that keeps track and returns
     /// the minimum value among numeric values extracted from the aggregated
@@ -85,7 +85,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    min: Option<InnerAggregationInput>,
+    pub min: Option<InnerAggregationInput>,
 
     /// This `single-value` [*metrics*] aggregation approximates the median
     /// absolute deviation of its search results.
@@ -101,7 +101,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    median_absolute_deviation: Option<InnerAggregationInput>,
+    pub median_absolute_deviation: Option<InnerAggregationInput>,
 
     /// A `multi-value` [*metrics*] aggregation that calculates one or more
     /// percentiles over numeric values extracted from the aggregated documents.
@@ -123,7 +123,7 @@ pub struct AggregationInput {
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     /// [Percentiles are (usually) estimated]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html#search-aggregations-metrics-percentile-aggregation-approximation
     #[cfg_attr(feature = "builder", builder(default))]
-    percentiles: Option<InnerAggregationInput>,
+    pub percentiles: Option<InnerAggregationInput>,
 
     /// A `multi-value` [*metrics*] aggregation that calculates one or more
     /// percentile ranks over numeric values extracted from the aggregated
@@ -134,7 +134,7 @@ pub struct AggregationInput {
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     /// [Percentiles are (usually) estimated]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html#search-aggregations-metrics-percentile-aggregation-approximation
     #[cfg_attr(feature = "builder", builder(default))]
-    percentile_ranks: Option<InnerAggregationInput>,
+    pub percentile_ranks: Option<InnerAggregationInput>,
 
     /// A `multi-value` [*metrics*] aggregation that computes stats over numeric
     /// values extracted from the aggregated documents.
@@ -144,7 +144,7 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    stats: Option<InnerAggregationInput>,
+    pub stats: Option<InnerAggregationInput>,
 
     /// A `multi-value` [*metrics*] aggregation that computes stats over numeric
     /// values extracted from the aggregated documents.
@@ -156,14 +156,14 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    extended_stats: Option<InnerAggregationInput>,
+    pub extended_stats: Option<InnerAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation that sums up numeric values
     /// that are extracted from the aggregated documents.
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    sum: Option<InnerAggregationInput>,
+    pub sum: Option<InnerAggregationInput>,
 
     /// A `single-value` [*metrics*] aggregation  that counts the number of
     /// values that are extracted from the aggregated documents. These values
@@ -173,28 +173,28 @@ pub struct AggregationInput {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    value_count: Option<InnerAggregationInput>,
+    pub value_count: Option<InnerAggregationInput>,
 
     /// A [*bucketing*] aggregation that creates a single *bucket* for all
     /// documents matching the filters specified.
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    filters: Option<CompoundFilterInput>,
+    pub filters: Option<CompoundFilterInput>,
 
     /// A [*multi-bucketing*] value source based aggregation where buckets are
     /// dynamically built - one per unique value.
     ///
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    terms: Option<InnerAggregationInput>,
+    pub terms: Option<InnerAggregationInput>,
 
     /// A [`range`] ([*bucketing*]) aggregation.
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
     #[cfg_attr(feature = "builder", builder(default))]
-    range: Option<RangeAggregationInput>,
+    pub range: Option<RangeAggregationInput>,
 
     /// A [`range`] ([*bucketing*]) aggregation that is dedicated for date
     /// values and supports [Date Math] expressions.
@@ -203,7 +203,7 @@ pub struct AggregationInput {
     /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
     #[cfg_attr(feature = "builder", builder(default))]
-    date_range: Option<DateRangeAggregationInput>,
+    pub date_range: Option<DateRangeAggregationInput>,
 
     /// A [*multi-bucketing*] aggregation similar to the normal [histogram
     /// aggregation], but can only be used with date or date range values.
@@ -211,7 +211,7 @@ pub struct AggregationInput {
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
     #[cfg_attr(feature = "builder", builder(default))]
-    date_histogram: Option<DateHistogramAggregationInput>,
+    pub date_histogram: Option<DateHistogramAggregationInput>,
 
     /// A [*multi-bucket*] aggregation similar to the [Date histogram aggregation]
     /// except instead of providing an interval to use as the width of each bucket,
@@ -223,7 +223,7 @@ pub struct AggregationInput {
     /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
     /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
+    pub auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
 
     /// A parent [**pipeline aggregation**] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
@@ -233,7 +233,7 @@ pub struct AggregationInput {
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_script: Option<BucketScriptInput>,
+    pub bucket_script: Option<BucketScriptInput>,
 
     /// A parent [**pipeline aggregation**] which executes a [script] which
     /// determines whether the current bucket will be retained in the parent
@@ -243,7 +243,7 @@ pub struct AggregationInput {
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_selector: Option<BucketSelectorInput>,
+    pub bucket_selector: Option<BucketSelectorInput>,
 
     /// A parent [**pipeline aggregation**] which sorts the buckets of its parent
     /// `multi-bucket` aggregation. Zero or more sort fields may be specified
@@ -253,7 +253,7 @@ pub struct AggregationInput {
     ///
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_sort: Option<BucketSortInput>,
+    pub bucket_sort: Option<BucketSortInput>,
 
     /// A special single [*bucketing*] aggregation that enables aggregating
     /// [nested] documents.
@@ -263,7 +263,7 @@ pub struct AggregationInput {
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     #[cfg_attr(feature = "builder", builder(default))]
-    nested: Option<NestedAggregationInput>,
+    pub nested: Option<NestedAggregationInput>,
 
     /// A special single [*bucketing*] aggregation that enables aggregating on
     /// parent docs from [nested] documents. Effectively this aggregation can
@@ -279,7 +279,7 @@ pub struct AggregationInput {
     /// [`nested`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
     #[cfg_attr(feature = "builder", builder(default))]
-    reverse_nested: Option<ReverseNestedAggregationInput>,
+    pub reverse_nested: Option<ReverseNestedAggregationInput>,
 
     /// The custom [metadata] to associate with this aggregation that will be
     /// returned alongside the results for this aggregation.
@@ -290,11 +290,11 @@ pub struct AggregationInput {
     ///
     /// [metadata]: https://www.elastic.co/guide/en/elasticsearch/reference/current/agg-metadata.html
     #[cfg_attr(feature = "builder", builder(default))]
-    metadata: Option<crate::scalars::Map>,
+    pub metadata: Option<crate::scalars::Map>,
 
     /// The sub aggregations, if any.
     #[cfg_attr(feature = "builder", builder(default))]
-    aggregations: Option<Vec<AggregationInput>>,
+    pub aggregations: Option<Vec<AggregationInput>>,
 }
 
 /// An [aggregation] can be seen as a unit-of-work that builds analytic
@@ -311,7 +311,7 @@ pub struct Aggregation {
     /// **NOTE**: this must be unique otherwise the query will only return
     /// results for the last one with this name.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
-    name: String,
+    pub name: String,
 
     /// A `single-value` [*metrics*] aggregation that computes the average of
     /// numeric values that are extracted from the aggregated documents. These
@@ -320,7 +320,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    avg: Option<InnerAggregation>,
+    pub avg: Option<InnerAggregation>,
 
     /// A `single-value` [*metrics*] aggregation that computes the weighted average
     /// of numeric values that are extracted from the aggregated documents. These
@@ -340,7 +340,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    weighted_avg: Option<WeightedAverageAggregation>,
+    pub weighted_avg: Option<WeightedAverageAggregation>,
 
     /// A `single-value` [*metrics*] aggregation that calculates an approximate
     /// count of distinct values. Values can be extracted either from specific
@@ -348,7 +348,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    cardinality: Option<InnerAggregation>,
+    pub cardinality: Option<InnerAggregation>,
 
     /// A `single-value` [*metrics*] aggregation that keeps track and returns
     /// the maximum value among the numeric values extracted from the aggregated
@@ -356,7 +356,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    max: Option<InnerAggregation>,
+    pub max: Option<InnerAggregation>,
 
     /// A `single-value` [*metrics*] aggregation that keeps track and returns
     /// the minimum value among numeric values extracted from the aggregated
@@ -364,7 +364,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    min: Option<InnerAggregation>,
+    pub min: Option<InnerAggregation>,
 
     /// This `single-value` [*metrics*] aggregation approximates the [median
     /// absolute deviation] of its search results.
@@ -381,7 +381,7 @@ pub struct Aggregation {
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     /// [median absolute deviation]: https://en.wikipedia.org/wiki/Median_absolute_deviation
     #[cfg_attr(feature = "builder", builder(default))]
-    median_absolute_deviation: Option<InnerAggregation>,
+    pub median_absolute_deviation: Option<InnerAggregation>,
 
     /// A `multi-value` [*metrics*] aggregation that calculates one or more
     /// percentiles over numeric values extracted from the aggregated documents.
@@ -403,7 +403,7 @@ pub struct Aggregation {
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     /// [Percentiles are (usually) estimated]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html#search-aggregations-metrics-percentile-aggregation-approximation
     #[cfg_attr(feature = "builder", builder(default))]
-    percentiles: Option<InnerAggregation>,
+    pub percentiles: Option<InnerAggregation>,
 
     /// A `multi-value` [*metrics*] aggregation that calculates one or more
     /// percentile ranks over numeric values extracted from the aggregated
@@ -414,7 +414,7 @@ pub struct Aggregation {
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     /// [Percentiles are (usually) estimated]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics-percentile-aggregation.html#search-aggregations-metrics-percentile-aggregation-approximation
     #[cfg_attr(feature = "builder", builder(default))]
-    percentile_ranks: Option<InnerAggregation>,
+    pub percentile_ranks: Option<InnerAggregation>,
 
     /// A `multi-value` [*metrics*] aggregation that computes stats over numeric
     /// values extracted from the aggregated documents.
@@ -424,7 +424,7 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    stats: Option<InnerAggregation>,
+    pub stats: Option<InnerAggregation>,
 
     /// A `multi-value` [*metrics*] aggregation that computes stats over numeric
     /// values extracted from the aggregated documents.
@@ -436,14 +436,14 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    extended_stats: Option<InnerAggregation>,
+    pub extended_stats: Option<InnerAggregation>,
 
     /// A `single-value` [*metrics*] aggregation that sums up numeric values
     /// that are extracted from the aggregated documents.
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    sum: Option<InnerAggregation>,
+    pub sum: Option<InnerAggregation>,
 
     /// A `single-value` [*metrics*] aggregation  that counts the number of
     /// values that are extracted from the aggregated documents. These values
@@ -453,28 +453,28 @@ pub struct Aggregation {
     ///
     /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
     #[cfg_attr(feature = "builder", builder(default))]
-    value_count: Option<InnerAggregation>,
+    pub value_count: Option<InnerAggregation>,
 
     /// A [*bucketing*] aggregation that creates a single *bucket* for all
     /// documents matching the filters specified.
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    filters: Option<crate::search::CompoundFilter>,
+    pub filters: Option<crate::search::CompoundFilter>,
 
     /// A [*multi-bucketing*] value source based aggregation where buckets are
     /// dynamically built - one per unique value.
     ///
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    terms: Option<InnerAggregation>,
+    pub terms: Option<InnerAggregation>,
 
     /// A [`range`] ([*bucketing*]) aggregation.
     ///
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
     #[cfg_attr(feature = "builder", builder(default))]
-    range: Option<RangeAggregation>,
+    pub range: Option<RangeAggregation>,
 
     /// A [`range`] ([*bucketing*]) aggregation that is dedicated for date
     /// values and supports [Date Math] expressions.
@@ -483,7 +483,7 @@ pub struct Aggregation {
     /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    date_range: Option<DateRangeAggregation>,
+    pub date_range: Option<DateRangeAggregation>,
 
     /// A [*multi-bucketing*] aggregation similar to the normal [histogram
     /// aggregation], but can only be used with date or date range values.
@@ -491,7 +491,7 @@ pub struct Aggregation {
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
     #[cfg_attr(feature = "builder", builder(default))]
-    date_histogram: Option<DateHistogramAggregation>,
+    pub date_histogram: Option<DateHistogramAggregation>,
 
     /// A [*multi-bucket*] aggregation similar to the [Date histogram aggregation]
     /// except instead of providing an interval to use as the width of each bucket,
@@ -503,7 +503,7 @@ pub struct Aggregation {
     /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
     /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    auto_date_histogram: Option<AutoDateHistogramAggregation>,
+    pub auto_date_histogram: Option<AutoDateHistogramAggregation>,
 
     /// A parent [**pipeline aggregation**] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
@@ -513,7 +513,7 @@ pub struct Aggregation {
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_script: Option<BucketScript>,
+    pub bucket_script: Option<BucketScript>,
 
     /// A parent [**pipeline aggregation**] which executes a [script] which
     /// determines whether the current bucket will be retained in the parent
@@ -523,7 +523,7 @@ pub struct Aggregation {
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_selector: Option<BucketSelector>,
+    pub bucket_selector: Option<BucketSelector>,
 
     /// A parent [**pipeline aggregation**] which sorts the buckets of its parent
     /// `multi-bucket` aggregation. Zero or more sort fields may be specified
@@ -533,7 +533,7 @@ pub struct Aggregation {
     ///
     /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     #[cfg_attr(feature = "builder", builder(default))]
-    bucket_sort: Option<BucketSort>,
+    pub bucket_sort: Option<BucketSort>,
 
     /// A special single [*bucketing*] aggregation that enables aggregating
     /// [nested] documents.
@@ -543,7 +543,7 @@ pub struct Aggregation {
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     #[cfg_attr(feature = "builder", builder(default))]
-    nested: Option<NestedAggregation>,
+    pub nested: Option<NestedAggregation>,
 
     /// A special single [*bucketing*] aggregation that enables aggregating on
     /// parent docs from [nested] documents. Effectively this aggregation can
@@ -559,7 +559,7 @@ pub struct Aggregation {
     /// [`nested`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
     #[cfg_attr(feature = "builder", builder(default))]
-    reverse_nested: Option<ReverseNestedAggregation>,
+    pub reverse_nested: Option<ReverseNestedAggregation>,
 
     /// The custom [metadata] to associate with this aggregation that will be
     /// returned alongside the results for this aggregation.
@@ -570,11 +570,11 @@ pub struct Aggregation {
     ///
     /// [metadata]: https://www.elastic.co/guide/en/elasticsearch/reference/current/agg-metadata.html
     #[cfg_attr(feature = "builder", builder(default))]
-    metadata: Option<crate::scalars::Map>,
+    pub metadata: Option<crate::scalars::Map>,
 
     /// The sub aggregation, if any.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    aggregations: Option<Vec<Aggregation>>,
+    pub aggregations: Option<Vec<Aggregation>>,
 }
 
 // TODO: auto generate this with a proc_macro?
@@ -614,28 +614,40 @@ impl From<AggregationInput> for Aggregation {
     }
 }
 
-// TODO: rename
+// TODO: rename?
 // TODO: add more fields
-/// The response for performing an aggregation.
+/// The response from performing an aggregation.
 #[async_graphql::SimpleObject]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Deserialize, Clone, Debug)]
 #[serde(from = "ElasticAggregationResponse")]
 pub struct AggregationResponse {
-    aggregations: Vec<AggregationResult>,
+    /// The aggregations.
+    pub aggregations: Vec<AggregationResult>,
 }
 
 /// An individual result from performing an aggregation/calculation.
 #[async_graphql::SimpleObject]
 #[derive(Deserialize, Clone, Debug)]
 pub struct AggregationResult {
-    parent: Option<String>,
-    name: String,
+    /// The parent of this aggregation (if any).
+    pub parent: Option<String>,
+
+    /// The name assigned to this aggregation.
+    pub name: String,
+
+    /// The `type` of this aggregation.
     #[field(name = "type")]
-    ty: AggregationType,
-    fields: Vec<String>,
-    values: Vec<f64>,
-    metadata: Option<crate::scalars::Map>,
+    pub ty: AggregationType,
+
+    /// The fields this aggregation computed over.
+    pub fields: Vec<String>,
+
+    /// The actual values/result of performing this aggregation.
+    pub values: Vec<f64>,
+
+    /// The user-supplied metadata attached to this aggregation.
+    pub metadata: Option<crate::scalars::Map>,
 }
 
 // TODO: generate this with proc-macro from Aggregation struct

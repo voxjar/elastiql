@@ -31,7 +31,7 @@ pub struct CompoundFilterInput {
     /// context.
     #[field(name = "bool")]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
-    boolean: Option<BooleanFilterInput>,
+    pub boolean: Option<BooleanFilterInput>,
 }
 
 impl CompoundFilterInput {
@@ -95,7 +95,7 @@ pub struct CompoundFilter {
     // #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
-    boolean: Option<BooleanFilter>,
+    pub boolean: Option<BooleanFilter>,
 }
 
 #[cfg(feature = "builder")]
@@ -133,7 +133,7 @@ pub struct BooleanFilterInput {
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    must: Vec<FilterInput>,
+    pub must: Vec<FilterInput>,
 
     /// The clause (query) must appear in matching documents. However unlike
     /// must, the score of the query will be ignored. Filter clauses are executed
@@ -144,13 +144,13 @@ pub struct BooleanFilterInput {
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    filter: Vec<FilterInput>,
+    pub filter: Vec<FilterInput>,
 
     /// The clause (query) should appear in the matching document.
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    should: Vec<FilterInput>,
+    pub should: Vec<FilterInput>,
 
     /// The clause (query) must not appear in the matching documents. Clauses
     /// are executed in [filter context] meaning that scoring is ignored and
@@ -161,7 +161,7 @@ pub struct BooleanFilterInput {
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    must_not: Vec<FilterInput>,
+    pub must_not: Vec<FilterInput>,
 
     /// [Controls] how many optional (`should`) parameters must match.
     ///
@@ -177,7 +177,7 @@ pub struct BooleanFilterInput {
     /// [Controls]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    minimum_should_match: Option<String>,
+    pub minimum_should_match: Option<String>,
 
     /// Floating point number used to decrease or increase the
     /// [relevance scores] of a query. (Defaults to `1.0`.)
@@ -192,7 +192,7 @@ pub struct BooleanFilterInput {
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    boost: Option<f64>,
+    pub boost: Option<f64>,
 }
 
 impl BooleanFilterInput {
@@ -241,7 +241,7 @@ pub struct BooleanFilter {
     /// contribute to the score* of this query.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    must: Vec<Filter>,
+    pub must: Vec<Filter>,
 
     /// The clause (query) **must** appear in matching documents. However unlike
     /// `must`, the *score of the query will be ignored*. Filter clauses are
@@ -251,12 +251,12 @@ pub struct BooleanFilter {
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    filter: Vec<Filter>,
+    pub filter: Vec<Filter>,
 
     /// The clause (query) **should** appear in the matching document.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    should: Vec<Filter>,
+    pub should: Vec<Filter>,
 
     /// The clause (query) **must not** appear in the matching documents. Clauses
     /// are executed in [filter context] meaning that *scoring is ignored* and
@@ -266,7 +266,7 @@ pub struct BooleanFilter {
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
-    must_not: Vec<Filter>,
+    pub must_not: Vec<Filter>,
 
     /// [Controls] how many optional (`should`) parameters must match.
     ///
@@ -282,7 +282,7 @@ pub struct BooleanFilter {
     /// [Controls]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    minimum_should_match: Option<String>,
+    pub minimum_should_match: Option<String>,
 
     /// Floating point number used to decrease or increase the
     /// [relevance scores] of a query. (Defaults to `1.0`.)
@@ -297,7 +297,7 @@ pub struct BooleanFilter {
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    boost: Option<f64>,
+    pub boost: Option<f64>,
 }
 
 #[cfg(feature = "builder")]
@@ -353,51 +353,52 @@ impl<T: Into<Filter>> From<T> for BooleanFilter {
 ///
 /// [union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 #[async_graphql::InputObject]
+#[allow(missing_docs)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct FilterInput {
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    exists: Option<ExistsFilterInput>,
+    pub exists: Option<ExistsFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    term: Option<TermFilterInput>,
+    pub term: Option<TermFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    terms: Option<TermsFilterInput>,
+    pub terms: Option<TermsFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    range: Option<RangeFilterInput>,
+    pub range: Option<RangeFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    regexp: Option<RegexpFilterInput>,
+    pub regexp: Option<RegexpFilterInput>,
 
     #[field(name = "match")]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
-    match_: Option<MatchFilterInput>,
+    pub match_: Option<MatchFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    simple_query_string: Option<SimpleQueryStringFilterInput>,
+    pub simple_query_string: Option<SimpleQueryStringFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    query_string: Option<QueryStringFilterInput>,
+    pub query_string: Option<QueryStringFilterInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    nested: Option<NestedFilterInput>,
+    pub nested: Option<NestedFilterInput>,
 
     /// A nested bool query.
     #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
-    boolean: Option<BooleanFilterInput>,
+    pub boolean: Option<BooleanFilterInput>,
 }
 
 impl From<ExistsFilterInput> for FilterInput {
@@ -566,51 +567,52 @@ impl From<NestedFilterInput> for FilterInput {
 ///
 /// **Note**: This will *never* have more than *one* defined (and non-null) field.
 #[async_graphql::SimpleObject]
+#[allow(missing_docs)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Filter {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    exists: Option<ExistsFilter>,
+    pub exists: Option<ExistsFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    term: Option<TermFilter>,
+    pub term: Option<TermFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    terms: Option<TermsFilter>,
+    pub terms: Option<TermsFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    range: Option<RangeFilter>,
+    pub range: Option<RangeFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    regexp: Option<RegexpFilter>,
+    pub regexp: Option<RegexpFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
-    match_: Option<MatchFilter>,
+    pub match_: Option<MatchFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    simple_query_string: Option<SimpleQueryStringFilter>,
+    pub simple_query_string: Option<SimpleQueryStringFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    query_string: Option<QueryStringFilter>,
+    pub query_string: Option<QueryStringFilter>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    nested: Option<NestedFilter>,
+    pub nested: Option<NestedFilter>,
 
     /// A nested bool query.
     #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
-    boolean: Option<BooleanFilter>,
+    pub boolean: Option<BooleanFilter>,
 }
 
 impl From<FilterInput> for Filter {

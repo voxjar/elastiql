@@ -31,7 +31,10 @@ pub(crate) type InnerCursor = Vec<JsonValue>;
 pub struct Cursor(InnerCursor);
 
 impl Cursor {
-    /// Encodes this `Cursor` to a base64 JSON string.
+    /// Encodes this `Cursor` to a [base64] [JSON] string.
+    ///
+    /// [base64]: https://tools.ietf.org/html/rfc4648#section-5
+    /// [JSON]: https://tools.ietf.org/html/rfc7159
     #[inline]
     pub fn encode(&self) -> Result<String, Box<dyn std::error::Error + Send + Sync>> {
         // NB: must use inner data, otherwise an endless fn call cycle happens
