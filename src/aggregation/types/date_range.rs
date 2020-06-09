@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
 /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -81,6 +82,7 @@ pub struct DateRangeAggregation {
     pub ranges: Vec<DateRange>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<DateRangeAggregationInput> for DateRangeAggregation {
     #[inline]
     fn from(input: DateRangeAggregationInput) -> Self {
@@ -94,6 +96,7 @@ impl From<DateRangeAggregationInput> for DateRangeAggregation {
     }
 }
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -148,6 +151,7 @@ impl DateRange {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<DateRangeInput> for DateRange {
     #[inline]
     fn from(input: DateRangeInput) -> Self {

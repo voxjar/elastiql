@@ -17,6 +17,7 @@ use serde::{
 /// [Regexp query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#query-dsl-regexp-query
 /// [regular expression]: https://en.wikipedia.org/wiki/Regular_expression
 /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -44,6 +45,7 @@ pub struct RegexpQueryInput {
     pub flags: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for RegexpQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -101,6 +103,7 @@ pub struct RegexpQuery {
     pub flags: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<RegexpQueryInput> for RegexpQuery {
     #[inline]
     fn from(input: RegexpQueryInput) -> RegexpQuery {

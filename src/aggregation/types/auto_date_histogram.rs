@@ -11,6 +11,8 @@ use serde::{Deserialize, Serialize};
 ///
 /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+#[cfg(feature = "graphql")]
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -93,6 +95,8 @@ pub struct AutoDateHistogramAggregation {
     pub missing: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
+#[cfg(feature = "graphql")]
 impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
     #[inline]
     fn from(input: AutoDateHistogramAggregationInput) -> Self {

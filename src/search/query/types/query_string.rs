@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 /// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
 /// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -71,6 +72,7 @@ pub struct QueryStringQuery {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
 impl From<QueryStringQueryInput> for QueryStringQuery {
     #[inline]
     fn from(input: QueryStringQueryInput) -> QueryStringQuery {

@@ -6,6 +6,7 @@ use serde::{Deserialize, Serialize};
 /// (e.g. `[]`) value for a field.
 ///
 /// [Exists query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -30,6 +31,7 @@ pub struct ExistsQuery {
     pub field: String,
 }
 
+#[cfg(feature = "graphql")]
 impl From<ExistsQueryInput> for ExistsQuery {
     #[inline]
     fn from(input: ExistsQueryInput) -> ExistsQuery {

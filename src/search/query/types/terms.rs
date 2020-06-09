@@ -11,6 +11,7 @@ use serde::{
 /// in a provided field.
 ///
 /// [Terms query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -43,6 +44,7 @@ pub struct TermsQueryInput {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl TermsQueryInput {
     /// Creates a new `TermsQueryInput`.
     #[inline]
@@ -59,6 +61,7 @@ impl TermsQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for TermsQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -108,6 +111,23 @@ pub struct TermsQuery {
     pub boost: Option<f64>,
 }
 
+impl TermsQuery {
+    /// Creates a new `TermsQuery`.
+    #[inline]
+    pub fn new<T: Into<String>>(
+        field: impl Into<String>,
+        // TODO: why can't this just be `impl Into<Vec<String>>`?
+        values: impl IntoIterator<Item = T>,
+    ) -> Self {
+        TermsQuery {
+            field: field.into(),
+            values: values.into_iter().map(Into::into).collect::<Vec<String>>(),
+            boost: None,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl From<TermsQueryInput> for TermsQuery {
     #[inline]
     fn from(input: TermsQueryInput) -> TermsQuery {

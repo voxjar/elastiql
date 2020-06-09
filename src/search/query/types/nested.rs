@@ -2,7 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::super::{CompoundQuery, CompoundQueryInput};
+use super::super::CompoundQuery;
+#[cfg(feature = "graphql")]
+use super::super::CompoundQueryInput;
 
 /// A [Nested query] wraps another query to search [nested] fields.
 ///
@@ -13,6 +15,7 @@ use super::super::{CompoundQuery, CompoundQueryInput};
 /// [Nested query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -40,6 +43,7 @@ pub struct NestedQueryInput {
     pub ignore_unmapped: bool,
 }
 
+#[cfg(feature = "graphql")]
 impl NestedQueryInput {
     /// Constructs a new `NestedQueryInput`.
     #[inline]
@@ -87,6 +91,7 @@ pub struct NestedQuery {
     pub ignore_unmapped: bool,
 }
 
+#[cfg(feature = "graphql")]
 impl From<NestedQueryInput> for NestedQuery {
     #[inline]
     fn from(input: NestedQueryInput) -> NestedQuery {

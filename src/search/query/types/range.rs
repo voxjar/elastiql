@@ -32,6 +32,7 @@ struct InnerRangeQuery {
 /// A [Range query] returns documents that contain terms within a provided range.
 ///
 /// [Range query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#query-dsl-range-query
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -86,6 +87,7 @@ pub struct RangeQueryInput {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for RangeQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -163,6 +165,7 @@ pub struct RangeQuery {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<RangeQueryInput> for RangeQuery {
     #[inline]
     fn from(input: RangeQueryInput) -> RangeQuery {

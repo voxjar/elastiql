@@ -1,8 +1,8 @@
-//! Wrapper/[newtype structs] [scalars] used in many different database documents.
+//! Wrapper/[newtype structs] scalars used throughout.
 //!
 //! [newtype structs]: https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html
-//! [scalars]: https://graphql.org/learn/schema/#scalar-types
 
-pub use self::json::*;
+pub use self::{json::*, number_or_string::*};
 
 mod json;
+mod number_or_string;

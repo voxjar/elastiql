@@ -15,6 +15,7 @@ use serde::{
 /// including options for fuzzy matching.
 ///
 /// [Match query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -35,6 +36,7 @@ pub struct MatchQueryInput {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for MatchQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -78,6 +80,7 @@ pub struct MatchQuery {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
 impl From<MatchQueryInput> for MatchQuery {
     #[inline]
     fn from(input: MatchQueryInput) -> MatchQuery {

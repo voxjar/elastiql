@@ -9,8 +9,11 @@ pub use self::{
     auto_date_histogram::*, bucket_script::*, bucket_selector::*, bucket_sort::*,
     date_histogram::*, date_range::*, nested::*, range::*, reverse_nested::*, weighted_average::*,
 };
+use crate::search::Script;
+#[cfg(feature = "graphql")]
+use crate::search::ScriptInput;
+
 use super::*;
-use crate::search::{Script, ScriptInput};
 
 mod auto_date_histogram;
 mod bucket_script;
@@ -29,6 +32,7 @@ mod weighted_average;
 /// `script` *must* be specified but *not* both.
 ///
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[derive(Serialize, Clone, Debug)]
 pub struct InnerAggregationInput {
@@ -63,6 +67,7 @@ pub struct InnerAggregation {
     pub missing: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<InnerAggregationInput> for InnerAggregation {
     #[inline]
     fn from(aggregation: InnerAggregationInput) -> Self {

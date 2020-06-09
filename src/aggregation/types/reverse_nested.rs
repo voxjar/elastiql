@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 /// [`nested`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -61,6 +62,7 @@ pub struct ReverseNestedAggregation {
     pub path: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<ReverseNestedAggregationInput> for ReverseNestedAggregation {
     #[inline]
     fn from(input: ReverseNestedAggregationInput) -> Self {

@@ -1,4 +1,4 @@
-//! Elasticsearch [bulk] request/response types.
+//! Request & response types used when making [bulk] queries.
 //!
 //! [bulk]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
 

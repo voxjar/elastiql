@@ -11,6 +11,7 @@ use serde::{Deserialize, Serialize};
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -147,6 +148,7 @@ pub struct DateHistogramAggregation {
     pub missing: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<DateHistogramAggregationInput> for DateHistogramAggregation {
     #[inline]
     fn from(input: DateHistogramAggregationInput) -> Self {

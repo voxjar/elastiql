@@ -1,4 +1,4 @@
-//! Facilitates [serialization/deserialization] for [`AggregationInput`] & [`Aggregation`].
+//! Facilitates [serialization/deserialization] for all [`Aggregation`] types.
 //!
 //! [ser/de]: https://docs.rs/serde/latest/serde/
 
@@ -11,6 +11,7 @@ use serde::{
 use super::*;
 use crate::search::CompoundQuery;
 
+#[cfg(feature = "graphql")]
 impl Serialize for AggregationInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -89,6 +90,7 @@ pub(super) struct SubAggregation {
 }
 
 // TODO: auto generate this with a proc-macro?
+#[cfg(feature = "graphql")]
 impl From<AggregationInput> for SubAggregation {
     #[inline]
     fn from(aggregation: AggregationInput) -> SubAggregation {
@@ -523,7 +525,7 @@ mod tests {
 
     use serde_json::json;
 
-    use crate::search::TermsQueryInput;
+    use crate::search::TermsQuery;
 
     /// Simple smoke test. This also makes it so editors pick up this test mod as runnable.
     #[test]
@@ -597,7 +599,7 @@ mod tests {
             simple_with_nest:
             Aggregation::builder()
                 .name("SPECIFIC_AGENTS")
-                .filters(Some(TermsQueryInput::new("agents", vec!["123", "456", "789"]).into(),))
+                .filters(Some(TermsQuery::new("agents", vec!["123", "456", "789"]).into()))
                 .aggregations(vec![Aggregation::builder()
                     .name("PER_AGENT")
                     .terms(Some("agents".into()))

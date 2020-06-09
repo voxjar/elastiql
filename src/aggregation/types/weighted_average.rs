@@ -2,7 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::{InnerAggregation, InnerAggregationInput};
+use super::InnerAggregation;
+#[cfg(feature = "graphql")]
+use super::InnerAggregationInput;
 
 /// A `single-value` [*metrics*] aggregation that computes the weighted average
 /// of numeric values that are extracted from the aggregated documents. These
@@ -21,6 +23,7 @@ use super::{InnerAggregation, InnerAggregationInput};
 /// has an implicit weight of `1`.
 ///
 /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -85,6 +88,7 @@ pub struct WeightedAverageAggregation {
     pub value_type: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<WeightedAverageAggregationInput> for WeightedAverageAggregation {
     #[inline]
     fn from(aggregation: WeightedAverageAggregationInput) -> Self {

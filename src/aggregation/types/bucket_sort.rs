@@ -2,7 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::search::{Sort, SortInput};
+use crate::search::Sort;
+#[cfg(feature = "graphql")]
+use crate::search::SortInput;
 
 use super::GapPolicy;
 
@@ -20,6 +22,7 @@ use super::GapPolicy;
 /// returned term buckets.
 ///
 /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -80,6 +83,7 @@ pub struct BucketSort {
     pub gap_policy: Option<GapPolicy>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<BucketSortInput> for BucketSort {
     #[inline]
     fn from(input: BucketSortInput) -> Self {

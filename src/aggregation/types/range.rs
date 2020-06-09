@@ -2,7 +2,10 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::search::{Script, ScriptInput};
+use crate::search::Script;
+
+#[cfg(feature = "graphql")]
+use crate::search::ScriptInput;
 
 /// A [*multi-bucket*] value source based aggregation that enables the user to
 /// define a set of ranges - each representing a bucket. During the aggregation
@@ -18,6 +21,7 @@ use crate::search::{Script, ScriptInput};
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -70,6 +74,7 @@ pub struct RangeAggregation {
     pub ranges: Vec<Range>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<RangeAggregationInput> for RangeAggregation {
     #[inline]
     fn from(input: RangeAggregationInput) -> Self {
@@ -81,6 +86,7 @@ impl From<RangeAggregationInput> for RangeAggregation {
     }
 }
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -113,6 +119,7 @@ pub struct Range {
 }
 
 // TODO: generate this with a proc-macro?
+#[cfg(feature = "graphql")]
 impl From<RangeInput> for Range {
     #[inline]
     fn from(input: RangeInput) -> Self {

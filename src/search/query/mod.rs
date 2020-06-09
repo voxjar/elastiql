@@ -17,6 +17,7 @@ mod types;
 /// to filter context.
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[derive(Serialize, Default, Clone, Debug)]
 pub struct CompoundQueryInput {
@@ -30,6 +31,7 @@ pub struct CompoundQueryInput {
     pub boolean: Option<BooleanQueryInput>,
 }
 
+#[cfg(feature = "graphql")]
 impl CompoundQueryInput {
     /// Returns `true` if this `CompoundQueryInput` is empty.
     #[inline]
@@ -57,6 +59,7 @@ impl CompoundQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<Option<CompoundQueryInput>> for CompoundQueryInput {
     #[inline]
     fn from(filter: Option<CompoundQueryInput>) -> CompoundQueryInput {
@@ -64,6 +67,7 @@ impl From<Option<CompoundQueryInput>> for CompoundQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl<T: Into<BooleanQueryInput>> From<T> for CompoundQueryInput {
     #[inline]
     fn from(filter: T) -> CompoundQueryInput {
@@ -105,11 +109,21 @@ impl CompoundQuery {
     }
 }
 
-impl<T: Into<CompoundQueryInput>> From<T> for CompoundQuery {
+impl<T: Into<BooleanQuery>> From<T> for CompoundQuery {
     #[inline]
-    fn from(input: T) -> CompoundQuery {
+    fn from(filter: T) -> CompoundQuery {
         CompoundQuery {
-            boolean: Some(input.into().boolean.unwrap_or_default().into()),
+            boolean: Some(filter.into()),
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
+impl From<CompoundQueryInput> for CompoundQuery {
+    #[inline]
+    fn from(input: CompoundQueryInput) -> CompoundQuery {
+        CompoundQuery {
+            boolean: Some(input.boolean.unwrap_or_default().into()),
         }
     }
 }
@@ -120,6 +134,7 @@ impl<T: Into<CompoundQueryInput>> From<T> for CompoundQuery {
 ///
 /// [query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Default, Clone, Debug)]
@@ -191,6 +206,7 @@ pub struct BooleanQueryInput {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl BooleanQueryInput {
     /// Returns `true` if this `BooleanQueryInput` is empty.
     #[inline]
@@ -209,6 +225,7 @@ impl BooleanQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl<T: Into<QueryInput>> From<T> for BooleanQueryInput {
     #[inline]
     fn from(filter: T) -> BooleanQueryInput {
@@ -308,6 +325,7 @@ impl BooleanQuery {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<BooleanQueryInput> for BooleanQuery {
     #[inline]
     fn from(input: BooleanQueryInput) -> BooleanQuery {
@@ -348,6 +366,7 @@ impl<T: Into<Query>> From<T> for BooleanQuery {
 /// to only allow specifying a single field.
 ///
 /// [union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[allow(missing_docs)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -397,6 +416,7 @@ pub struct QueryInput {
     pub boolean: Option<BooleanQueryInput>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<ExistsQueryInput> for QueryInput {
     #[inline]
     fn from(filter: ExistsQueryInput) -> QueryInput {
@@ -415,6 +435,7 @@ impl From<ExistsQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<TermQueryInput> for QueryInput {
     #[inline]
     fn from(filter: TermQueryInput) -> QueryInput {
@@ -433,6 +454,7 @@ impl From<TermQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<TermsQueryInput> for QueryInput {
     #[inline]
     fn from(filter: TermsQueryInput) -> QueryInput {
@@ -451,6 +473,7 @@ impl From<TermsQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<RangeQueryInput> for QueryInput {
     #[inline]
     fn from(filter: RangeQueryInput) -> QueryInput {
@@ -469,6 +492,7 @@ impl From<RangeQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<RegexpQueryInput> for QueryInput {
     #[inline]
     fn from(filter: RegexpQueryInput) -> QueryInput {
@@ -487,6 +511,7 @@ impl From<RegexpQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<MatchQueryInput> for QueryInput {
     #[inline]
     fn from(filter: MatchQueryInput) -> QueryInput {
@@ -505,6 +530,7 @@ impl From<MatchQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<SimpleQueryStringQueryInput> for QueryInput {
     #[inline]
     fn from(filter: SimpleQueryStringQueryInput) -> QueryInput {
@@ -523,6 +549,7 @@ impl From<SimpleQueryStringQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<QueryStringQueryInput> for QueryInput {
     #[inline]
     fn from(filter: QueryStringQueryInput) -> QueryInput {
@@ -541,6 +568,7 @@ impl From<QueryStringQueryInput> for QueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl From<NestedQueryInput> for QueryInput {
     #[inline]
     fn from(filter: NestedQueryInput) -> QueryInput {
@@ -611,6 +639,7 @@ pub struct Query {
     pub boolean: Option<BooleanQuery>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<QueryInput> for Query {
     #[inline]
     fn from(input: QueryInput) -> Query {
@@ -625,6 +654,168 @@ impl From<QueryInput> for Query {
             query_string: input.query_string.map(Into::into),
             nested: input.nested.map(Into::into),
             boolean: input.boolean.map(Into::into),
+        }
+    }
+}
+
+impl From<ExistsQuery> for Query {
+    #[inline]
+    fn from(filter: ExistsQuery) -> Query {
+        Query {
+            exists: Some(filter),
+            term: None,
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<TermQuery> for Query {
+    #[inline]
+    fn from(filter: TermQuery) -> Query {
+        Query {
+            exists: None,
+            term: Some(filter),
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<TermsQuery> for Query {
+    #[inline]
+    fn from(filter: TermsQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: Some(filter),
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<RangeQuery> for Query {
+    #[inline]
+    fn from(filter: RangeQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: Some(filter),
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<RegexpQuery> for Query {
+    #[inline]
+    fn from(filter: RegexpQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            regexp: Some(filter),
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<MatchQuery> for Query {
+    #[inline]
+    fn from(filter: MatchQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: Some(filter),
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<SimpleQueryStringQuery> for Query {
+    #[inline]
+    fn from(filter: SimpleQueryStringQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: Some(filter),
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<QueryStringQuery> for Query {
+    #[inline]
+    fn from(filter: QueryStringQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: Some(filter),
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+impl From<NestedQuery> for Query {
+    #[inline]
+    fn from(filter: NestedQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: Some(filter),
+            boolean: None,
         }
     }
 }

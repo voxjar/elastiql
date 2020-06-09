@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
 /// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
 /// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -79,6 +80,7 @@ pub struct SimpleQueryStringQuery {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
 impl From<SimpleQueryStringQueryInput> for SimpleQueryStringQuery {
     #[inline]
     fn from(input: SimpleQueryStringQueryInput) -> SimpleQueryStringQuery {

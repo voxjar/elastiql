@@ -7,6 +7,7 @@ use serde::{Deserialize, Serialize};
 ///
 /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
@@ -29,6 +30,7 @@ pub struct NestedAggregation {
     pub path: String,
 }
 
+#[cfg(feature = "graphql")]
 impl From<NestedAggregationInput> for NestedAggregation {
     #[inline]
     fn from(input: NestedAggregationInput) -> Self {

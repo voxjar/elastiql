@@ -1,4 +1,4 @@
-//! Facilitates [aggregating] documents in the database.
+//! Request, response and other types used when [aggregating] documents.
 //!
 //! [aggregating]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
 
@@ -8,6 +8,8 @@ use serde::{Deserialize, Serialize};
 
 pub(crate) use self::serialization_deserialization::*;
 use self::types::*;
+
+#[cfg(feature = "graphql")]
 use crate::search::CompoundQueryInput;
 
 mod serialization_deserialization;
@@ -23,6 +25,7 @@ mod types;
 ///
 /// [aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
 /// [union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -578,6 +581,7 @@ pub struct Aggregation {
 }
 
 // TODO: auto generate this with a proc_macro?
+#[cfg(feature = "graphql")]
 impl From<AggregationInput> for Aggregation {
     #[inline]
     fn from(aggregation: AggregationInput) -> Self {

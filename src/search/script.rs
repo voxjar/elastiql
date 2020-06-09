@@ -58,6 +58,7 @@ impl Default for ScriptLanguage {
 /// Evaluates custom expressions/[scripts].
 ///
 /// [scripts]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[derive(Serialize, Clone, Debug)]
 pub struct ScriptInput {
@@ -81,6 +82,7 @@ pub struct Script {
     params: Option<crate::scalars::Map>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<ScriptInput> for Script {
     #[inline]
     fn from(script: ScriptInput) -> Self {

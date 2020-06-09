@@ -19,6 +19,7 @@ struct InnerTermQuery {
 /// A [Term query] returns documents that contain an **exact** term in a provided field.
 ///
 /// [Term query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#query-dsl-term-query
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
@@ -51,6 +52,7 @@ pub struct TermQueryInput {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl TermQueryInput {
     /// Create a new `TermQueryInput`.
     #[inline]
@@ -63,6 +65,7 @@ impl TermQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for TermQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -115,6 +118,7 @@ pub struct TermQuery {
     pub boost: Option<f64>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<TermQueryInput> for TermQuery {
     #[inline]
     fn from(input: TermQueryInput) -> TermQuery {

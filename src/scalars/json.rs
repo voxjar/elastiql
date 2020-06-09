@@ -1,4 +1,4 @@
-//! [JSON] wrapper/[newtype struct] used in many database documents.
+//! [JSON] wrapper/[newtype struct].
 //!
 //! [JSON]: https://tools.ietf.org/html/rfc8259#section-3
 //! [newtype struct]: https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html

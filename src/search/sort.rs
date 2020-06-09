@@ -56,6 +56,7 @@ pub enum SortMode {
 ///
 /// **NOTE**: the `id` field will always be used as a tie breaker or a default,
 /// regardless of any value specified.
+#[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[derive(PartialEq, Clone, Debug)]
 pub struct SortInput {
@@ -77,12 +78,13 @@ pub struct SortInput {
     pub mode: Option<SortMode>,
 }
 
+#[cfg(feature = "graphql")]
 impl Default for SortInput {
     /// Returns the "default value" for a `SortInput`, which consists of only
     /// sorting on the tie-breaker field (`id`).
     #[inline]
     fn default() -> Self {
-        SortInput {
+        Self {
             // `id` is the tie-breaker field
             field: "id".to_string(),
             order: None,
@@ -91,6 +93,7 @@ impl Default for SortInput {
     }
 }
 
+#[cfg(feature = "graphql")]
 impl Serialize for SortInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -139,6 +142,21 @@ pub struct Sort {
     mode: Option<SortMode>,
 }
 
+impl Default for Sort {
+    /// Returns the "default value" for a `Sort`, which consists of only
+    /// sorting on the tie-breaker field (`id`).
+    #[inline]
+    fn default() -> Self {
+        Self {
+            // `id` is the tie-breaker field
+            field: "id".to_string(),
+            order: None,
+            mode: None,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl From<SortInput> for Sort {
     #[inline]
     fn from(input: SortInput) -> Self {
@@ -217,6 +235,7 @@ struct InnerSortValue {
     unmapped_type: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
 impl From<&SortInput> for InnerSortValue {
     #[inline]
     fn from(sort: &SortInput) -> Self {
@@ -264,7 +283,7 @@ mod tests {
 
     #[test]
     fn can_serialize_default() {
-        let f = SortInput::default();
+        let f = Sort::default();
         let j = json!({ "id": { "unmapped_type": "keyword" } });
         assert_eq!(serde_json::to_value(&f).unwrap(), j, "{}", &j);
     }
@@ -272,12 +291,12 @@ mod tests {
     #[test]
     fn can_serialize_with_order() {
         let sort = vec![
-            SortInput {
+            Sort {
                 field: "id".to_string(),
                 mode: None,
                 order: Some(SortOrder::Asc),
             },
-            SortInput {
+            Sort {
                 field: "id".to_string(),
                 mode: None,
                 order: Some(SortOrder::Desc),
@@ -294,7 +313,7 @@ mod tests {
 
     #[test]
     fn can_serialize_with_mode() {
-        let sorts: Vec<SortInput> = vec![
+        let sorts: Vec<Sort> = vec![
             SortMode::Min,
             SortMode::Max,
             SortMode::Sum,
@@ -302,7 +321,7 @@ mod tests {
             SortMode::Median,
         ]
         .into_iter()
-        .map(|m| SortInput {
+        .map(|m| Sort {
             field: "id".to_string(),
             mode: Some(m),
             order: None,
@@ -322,7 +341,7 @@ mod tests {
 
     #[test]
     fn can_serialize_with_everything() {
-        let sort = SortInput {
+        let sort = Sort {
             field: "id".to_string(),
             mode: Some(SortMode::Max),
             order: Some(SortOrder::Desc),
@@ -333,7 +352,7 @@ mod tests {
 
     #[test]
     fn can_serialize_with_special_field() {
-        let sort = SortInput {
+        let sort = Sort {
             field: "_score".to_string(),
             mode: None,
             order: None,
@@ -341,7 +360,7 @@ mod tests {
         let j = json!({ "_score": { } });
         assert_eq!(serde_json::to_value(&sort).unwrap(), j, "{}", &j);
 
-        let sort = SortInput {
+        let sort = Sort {
             field: "_key".to_string(),
             mode: Some(SortMode::Avg),
             order: None,
@@ -349,7 +368,7 @@ mod tests {
         let j = json!({ "_key": { "mode": "avg" } });
         assert_eq!(serde_json::to_value(&sort).unwrap(), j, "{}", &j);
 
-        let sort = SortInput {
+        let sort = Sort {
             field: "_count".to_string(),
             mode: None,
             order: None,
