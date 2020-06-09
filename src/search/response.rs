@@ -1,6 +1,5 @@
 use std::{collections::HashMap, convert::TryFrom};
 
-use super::InnerCursor;
 use serde::Deserialize;
 
 /// The database response for performing a `Search`.
@@ -123,13 +122,21 @@ impl<T> Default for Hits<T> {
 /// An individual Elasticsearch search hit/match.
 #[derive(Deserialize, Debug)]
 pub struct Hit<T> {
-    // TODO: there has to be a better way than `InnerCursor`...
-    /// The values to sort by to encode into an opaque [cursor] for pagination.
-    /// Not exposed via GraphQL.
+    /// The database Id of this `Document`.
     ///
-    /// [cursor]: https://facebook.github.io/relay/graphql/connections.htm#sec-Cursor
-    #[serde(default)]
-    pub sort: InnerCursor,
+    /// **TODO**: should this be a different type?
+    #[serde(rename = "_id")]
+    pub id: String,
+
+    /// The name of the database index that this `Document` belongs to.
+    ///
+    /// **TODO**: should this be a different type?
+    #[serde(rename = "_index")]
+    pub index: String,
+
+    /// The actual `Document` of this search hit/match.
+    #[serde(rename = "_source")]
+    pub source: T,
 
     /// The [version] number of this `Document`.
     ///
@@ -164,21 +171,11 @@ pub struct Hit<T> {
     #[serde(default)]
     pub highlight: HashMap<String, Vec<String>>,
 
-    /// The database Id of this `Document`.
+    /// The live cursor from which to search after to fascilitate [pagination].
     ///
-    /// **TODO**: should this be a different type?
-    #[serde(rename = "_id")]
-    pub id: String,
-
-    /// The name of the database index that this `Document` belongs to.
-    ///
-    /// **TODO**: should this be a different type?
-    #[serde(rename = "_index")]
-    pub index: String,
-
-    /// The actual `Document` of this search hit/match.
-    #[serde(rename = "_source")]
-    pub source: T,
+    /// [pagination]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#request-body-search-search-after
+    #[serde(default)]
+    pub sort: Vec<serde_json::Value>,
 }
 
 /// The type of count.
