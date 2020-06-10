@@ -403,7 +403,7 @@ impl<T: Into<Query>> From<T> for BooleanQuery {
 ///
 /// [union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "FilterInput")]
 #[allow(missing_docs)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
