@@ -34,9 +34,8 @@ pub struct ComputedResult {
     /// The name assigned to this aggregation.
     pub name: String,
 
+    // TODO: rename to `ty` once https://github.com/async-graphql/async-graphql/issues/164
     /// The `type` of this aggregation.
-    ///
-    /// **TODO**: rename to `ty` once https://github.com/async-graphql/async-graphql/issues/164
     pub type_: Ty,
 
     /// The fields this aggregation computed over.

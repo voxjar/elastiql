@@ -860,10 +860,9 @@ pub struct QueryField {
     /// The field name.
     pub field: String,
 
+    // TODO: rename to `ty` once https://github.com/async-graphql/async-graphql/issues/164
     /// The type
-    ///
-    /// TODO: make this an enum
-    pub ty: String,
+    pub type_: String,
 }
 
 impl QueryField {
@@ -872,7 +871,7 @@ impl QueryField {
     pub fn new(field: impl Into<String>, ty: impl Into<String>) -> Self {
         Self {
             field: field.into(),
-            ty: ty.into(),
+            type_: ty.into(),
         }
     }
 }
