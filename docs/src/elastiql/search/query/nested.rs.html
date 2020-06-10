@@ -105,6 +105,26 @@
 <span id="105">105</span>
 <span id="106">106</span>
 <span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! [Nested query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html)</span>
 
@@ -155,11 +175,15 @@
 <span class="kw">impl</span> <span class="ident">NestedQueryInput</span> {
     <span class="doccomment">/// Constructs a new `NestedQueryInput`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>, <span class="ident">query</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CompoundQueryInput</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+        <span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">query</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CompoundQueryInput</span><span class="op">&gt;</span>,
+        <span class="ident">ignore_unmapped</span>: <span class="ident">bool</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NestedQueryInput</span> {
         <span class="ident">NestedQueryInput</span> {
             <span class="ident">path</span>: <span class="ident">path</span>.<span class="ident">into</span>(),
             <span class="ident">query</span>: <span class="ident">query</span>.<span class="ident">into</span>(),
-            <span class="ident">ignore_unmapped</span>: <span class="bool-val">true</span>,
+            <span class="ident">ignore_unmapped</span>,
         }
     }
 }
@@ -200,6 +224,22 @@
     <span class="doccomment">/// documents instead of an error.</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;builder&quot;</span>, <span class="ident">builder</span>(<span class="ident">default</span>))]</span>
     <span class="kw">pub</span> <span class="ident">ignore_unmapped</span>: <span class="ident">bool</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">NestedQuery</span> {
+    <span class="doccomment">/// Constructs a new `NestedQuery`.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(
+        <span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>,
+        <span class="ident">query</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">CompoundQuery</span><span class="op">&gt;</span>,
+        <span class="ident">ignore_unmapped</span>: <span class="ident">bool</span>,
+    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">NestedQuery</span> {
+        <span class="ident">NestedQuery</span> {
+            <span class="ident">path</span>: <span class="ident">path</span>.<span class="ident">into</span>(),
+            <span class="ident">query</span>: <span class="ident">query</span>.<span class="ident">into</span>(),
+            <span class="ident">ignore_unmapped</span>,
+        }
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;graphql&quot;</span>)]</span>

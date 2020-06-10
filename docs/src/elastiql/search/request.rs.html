@@ -187,12 +187,26 @@
 <span id="187">187</span>
 <span id="188">188</span>
 <span id="189">189</span>
+<span id="190">190</span>
+<span id="191">191</span>
+<span id="192">192</span>
+<span id="193">193</span>
+<span id="194">194</span>
+<span id="195">195</span>
+<span id="196">196</span>
+<span id="197">197</span>
+<span id="198">198</span>
+<span id="199">199</span>
+<span id="200">200</span>
+<span id="201">201</span>
+<span id="202">202</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! [Search request] types.</span>
 <span class="doccomment">//!</span>
 <span class="doccomment">//! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html</span>
 
 <span class="kw">use</span> <span class="ident">serde</span>::{<span class="ident">Deserialize</span>, <span class="ident">Serialize</span>};
+<span class="kw">use</span> <span class="ident">serde_json</span>::<span class="ident">json</span>;
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;graphql&quot;</span>)]</span>
 <span class="kw">use</span> <span class="kw">crate</span>::<span class="ident">search</span>::{<span class="ident">query</span>::<span class="ident">CompoundQueryInput</span>, <span class="ident">SortInput</span>};
@@ -372,10 +386,22 @@
     <span class="kw">pub</span> <span class="ident">tags_schema</span>: <span class="ident">String</span>,
 
     <span class="doccomment">/// The maximum number of fragments to return.</span>
+    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;builder&quot;</span>, <span class="ident">builder</span>(<span class="ident">default</span> <span class="op">=</span> <span class="number">5</span>, <span class="ident">setter</span>(<span class="ident">into</span>)))]</span>
     <span class="kw">pub</span> <span class="ident">number_of_fragments</span>: <span class="ident">i32</span>,
 
     <span class="doccomment">/// The field names and their options to highlight.</span>
     <span class="kw">pub</span> <span class="ident">fields</span>: <span class="kw">crate</span>::<span class="ident">scalars</span>::<span class="ident">Map</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">HighlightOptions</span> {
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="ident">HighlightOptions</span> {
+            <span class="ident">tags_schema</span>: <span class="string">&quot;styled&quot;</span>.<span class="ident">to_string</span>(),
+            <span class="ident">number_of_fragments</span>: <span class="number">5</span>,
+            <span class="ident">fields</span>: <span class="macro">json</span><span class="macro">!</span>({ <span class="string">&quot;*&quot;</span>: {} }).<span class="ident">into</span>(),
+        }
+    }
 }
 </pre></div>
 </section><section id="search" class="content hidden"></section><section class="footer"></section><script>window.rootPath = "../../../";window.currentCrate = "elastiql";</script><script src="../../../main.js"></script><script src="../../../source-script.js"></script><script src="../../../source-files.js"></script><script defer src="../../../search-index.js"></script></body></html>

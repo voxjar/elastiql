@@ -41,6 +41,27 @@
 <span id="41">41</span>
 <span id="42">42</span>
 <span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
 </pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">//! [Exists query](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query)</span>
 
@@ -61,6 +82,17 @@
     <span class="kw">pub</span> <span class="ident">field</span>: <span class="ident">String</span>,
 }
 
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;graphql&quot;</span>)]</span>
+<span class="kw">impl</span> <span class="ident">ExistsQueryInput</span> {
+    <span class="doccomment">/// Constructs a new `ExistsQueryInput`.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">field</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExistsQueryInput</span> {
+        <span class="ident">ExistsQueryInput</span> {
+            <span class="ident">field</span>: <span class="ident">field</span>.<span class="ident">into</span>(),
+        }
+    }
+}
+
 <span class="doccomment">/// An [Exists query] returns documents that contain a non-null or empty</span>
 <span class="doccomment">/// (e.g. `[]`) value for a field.</span>
 <span class="doccomment">///</span>
@@ -76,6 +108,16 @@
     <span class="doccomment">/// The name of the field to query.</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;builder&quot;</span>, <span class="ident">builder</span>(<span class="ident">setter</span>(<span class="ident">into</span>)))]</span>
     <span class="kw">pub</span> <span class="ident">field</span>: <span class="ident">String</span>,
+}
+
+<span class="kw">impl</span> <span class="ident">ExistsQuery</span> {
+    <span class="doccomment">/// Constructs a new `ExistsQuery`.</span>
+    <span class="attribute">#[<span class="ident">inline</span>]</span>
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">field</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ExistsQuery</span> {
+        <span class="ident">ExistsQuery</span> {
+            <span class="ident">field</span>: <span class="ident">field</span>.<span class="ident">into</span>(),
+        }
+    }
 }
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;graphql&quot;</span>)]</span>
