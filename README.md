@@ -1,6 +1,6 @@
 # elastiql
 
-![CI](https://github.com/mwilliammyers/elastiql/workflows/CI/badge.svg)
+[![CI](https://github.com/mwilliammyers/elastiql/workflows/CI/badge.svg)](https://github.com/mwilliammyers/elastiql/actions)
 [![docs](https://img.shields.io/badge/docs-master-blue.svg)](https://www.mwilliammyers.com/elastiql/elastiql/index.html)
 
 > Opinionated [Elasticsearch] query language for [Rust].
