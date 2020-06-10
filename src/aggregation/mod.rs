@@ -14,7 +14,7 @@ use crate::search::query::CompoundQuery;
 use crate::search::query::CompoundQueryInput;
 
 mod serialization_deserialization;
-mod types;
+pub mod types;
 
 /// An [aggregation] can be seen as a unit-of-work that builds analytic
 /// information over a set of documents.
