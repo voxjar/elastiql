@@ -69,21 +69,6 @@ pub struct OkResponse<T> {
 /// **TODO**: should the fields be private?
 #[derive(Deserialize, Debug)]
 pub struct Hits<T> {
-    /// The number of results to return in each page.
-    /// Not exposed via GraphQL.
-    ///
-    /// **HACK**: will be `0` from the db, until we figure it out and set it.
-    #[serde(default)]
-    pub page_size: usize,
-
-    /// Time it took to process the request.
-    #[serde(default)]
-    pub took: u64,
-
-    /// Whether or not the request timed out before completing.
-    #[serde(default)]
-    pub timed_out: bool,
-
     /// The total count of the hits/matches.
     #[serde(default, rename = "total")]
     pub total_count: Count,
@@ -103,21 +88,6 @@ impl<T> Hits<T> {
     #[inline]
     pub fn first_doc(&self) -> Option<&T> {
         self.hits.get(0).map(|hit| &hit.source)
-    }
-}
-
-impl<T> Default for Hits<T> {
-    #[inline]
-    fn default() -> Self {
-        Hits {
-            page_size: Default::default(),
-            took: Default::default(),
-            timed_out: Default::default(),
-            total_count: Default::default(),
-            max_score: Default::default(),
-            // we cannot defer to `Default` because it is not impl for all `T`
-            hits: Vec::with_capacity(0),
-        }
     }
 }
 
