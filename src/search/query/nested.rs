@@ -47,11 +47,15 @@ pub struct NestedQueryInput {
 impl NestedQueryInput {
     /// Constructs a new `NestedQueryInput`.
     #[inline]
-    pub fn new(path: impl Into<String>, query: impl Into<CompoundQueryInput>) -> Self {
+    pub fn new(
+        path: impl Into<String>,
+        query: impl Into<CompoundQueryInput>,
+        ignore_unmapped: bool,
+    ) -> NestedQueryInput {
         NestedQueryInput {
             path: path.into(),
             query: query.into(),
-            ignore_unmapped: true,
+            ignore_unmapped,
         }
     }
 }
@@ -92,6 +96,22 @@ pub struct NestedQuery {
     /// documents instead of an error.
     #[cfg_attr(feature = "builder", builder(default))]
     pub ignore_unmapped: bool,
+}
+
+impl NestedQuery {
+    /// Constructs a new `NestedQuery`.
+    #[inline]
+    pub fn new(
+        path: impl Into<String>,
+        query: impl Into<CompoundQuery>,
+        ignore_unmapped: bool,
+    ) -> NestedQuery {
+        NestedQuery {
+            path: path.into(),
+            query: query.into(),
+            ignore_unmapped,
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

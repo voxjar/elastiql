@@ -46,6 +46,23 @@ pub struct RegexpQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl RegexpQueryInput {
+    /// Constructs a new `RegexpQueryInput`.
+    #[inline]
+    pub fn new(
+        field: impl Into<String>,
+        value: impl Into<String>,
+        flags: Option<impl Into<String>>,
+    ) -> RegexpQueryInput {
+        RegexpQueryInput {
+            field: field.into(),
+            value: value.into(),
+            flags: flags.map(Into::into),
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for RegexpQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -104,6 +121,22 @@ pub struct RegexpQuery {
     /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html#regexp-optional-operators
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub flags: Option<String>,
+}
+
+impl RegexpQuery {
+    /// Constructs a new `RegexpQuery`.
+    #[inline]
+    pub fn new(
+        field: impl Into<String>,
+        value: impl Into<String>,
+        flags: Option<impl Into<String>>,
+    ) -> RegexpQuery {
+        RegexpQuery {
+            field: field.into(),
+            value: value.into(),
+            flags: flags.map(Into::into),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

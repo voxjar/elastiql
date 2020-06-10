@@ -17,6 +17,17 @@ pub struct ExistsQueryInput {
     pub field: String,
 }
 
+#[cfg(feature = "graphql")]
+impl ExistsQueryInput {
+    /// Constructs a new `ExistsQueryInput`.
+    #[inline]
+    pub fn new(field: impl Into<String>) -> ExistsQueryInput {
+        ExistsQueryInput {
+            field: field.into(),
+        }
+    }
+}
+
 /// An [Exists query] returns documents that contain a non-null or empty
 /// (e.g. `[]`) value for a field.
 ///
@@ -32,6 +43,16 @@ pub struct ExistsQuery {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
+}
+
+impl ExistsQuery {
+    /// Constructs a new `ExistsQuery`.
+    #[inline]
+    pub fn new(field: impl Into<String>) -> ExistsQuery {
+        ExistsQuery {
+            field: field.into(),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

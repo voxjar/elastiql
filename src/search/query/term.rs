@@ -54,7 +54,7 @@ pub struct TermQueryInput {
 
 #[cfg(feature = "graphql")]
 impl TermQueryInput {
-    /// Create a new `TermQueryInput`.
+    /// Constructs a new `TermQueryInput`.
     #[inline]
     pub fn new(field: impl Into<String>, value: impl Into<String>) -> Self {
         TermQueryInput {
@@ -116,6 +116,18 @@ pub struct TermQuery {
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub boost: Option<f64>,
+}
+
+impl TermQuery {
+    /// Constructs a new `TermQuery`.
+    #[inline]
+    pub fn new(field: impl Into<String>, value: impl Into<String>) -> Self {
+        TermQuery {
+            field: field.into(),
+            value: value.into(),
+            boost: None,
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

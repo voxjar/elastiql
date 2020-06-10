@@ -37,6 +37,18 @@ pub struct MatchQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl MatchQueryInput {
+    /// Constructs a new `MatchQueryInput`.
+    #[inline]
+    pub fn new(field: impl Into<String>, query: impl Into<String>) -> MatchQueryInput {
+        MatchQueryInput {
+            field: field.into(),
+            query: query.into(),
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for MatchQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
@@ -78,6 +90,17 @@ pub struct MatchQuery {
     /// [match query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
+}
+
+impl MatchQuery {
+    /// Constructs a new `MatchQuery`.
+    #[inline]
+    pub fn new(field: impl Into<String>, query: impl Into<String>) -> MatchQuery {
+        MatchQuery {
+            field: field.into(),
+            query: query.into(),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

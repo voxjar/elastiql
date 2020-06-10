@@ -46,7 +46,7 @@ pub struct TermsQueryInput {
 
 #[cfg(feature = "graphql")]
 impl TermsQueryInput {
-    /// Creates a new `TermsQueryInput`.
+    /// Constructs a new `TermsQueryInput`.
     #[inline]
     pub fn new<T: Into<String>>(
         field: impl Into<String>,
@@ -112,7 +112,7 @@ pub struct TermsQuery {
 }
 
 impl TermsQuery {
-    /// Creates a new `TermsQuery`.
+    /// Constructs a new `TermsQuery`.
     #[inline]
     pub fn new<T: Into<String>>(
         field: impl Into<String>,

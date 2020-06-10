@@ -42,6 +42,22 @@ pub struct SimpleQueryStringQueryInput {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
+impl SimpleQueryStringQueryInput {
+    /// Constructs a new `SimpleQueryStringQueryInput`.
+    #[inline]
+    pub fn new<I, T>(fields: I, query: impl Into<String>) -> SimpleQueryStringQueryInput
+    where
+        I: IntoIterator<Item = T>,
+        T: Into<String>,
+    {
+        SimpleQueryStringQueryInput {
+            fields: fields.into_iter().map(|f| f.into()).collect(),
+            query: query.into(),
+        }
+    }
+}
+
 // TODO: add additional options
 /// A [Simple query string] returns documents based on a provided query string,
 /// using a parser with a limited but fault-tolerant syntax.
@@ -81,6 +97,21 @@ pub struct SimpleQueryStringQuery {
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
+}
+
+impl SimpleQueryStringQuery {
+    /// Constructs a new `SimpleQueryStringQuery`.
+    #[inline]
+    pub fn new<I, T>(fields: I, query: impl Into<String>) -> SimpleQueryStringQuery
+    where
+        I: IntoIterator<Item = T>,
+        T: Into<String>,
+    {
+        SimpleQueryStringQuery {
+            fields: fields.into_iter().map(|f| f.into()).collect(),
+            query: query.into(),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

@@ -38,6 +38,22 @@ pub struct QueryStringQueryInput {
     pub query: String,
 }
 
+#[cfg(feature = "graphql")]
+impl QueryStringQueryInput {
+    /// Constructs a new `QueryStringQueryInput`.
+    #[inline]
+    pub fn new<I, T>(fields: I, query: impl Into<String>) -> QueryStringQueryInput
+    where
+        I: IntoIterator<Item = T>,
+        T: Into<String>,
+    {
+        QueryStringQueryInput {
+            fields: fields.into_iter().map(|f| f.into()).collect(),
+            query: query.into(),
+        }
+    }
+}
+
 // TODO: add additional options
 /// [Query string] returns documents based on a provided query string, using a
 /// parser with a strict syntax.
@@ -73,6 +89,21 @@ pub struct QueryStringQuery {
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
+}
+
+impl QueryStringQuery {
+    /// Constructs a new `QueryStringQuery`.
+    #[inline]
+    pub fn new<I, T>(fields: I, query: impl Into<String>) -> QueryStringQuery
+    where
+        I: IntoIterator<Item = T>,
+        T: Into<String>,
+    {
+        QueryStringQuery {
+            fields: fields.into_iter().map(|f| f.into()).collect(),
+            query: query.into(),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]
