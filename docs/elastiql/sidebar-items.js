@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["aggregation","Request, response and other types used when [aggregating] documents."],["bulk","Response types for [bulk] queries."],["scalars","Primitive data types used by Elasticsearch."],["search","Request, response and [Query DSL] types used when [searching] for documents."]]});
