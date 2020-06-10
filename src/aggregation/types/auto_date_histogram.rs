@@ -58,7 +58,7 @@ pub struct AutoDateHistogramAggregationInput {
 ///
 /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -113,7 +113,7 @@ impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
 /// Specifies the minimum rounding interval that should be used. This can make
 /// the collection process more efficient, as the aggregation will not attempt
 /// to round at any interval lower than `minimum_interval`.
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum MinimumInterval {

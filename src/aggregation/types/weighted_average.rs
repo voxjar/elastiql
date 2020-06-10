@@ -64,7 +64,7 @@ pub struct WeightedAverageAggregationInput {
 /// has an implicit weight of `1`.
 ///
 /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]

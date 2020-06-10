@@ -62,7 +62,7 @@ pub struct BucketSortInput {
 /// returned term buckets.
 ///
 /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 pub struct BucketSort {

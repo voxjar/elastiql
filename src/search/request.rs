@@ -2,8 +2,6 @@
 //!
 //! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 
-use std::{default::Default, str};
-
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "graphql")]

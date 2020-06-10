@@ -39,7 +39,7 @@ pub struct BucketSelectorInput {
 ///
 /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 pub struct BucketSelector {

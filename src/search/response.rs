@@ -1,4 +1,6 @@
-use std::{collections::HashMap, convert::TryFrom};
+use std::collections::HashMap;
+#[cfg(feature = "graphql")]
+use std::convert::TryFrom;
 
 use serde::Deserialize;
 
@@ -179,7 +181,7 @@ pub struct Hit<T> {
 }
 
 /// The type of count.
-#[async_graphql::Enum(name = "SearchCountRelation")]
+#[cfg_attr(feature = "graphql", async_graphql::Enum(name = "SearchCountRelation"))]
 #[derive(Deserialize, Debug)]
 pub enum CountRelation {
     /// An exact count.
@@ -211,7 +213,7 @@ pub struct Count {
 }
 
 /// The total count of the hits/matches.
-
+#[cfg(feature = "graphql")]
 #[async_graphql::Object(name = "SearchCount")]
 impl Count {
     /// The type of count this is.

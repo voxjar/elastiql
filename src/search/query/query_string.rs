@@ -49,7 +49,10 @@ pub struct QueryStringQueryInput {
 /// [Query string]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 /// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
 /// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
-#[async_graphql::SimpleObject(name = "QueryStringFilter")]
+#[cfg_attr(
+    feature = "graphql",
+    async_graphql::SimpleObject(name = "QueryStringFilter")
+)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]

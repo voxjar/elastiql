@@ -50,7 +50,7 @@ pub struct InnerAggregationInput {
 }
 
 /// A generic aggregation.
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct InnerAggregation {
@@ -92,7 +92,7 @@ impl<T: Into<String>> From<T> for InnerAggregation {
 }
 
 /// The policy to apply when gaps are found in the data.
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum GapPolicy {

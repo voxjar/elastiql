@@ -9,7 +9,7 @@ use serde::{Deserialize, Serialize};
 /// Available sandboxed scripting [languages].
 ///
 /// [languages]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub enum ScriptLanguage {
     /// [Lucene expressions language] compile a Javascript expression to
@@ -73,7 +73,7 @@ pub struct ScriptInput {
 /// Evaluates custom expressions/[scripts].
 ///
 /// [scripts]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct Script {

@@ -4,13 +4,12 @@
 //! [newtype struct]: https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html
 //! [scalar]: https://graphql.org/learn/schema/#scalar-types
 
-use std::{
-    borrow::Borrow, collections::BTreeMap, convert::TryFrom, default::Default, hash::Hash,
-    str::FromStr, string::String,
-};
+#[cfg(feature = "graphql")]
+use std::convert::TryFrom;
+use std::{borrow::Borrow, default::Default, hash::Hash, str::FromStr, string::String};
 
 use serde::{Deserialize, Serialize};
-use serde_json::{json, Map as JsonMap, Value as JsonValue};
+use serde_json::{Map as JsonMap, Value as JsonValue};
 
 /// A [JSON] object (key => value map).
 ///
@@ -57,9 +56,10 @@ impl From<JsonValue> for Map {
     }
 }
 
-impl From<BTreeMap<String, async_graphql::Value>> for Map {
+#[cfg(feature = "graphql")]
+impl From<std::collections::BTreeMap<String, async_graphql::Value>> for Map {
     #[inline]
-    fn from(value: BTreeMap<String, async_graphql::Value>) -> Self {
+    fn from(value: std::collections::BTreeMap<String, async_graphql::Value>) -> Self {
         let result = value
             .into_iter()
             .map(|(k, v)| (k, JsonValue::from(v)))
@@ -78,6 +78,7 @@ impl FromStr for Map {
     }
 }
 
+#[cfg(feature = "graphql")]
 #[async_graphql::Scalar]
 impl async_graphql::ScalarType for Map {
     #[inline]
@@ -100,6 +101,6 @@ impl async_graphql::ScalarType for Map {
 
     #[inline]
     fn to_value(&self) -> async_graphql::Value {
-        json!(&self.0).into()
+        serde_json::json!(&self.0).into()
     }
 }

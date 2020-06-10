@@ -279,7 +279,7 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
                                     .or_insert_with(|| AggregationResult {
                                         parent: parent.map(|p| p.to_owned()),
                                         name: name.to_string(),
-                                        type_: ty,
+                                        type_: ty.clone(),
                                         fields: vec![],
                                         values: vec![],
                                         metadata: agg.metadata.to_owned(),

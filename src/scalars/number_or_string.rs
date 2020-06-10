@@ -31,6 +31,7 @@ impl From<String> for NumberOrString {
 }
 
 #[cfg(feature = "graphql")]
+#[cfg(feature = "graphql")]
 #[async_graphql::Scalar]
 impl async_graphql::ScalarType for NumberOrString {
     #[inline]

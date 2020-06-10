@@ -84,7 +84,7 @@ pub struct DateHistogramAggregationInput {
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
@@ -164,7 +164,7 @@ impl From<DateHistogramAggregationInput> for DateHistogramAggregation {
     }
 }
 
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum CalendarInterval {

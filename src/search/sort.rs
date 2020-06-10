@@ -11,7 +11,7 @@ use serde::{
 };
 
 /// The [sort order](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_order)
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortOrder {
@@ -23,7 +23,7 @@ pub enum SortOrder {
 }
 
 /// The [sort mode](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_mode_option)
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortMode {
@@ -121,7 +121,7 @@ impl Serialize for SortInput {
 ///
 /// **NOTE**: the `id` field will always be used as a tie breaker or a default,
 /// regardless of any value specified.
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[derive(PartialEq, Clone, Debug)]
 pub struct Sort {
     /// The field to sort by.
@@ -260,8 +260,8 @@ impl From<&Sort> for InnerSortValue {
     fn from(sort: &Sort) -> Self {
         // TODO: make it so we don't have to clone- maybe borrow data in InnerSortValue?
         InnerSortValue {
-            order: sort.order,
-            mode: sort.mode,
+            order: sort.order.clone(),
+            mode: sort.mode.clone(),
             // HACK: in case the field is one we don't have an index mapping for
             //       see: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#_ignoring_unmapped_fields
             unmapped_type: if sort.field.starts_with('_') {

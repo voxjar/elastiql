@@ -92,7 +92,10 @@ impl<T: Into<BooleanQueryInput>> From<T> for CompoundQueryInput {
 /// to filter context.
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
-#[async_graphql::SimpleObject(name = "CompoundFilter")]
+#[cfg_attr(
+    feature = "graphql",
+    async_graphql::SimpleObject(name = "CompoundFilter")
+)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
@@ -107,7 +110,6 @@ pub struct CompoundQuery {
     pub boolean: Option<BooleanQuery>,
 }
 
-#[cfg(feature = "builder")]
 impl CompoundQuery {
     /// Returns `true` if this `CompoundQuery` is empty.
     #[inline]
@@ -253,7 +255,10 @@ impl<T: Into<QueryInput>> From<T> for BooleanQueryInput {
 /// typed occurrence.
 ///
 /// [query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
-#[async_graphql::SimpleObject(name = "BooleanFilter")]
+#[cfg_attr(
+    feature = "graphql",
+    async_graphql::SimpleObject(name = "BooleanFilter")
+)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
@@ -321,7 +326,6 @@ pub struct BooleanQuery {
     pub boost: Option<f64>,
 }
 
-#[cfg(feature = "builder")]
 impl BooleanQuery {
     /// Returns `true` if this `BooleanQuery` is empty.
     #[inline]
@@ -596,7 +600,7 @@ impl From<NestedQueryInput> for QueryInput {
 /// A single search query.
 ///
 /// **Note**: This should *never* have more than *one* defined (and non-null) field.
-#[async_graphql::SimpleObject(name = "Filter")]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "Filter"))]
 #[allow(missing_docs)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -826,7 +830,7 @@ impl From<NestedQuery> for Query {
 }
 
 /// Describes a field that can be queried and its type.
-#[async_graphql::SimpleObject(name = "FilterField")]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "FilterField"))]
 #[derive(Debug)]
 pub struct QueryField {
     /// The field name.

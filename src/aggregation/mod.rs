@@ -305,7 +305,7 @@ pub struct AggregationInput {
 /// information over a set of documents.
 ///
 /// [aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Clone, Debug)]
@@ -622,7 +622,7 @@ impl From<AggregationInput> for Aggregation {
 // TODO: rename?
 // TODO: add more fields
 /// The response from performing an aggregation.
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Deserialize, Clone, Debug)]
 #[serde(from = "ElasticAggregationResponse")]
@@ -632,7 +632,7 @@ pub struct AggregationResponse {
 }
 
 /// An individual result from performing an aggregation/calculation.
-#[async_graphql::SimpleObject]
+#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[derive(Deserialize, Clone, Debug)]
 pub struct AggregationResult {
     /// The parent of this aggregation (if any).
@@ -658,7 +658,7 @@ pub struct AggregationResult {
 
 // TODO: generate this with proc-macro from Aggregation struct
 /// The type of aggregation.
-#[async_graphql::Enum]
+#[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Deserialize, Clone, Debug)]
 pub enum AggregationType {
     /// metric

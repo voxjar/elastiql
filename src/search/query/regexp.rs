@@ -75,7 +75,10 @@ impl Serialize for RegexpQueryInput {
 /// [Regexp query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-regexp-query.html#query-dsl-regexp-query
 /// [regular expression]: https://en.wikipedia.org/wiki/Regular_expression
 /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html
-#[async_graphql::SimpleObject(name = "RegexpFilter")]
+#[cfg_attr(
+    feature = "graphql",
+    async_graphql::SimpleObject(name = "RegexpFilter")
+)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
