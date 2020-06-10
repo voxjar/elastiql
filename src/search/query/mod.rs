@@ -162,7 +162,7 @@ impl From<CompoundQueryInput> for CompoundQuery {
 ///
 /// [query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
+#[async_graphql::InputObject(name = "BooleanFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Default, Clone, Debug)]
 pub struct BooleanQueryInput {
