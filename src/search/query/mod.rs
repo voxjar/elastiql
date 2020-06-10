@@ -103,7 +103,7 @@ pub struct CompoundQuery {
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
-    // #[field(name = "bool")]
+    #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQuery>,
@@ -144,7 +144,6 @@ impl From<CompoundQueryInput> for CompoundQuery {
 /// typed occurrence.
 ///
 /// [query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-bool-query.html
-
 #[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
