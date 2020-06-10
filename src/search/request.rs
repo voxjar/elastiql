@@ -3,6 +3,7 @@
 //! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 
 use serde::{Deserialize, Serialize};
+use serde_json::json;
 
 #[cfg(feature = "graphql")]
 use crate::search::{query::CompoundQueryInput, SortInput};
@@ -182,8 +183,20 @@ pub struct HighlightOptions {
     pub tags_schema: String,
 
     /// The maximum number of fragments to return.
+    #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
     pub number_of_fragments: i32,
 
     /// The field names and their options to highlight.
     pub fields: crate::scalars::Map,
+}
+
+impl Default for HighlightOptions {
+    #[inline]
+    fn default() -> Self {
+        HighlightOptions {
+            tags_schema: "styled".to_string(),
+            number_of_fragments: 5,
+            fields: json!({ "*": {} }).into(),
+        }
+    }
 }
