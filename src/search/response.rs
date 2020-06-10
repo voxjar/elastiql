@@ -51,7 +51,7 @@ pub struct ErrResponse {
 //     Unknown(String),
 // }
 
-/// The database response for performing a successful `Search`.
+/// The response for performing a successful `Search`.
 #[derive(Deserialize, Debug)]
 pub struct OkResponse<T> {
     /// Time it took for the database to process the request.
@@ -65,9 +65,7 @@ pub struct OkResponse<T> {
 }
 
 /// The hits/matches from performing a Elasticsearch search.
-///
-/// **TODO**: should the fields be private?
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Default, Debug)]
 pub struct Hits<T> {
     /// The total count of the hits/matches.
     #[serde(default, rename = "total")]
@@ -94,9 +92,8 @@ impl<T> Hits<T> {
 /// An individual Elasticsearch search hit/match.
 #[derive(Deserialize, Debug)]
 pub struct Hit<T> {
+    // TODO: should this be a different type?
     /// The database Id of this `Document`.
-    ///
-    /// **TODO**: should this be a different type?
     #[serde(rename = "_id")]
     pub id: String,
 
@@ -134,10 +131,9 @@ pub struct Hit<T> {
     #[serde(rename = "_score")]
     pub score: Option<f32>,
 
+    // TODO: make this a GraphQL object
     /// The [highlighted] snippets of the part(s) of the field(s) matching the
     /// search query.
-    ///
-    /// **TODO**: make this a GraphQL object
     ///
     /// [highlighted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
     #[serde(default)]
@@ -171,8 +167,6 @@ impl Default for CountRelation {
 }
 
 /// The total count of the hits/matches.
-///
-/// **TODO**: should the fields be private?
 #[derive(Deserialize, Default, Debug)]
 pub struct Count {
     /// The type of count this is.

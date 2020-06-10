@@ -16,8 +16,10 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct DateRangeAggregationInput {
+    /// The field to perform the aggregation over.
     pub field: String,
 
+    /// Converts from another time zone to UTC.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
@@ -36,6 +38,7 @@ pub struct DateRangeAggregationInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 
+    /// The ranges to use for the aggregation.
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default)]
@@ -56,9 +59,11 @@ pub struct DateRangeAggregationInput {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DateRangeAggregation {
+    /// The field to perform the aggregation over.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
+    /// Converts from another time zone to UTC.ƒ
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
@@ -77,6 +82,7 @@ pub struct DateRangeAggregation {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 
+    /// The ranges to use for the aggregation.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default)]
     pub ranges: Vec<DateRange>,
@@ -96,6 +102,7 @@ impl From<DateRangeAggregationInput> for DateRangeAggregation {
     }
 }
 
+/// A range/span of dates.
 #[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -116,6 +123,7 @@ pub struct DateRangeInput {
     pub to: Option<String>,
 }
 
+/// A range/span of dates.
 #[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]

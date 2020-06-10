@@ -1,5 +1,3 @@
-#![allow(clippy::missing_docs_in_private_items)]
-
 //! Inner [aggregation] types that specify the actual computation/aggregation to
 //! perform.
 //!
@@ -36,8 +34,10 @@ mod weighted_average;
 #[async_graphql::InputObject]
 #[derive(Serialize, Clone, Debug)]
 pub struct InnerAggregationInput {
+    /// The field to perform the aggregation over.
     pub field: Option<String>,
 
+    /// The script to use.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<ScriptInput>,
 
@@ -54,8 +54,10 @@ pub struct InnerAggregationInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct InnerAggregation {
+    /// The field to perform the aggregation over.
     pub field: Option<String>,
 
+    /// The script to use.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
 

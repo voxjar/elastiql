@@ -164,6 +164,7 @@ impl From<DateHistogramAggregationInput> for DateHistogramAggregation {
     }
 }
 
+/// Calendar aware interval.
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "lowercase")]

@@ -11,7 +11,7 @@ use std::{borrow::Borrow, default::Default, hash::Hash, str::FromStr, string::St
 use serde::{Deserialize, Serialize};
 use serde_json::{Map as JsonMap, Value as JsonValue};
 
-/// A [JSON] object (key => value map).
+/// A [JSON] object (`key` => `value` map).
 ///
 /// [JSON]: https://tools.ietf.org/html/rfc8259#section-3
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]

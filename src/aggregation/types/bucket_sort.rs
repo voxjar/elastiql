@@ -8,7 +8,7 @@ use crate::search::SortInput;
 
 use super::GapPolicy;
 
-/// A parent [**pipeline aggregation**] which sorts the buckets of its parent
+/// A parent [*pipeline aggregation*] which sorts the buckets of its parent
 /// `multi-bucket` aggregation. Zero or more sort fields may be specified
 /// together with the corresponding sort order. Each bucket may be sorted based
 /// on its `_key`, `_count` or its sub-aggregations. In addition, parameters
@@ -21,12 +21,13 @@ use super::GapPolicy;
 /// `size` is set to `10`, the `bucket_sort` will only sort over those `10`
 /// returned term buckets.
 ///
-/// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+/// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 #[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct BucketSortInput {
+    /// How to sort the data.
     #[field(default)]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sort: Vec<SortInput>,
@@ -43,12 +44,13 @@ pub struct BucketSortInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<i32>,
 
+    /// The policy to apply when gaps are found in the data.
     #[field(default_with = "Some(GapPolicy::Skip)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }
 
-/// A parent [**pipeline aggregation**] which sorts the buckets of its parent
+/// A parent [*pipeline aggregation*] which sorts the buckets of its parent
 /// `multi-bucket` aggregation. Zero or more sort fields may be specified
 /// together with the corresponding sort order. Each bucket may be sorted based
 /// on its `_key`, `_count` or its sub-aggregations. In addition, parameters
@@ -61,11 +63,12 @@ pub struct BucketSortInput {
 /// `size` is set to `10`, the `bucket_sort` will only sort over those `10`
 /// returned term buckets.
 ///
-/// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+/// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 #[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 pub struct BucketSort {
+    /// How to sort the data.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sort: Vec<Sort>,
 
@@ -79,6 +82,7 @@ pub struct BucketSort {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<i32>,
 
+    /// The policy to apply when gaps are found in the data.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }

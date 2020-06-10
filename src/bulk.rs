@@ -1,4 +1,4 @@
-//! Request & response types used when making [bulk] queries.
+//! Response types for [bulk] queries.
 //!
 //! [bulk]: https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
 
@@ -29,22 +29,22 @@ pub struct Response<T> {
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum Action<T> {
-    /// Result from performing a bulk `Create` operation.
+    /// The result from performing a bulk `Create` operation.
     Create(Item<T>),
 
-    /// Result from performing a bulk `Index` operation.
+    /// The result from performing a bulk `Index` operation.
     Index(Item<T>),
 
-    /// Result from performing a bulk `Update` operation.
+    /// The result from performing a bulk `Update` operation.
     Update(Item<T>),
 
-    /// Result from performing a bulk `Delete` operation.
+    /// The result from performing a bulk `Delete` operation.
     Delete(Item<T>),
 }
 
 /// An individual bulk item.
 ///
-/// *FIXME*: somehow use `std::error::Error` instead of this...
+/// *TODO*: somehow use `std::error::Error` instead of this...
 #[derive(Deserialize, Debug)]
 #[serde(untagged)]
 pub enum Item<T> {

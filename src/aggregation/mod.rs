@@ -229,33 +229,33 @@ pub struct AggregationInput {
     #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
 
-    /// A parent [**pipeline aggregation**] which executes a [script] which can
+    /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
     /// script must return a numeric value.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_script: Option<BucketScriptInput>,
 
-    /// A parent [**pipeline aggregation**] which executes a [script] which
+    /// A parent [*pipeline aggregation*] which executes a [script] which
     /// determines whether the current bucket will be retained in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
     /// script must return a boolean value.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_selector: Option<BucketSelectorInput>,
 
-    /// A parent [**pipeline aggregation**] which sorts the buckets of its parent
+    /// A parent [*pipeline aggregation*] which sorts the buckets of its parent
     /// `multi-bucket` aggregation. Zero or more sort fields may be specified
     /// together with the corresponding sort order. Each bucket may be sorted based
     /// on its `_key`, `_count` or its sub-aggregations. In addition, parameters
     /// from and size may be set in order to truncate the result buckets.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_sort: Option<BucketSortInput>,
 
@@ -509,33 +509,33 @@ pub struct Aggregation {
     #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregation>,
 
-    /// A parent [**pipeline aggregation**] which executes a [script] which can
+    /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
     /// script must return a numeric value.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_script: Option<BucketScript>,
 
-    /// A parent [**pipeline aggregation**] which executes a [script] which
+    /// A parent [*pipeline aggregation*] which executes a [script] which
     /// determines whether the current bucket will be retained in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
     /// script must return a boolean value.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_selector: Option<BucketSelector>,
 
-    /// A parent [**pipeline aggregation**] which sorts the buckets of its parent
+    /// A parent [*pipeline aggregation*] which sorts the buckets of its parent
     /// `multi-bucket` aggregation. Zero or more sort fields may be specified
     /// together with the corresponding sort order. Each bucket may be sorted based
     /// on its `_key`, `_count` or its sub-aggregations. In addition, parameters
     /// from and size may be set in order to truncate the result buckets.
     ///
-    /// [**pipeline aggregation**]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
+    /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
     #[cfg_attr(feature = "builder", builder(default))]
     pub bucket_sort: Option<BucketSort>,
 

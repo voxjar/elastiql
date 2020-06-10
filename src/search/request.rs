@@ -19,7 +19,7 @@ use crate::{
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct RequestInput {
-    /// Querys the search results.
+    /// The query to perform in this search request.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "CompoundQueryInput::is_empty")]
     pub query: CompoundQueryInput,
@@ -84,7 +84,7 @@ impl RequestInput {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct Request {
-    /// Querys the search results.
+    /// The query to perform in this search request.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "CompoundQuery::is_empty")]
     pub query: CompoundQuery,

@@ -20,7 +20,6 @@ use crate::search::ScriptInput;
 ///
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-
 #[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -35,6 +34,7 @@ pub struct RangeAggregationInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<ScriptInput>,
 
+    /// The ranges to use for the aggregation.
     #[field(default)]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default)]
@@ -68,6 +68,7 @@ pub struct RangeAggregation {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
 
+    /// The ranges to use for the aggregation.
     #[cfg_attr(feature = "builder", builder(default))]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default)]
@@ -86,6 +87,7 @@ impl From<RangeAggregationInput> for RangeAggregation {
     }
 }
 
+/// A range/span of data.
 #[cfg(feature = "graphql")]
 #[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
@@ -102,6 +104,7 @@ pub struct RangeInput {
     to: Option<f64>,
 }
 
+/// A range/span of data.
 #[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]

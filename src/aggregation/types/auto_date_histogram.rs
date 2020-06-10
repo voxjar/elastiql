@@ -113,6 +113,7 @@ impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
 /// Specifies the minimum rounding interval that should be used. This can make
 /// the collection process more efficient, as the aggregation will not attempt
 /// to round at any interval lower than `minimum_interval`.
+#[allow(missing_docs)]
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
 #[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
 #[serde(rename_all = "lowercase")]

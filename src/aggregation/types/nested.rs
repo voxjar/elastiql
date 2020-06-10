@@ -12,6 +12,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct NestedAggregationInput {
+    /// The nested path to search.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 }
@@ -26,6 +27,7 @@ pub struct NestedAggregationInput {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct NestedAggregation {
+    /// The nested path to search.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 }
