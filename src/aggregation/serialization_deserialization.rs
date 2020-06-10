@@ -279,7 +279,7 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
                                     .or_insert_with(|| AggregationResult {
                                         parent: parent.map(|p| p.to_owned()),
                                         name: name.to_string(),
-                                        ty,
+                                        type_: ty,
                                         fields: vec![],
                                         values: vec![],
                                         metadata: agg.metadata.to_owned(),
@@ -734,7 +734,7 @@ mod tests {
                     fields: vec![],
                     values: vec![3.0, 4.0],
                     metadata: Some(json!({"test": true}).into()),
-                    ty: AggregationType::Avg,
+                    type_: AggregationType::Avg,
                 }],
             },
             json!({
@@ -754,7 +754,7 @@ mod tests {
                     fields: vec!["dallin".to_string(), "will".to_string()],
                     values: vec![0.009, 0.017],
                     metadata: None,
-                    ty: AggregationType::Unknown,
+                    type_: AggregationType::Unknown,
                 }],
             },
             json!({
@@ -808,7 +808,7 @@ mod tests {
                     fields: vec![],
                     values: vec![3.0, 4.0],
                     metadata: None,
-                    ty: AggregationType::Avg,
+                    type_: AggregationType::Avg,
                 }],
             },
             json!({ "aggregations": { "avg#AVG_DURATION": { "value": 353_964.312_5 } } })
@@ -824,7 +824,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![462_430.123, 346_602.0],
                         metadata: None,
-                        ty: AggregationType::Avg,
+                        type_: AggregationType::Avg,
                     },
                 ]
             },
@@ -867,7 +867,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![3.0, 4.0],
                         metadata: None,
-                        ty: AggregationType::ValueCount,
+                        type_: AggregationType::ValueCount,
                     },
                     AggregationResult {
                         parent: Some("sales".to_string()),
@@ -875,7 +875,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![2997.0, 2196.0],
                         metadata: None,
-                        ty: AggregationType::Sum,
+                        type_: AggregationType::Sum,
                     },
                     AggregationResult {
                         parent: Some("sales".to_string()),
@@ -883,7 +883,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![999.0, 549.0],
                         metadata: None,
-                        ty: AggregationType::Avg,
+                        type_: AggregationType::Avg,
                     },
                     AggregationResult {
                         parent: Some("(missing)".to_string()),
@@ -891,7 +891,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![4.0, 3.0],
                         metadata: None,
-                        ty: AggregationType::ValueCount,
+                        type_: AggregationType::ValueCount,
                     },
                     AggregationResult {
                         parent: Some("(missing)".to_string()),
@@ -899,7 +899,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![3_234_017.0, 2_424_018.0],
                         metadata: None,
-                        ty: AggregationType::Sum,
+                        type_: AggregationType::Sum,
                     },
                     AggregationResult {
                         parent: Some("(missing)".to_string()),
@@ -907,7 +907,7 @@ mod tests {
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![808_504.25, 808_006.0],
                         metadata: None,
-                        ty: AggregationType::Avg,
+                        type_: AggregationType::Avg,
                     },
                 ],
             },
@@ -996,7 +996,7 @@ mod tests {
                         ],
                         values: vec![0.0, 30.0],
                         metadata: None,
-                        ty: AggregationType::ValueCount,
+                        type_: AggregationType::ValueCount,
                     },
                 ]
             },
@@ -1040,7 +1040,7 @@ mod tests {
                         ],
                         values: vec![1.0, 2.0, 1.0, 1.0, 2.0],
                         metadata: None,
-                        ty: AggregationType::DateHistogram,
+                        type_: AggregationType::DateHistogram,
                     },
                 ]
             },
@@ -1103,7 +1103,7 @@ mod tests {
                         ],
                         values: vec![1.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0, 0.0, 2.0],
                         metadata: None,
-                        ty: AggregationType::AutoDateHistogram,
+                        type_: AggregationType::AutoDateHistogram,
                     },
                 ]
             },
@@ -1177,7 +1177,7 @@ mod tests {
                         fields: vec!["Denmark".to_string()],
                         values: vec![1.0],
                         metadata: None,
-                        ty: AggregationType::Unknown,
+                        type_: AggregationType::Unknown,
                     },
                 ]
             },

@@ -44,7 +44,6 @@ pub struct RangeQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "gt")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub greater_than: Option<String>,
 
@@ -52,7 +51,6 @@ pub struct RangeQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "gte")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub greater_than_or_equal_to: Option<String>,
 
@@ -60,7 +58,6 @@ pub struct RangeQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "lt")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than: Option<String>,
 
@@ -68,7 +65,6 @@ pub struct RangeQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "lte")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than_or_equal_to: Option<String>,
 
@@ -122,7 +118,6 @@ pub struct RangeQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "gt")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub greater_than: Option<String>,
 
@@ -130,7 +125,6 @@ pub struct RangeQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "gte")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub greater_than_or_equal_to: Option<String>,
 
@@ -138,7 +132,6 @@ pub struct RangeQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "lt")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than: Option<String>,
 
@@ -146,7 +139,6 @@ pub struct RangeQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[field(name = "lte")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than_or_equal_to: Option<String>,
 

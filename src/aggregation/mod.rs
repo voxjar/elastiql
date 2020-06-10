@@ -642,8 +642,9 @@ pub struct AggregationResult {
     pub name: String,
 
     /// The `type` of this aggregation.
-    #[field(name = "type")]
-    pub ty: AggregationType,
+    ///
+    /// **TODO**: rename to `ty` once https://github.com/async-graphql/async-graphql/issues/164
+    pub type_: AggregationType,
 
     /// The fields this aggregation computed over.
     pub fields: Vec<String>,

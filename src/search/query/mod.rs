@@ -37,7 +37,6 @@ pub struct CompoundQueryInput {
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
-    #[field(name = "bool")]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
 }
@@ -103,7 +102,6 @@ pub struct CompoundQuery {
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
-    #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQuery>,
@@ -402,7 +400,6 @@ pub struct QueryInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub regexp: Option<RegexpQueryInput>,
 
-    #[field(name = "match")]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
     pub match_: Option<MatchQueryInput>,
@@ -420,7 +417,6 @@ pub struct QueryInput {
     pub nested: Option<NestedQueryInput>,
 
     /// A nested bool query.
-    #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
@@ -643,7 +639,6 @@ pub struct Query {
     pub nested: Option<NestedQuery>,
 
     /// A nested bool query.
-    #[field(name = "bool")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQuery>,
