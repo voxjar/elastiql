@@ -1,6 +1,7 @@
 # elastiql
 
 ![CI](https://github.com/mwilliammyers/elastiql/workflows/CI/badge.svg)
+[![docs](https://img.shields.io/badge/docs-master-blue.svg)](https://www.mwilliammyers.com/elastiql/elastiql/index.html)
 
 > Opinionated [Elasticsearch] query language for [Rust].
 
@@ -12,7 +13,8 @@ working with [Elasticsearch] in [Rust] than the official [crate] (see:
 ### project status
 
 This project has not yet reached `v1.0.0`. As such, you can expect some amount
-of breaking changes.
+of breaking changes. It has also not (yet) been published to _crates.io_, but
+most likely will in the future.
 
 We have defined types (optionally with [`builder`] methods) for most
 Elasticsearch [aggregations], [query DSL] and other miscellaneous
