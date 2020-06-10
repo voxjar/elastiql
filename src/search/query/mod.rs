@@ -597,9 +597,9 @@ impl From<NestedQueryInput> for QueryInput {
     }
 }
 
-/// A single query to perform for this search request.
+/// A single search query.
 ///
-/// **Note**: This will *never* have more than *one* defined (and non-null) field.
+/// **Note**: This should *never* have more than *one* defined (and non-null) field.
 #[async_graphql::SimpleObject(name = "Filter")]
 #[allow(missing_docs)]
 #[cfg_attr(test, derive(PartialEq))]

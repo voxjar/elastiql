@@ -9,7 +9,7 @@ use serde::{
 };
 
 use super::*;
-use crate::search::CompoundQuery;
+use crate::search::query::CompoundQuery;
 
 #[cfg(feature = "graphql")]
 impl Serialize for AggregationInput {
@@ -525,7 +525,7 @@ mod tests {
 
     use serde_json::json;
 
-    use crate::search::TermsQuery;
+    use crate::search::query::TermsQuery;
 
     /// Simple smoke test. This also makes it so editors pick up this test mod as runnable.
     #[test]

@@ -7,10 +7,10 @@ use std::{default::Default, str};
 use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "graphql")]
-use crate::search::{CompoundQueryInput, SortInput};
+use crate::search::{query::CompoundQueryInput, SortInput};
 use crate::{
     scalars::NumberOrString,
-    search::{CompoundQuery, Sort},
+    search::{query::CompoundQuery, Sort},
 };
 
 /// The [request body] for an Elasticsearch search request.

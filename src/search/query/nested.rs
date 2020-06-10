@@ -2,9 +2,9 @@
 
 use serde::{Deserialize, Serialize};
 
-use super::super::CompoundQuery;
+use super::super::query::CompoundQuery;
 #[cfg(feature = "graphql")]
-use super::super::CompoundQueryInput;
+use super::super::query::CompoundQueryInput;
 
 /// A [Nested query] wraps another query to search [nested] fields.
 ///
