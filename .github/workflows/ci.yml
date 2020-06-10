@@ -25,7 +25,10 @@ jobs:
           toolchain: stable
           components: rustfmt, clippy
 
-      - run: cargo build --verbose
+      - run: cargo build --all-features
+      - run: cargo build --no-default-features
+      - run: cargo build --no-default-features --features=builder
+      - run: cargo build --no-default-features --features=graphql
       - run: cargo fmt -- --check --verbose
       - run: cargo clippy --verbose
       - run: cargo test --verbose
