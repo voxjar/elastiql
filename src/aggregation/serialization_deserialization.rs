@@ -2,13 +2,17 @@
 //!
 //! [ser/de]: https://docs.rs/serde/latest/serde/
 
+use std::{collections::HashMap, fmt};
+
 use serde::{
     de::{self, Deserializer, MapAccess, Visitor},
     ser::{SerializeMap, Serializer},
     Deserialize, Serialize,
 };
 
-use super::*;
+#[cfg(feature = "graphql")]
+use super::request::RequestInput as AggregationInput;
+use super::{request::Request as Aggregation, response::Ty, types::*, ComputedResult, Response};
 use crate::search::query::CompoundQuery;
 
 #[cfg(feature = "graphql")]
@@ -252,7 +256,7 @@ pub(crate) struct ElasticAggregationResponse {
     aggregations: HashMap<String, ElasticAggregationResult>,
 }
 
-impl From<ElasticAggregationResponse> for AggregationResponse {
+impl From<ElasticAggregationResponse> for Response {
     // TODO: make this recursive instead/cleanup this function...
     /// Converts aggregation results from Elasticsearch to a trace like format
     /// suitable for plotting libraries.
@@ -261,7 +265,7 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
         let aggs = response.aggregations;
 
         // (parent, name) => AggregationResult
-        let mut results: HashMap<(Option<&String>, String), AggregationResult> = HashMap::new();
+        let mut results: HashMap<(Option<&String>, String), ComputedResult> = HashMap::new();
 
         let mut pending_aggs: Vec<(Option<&String>, _)> = vec![(None, &aggs)];
         while let Some(curr) = pending_aggs.pop() {
@@ -276,7 +280,7 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
                             let result =
                                 results
                                     .entry((parent, name.to_string()))
-                                    .or_insert_with(|| AggregationResult {
+                                    .or_insert_with(|| ComputedResult {
                                         parent: parent.map(|p| p.to_owned()),
                                         name: name.to_string(),
                                         type_: ty.clone(),
@@ -310,7 +314,7 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
             }
         }
 
-        AggregationResponse {
+        Response {
             aggregations: results.into_iter().map(|(_, agg)| agg).collect(),
         }
     }
@@ -318,12 +322,12 @@ impl From<ElasticAggregationResponse> for AggregationResponse {
 
 #[doc(hidden)]
 #[allow(clippy::indexing_slicing)]
-fn split_ty_and_name(ty_and_name: &str) -> (AggregationType, String) {
+fn split_ty_and_name(ty_and_name: &str) -> (Ty, String) {
     let parts: Vec<&str> = ty_and_name.split('#').collect();
 
     if parts.len() < 2 {
         // the split will always have at least 1 item
-        (AggregationType::Unknown, parts[0].to_owned())
+        (Ty::Unknown, parts[0].to_owned())
     } else {
         (parts[0].into(), parts[1..].join(""))
     }
@@ -534,7 +538,7 @@ mod tests {
         let _: Aggregation = serde_json::from_value(input).unwrap();
 
         let result = json!({ "aggregations": { "agg": { "value": 123_456_789 } } });
-        let _: AggregationResponse = serde_json::from_value(result).unwrap();
+        let _: Response = serde_json::from_value(result).unwrap();
     }
 
     mod aggregation_input {
@@ -691,11 +695,13 @@ mod tests {
 
         use std::cmp::Ordering;
 
+        use crate::aggregation::Response;
+
         /// Simple smoke test. This also makes it so editors pick up this test mod as runnable.
         #[test]
         fn simple() {
             let result = json!({ "aggregations": { "AVG_DURATION": { "value": 353_964.312 } } });
-            let _: AggregationResponse = serde_json::from_value(result).unwrap();
+            let _: Response = serde_json::from_value(result).unwrap();
         }
 
         // TODO: use real `AggregationTypes` instead of `Unknown`
@@ -709,8 +715,7 @@ mod tests {
                     fn can_deserialize() {
                         let mut expected = $agg;
 
-                        let mut actual: AggregationResponse =
-                            serde_json::from_value($json_value).unwrap();
+                        let mut actual: Response = serde_json::from_value($json_value).unwrap();
 
                         actual.aggregations.sort();
                         expected.aggregations.sort();
@@ -727,14 +732,14 @@ mod tests {
 
         test_case!(
             simple_with_metadata:
-            AggregationResponse {
-                aggregations: vec![AggregationResult {
+            Response {
+                aggregations: vec![ComputedResult {
                     parent: None,
                     name: "AVG_DURATION".to_string(),
                     fields: vec![],
                     values: vec![3.0, 4.0],
                     metadata: Some(json!({"test": true}).into()),
-                    type_: AggregationType::Avg,
+                    type_: Ty::Avg,
                 }],
             },
             json!({
@@ -747,14 +752,14 @@ mod tests {
 
         test_case!(
             simple_with_skip:
-            AggregationResponse {
-                aggregations: vec![AggregationResult {
+            Response {
+                aggregations: vec![ComputedResult {
                     parent: None,
                     name: "PERCENT_DEAD_AIR".to_string(),
                     fields: vec!["dallin".to_string(), "will".to_string()],
                     values: vec![0.009, 0.017],
                     metadata: None,
-                    type_: AggregationType::Unknown,
+                    type_: Ty::Unknown,
                 }],
             },
             json!({
@@ -801,14 +806,14 @@ mod tests {
 
         test_case!(
             simple_without_nest:
-            AggregationResponse {
-                aggregations: vec![AggregationResult {
+            Response {
+                aggregations: vec![ComputedResult {
                     parent: None,
                     name: "AVG_DURATION".to_string(),
                     fields: vec![],
                     values: vec![3.0, 4.0],
                     metadata: None,
-                    type_: AggregationType::Avg,
+                    type_: Ty::Avg,
                 }],
             },
             json!({ "aggregations": { "avg#AVG_DURATION": { "value": 353_964.312_5 } } })
@@ -816,15 +821,15 @@ mod tests {
 
         test_case!(
             simple_with_nest:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: None,
                         name: "AVG_DURATION".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![462_430.123, 346_602.0],
                         metadata: None,
-                        type_: AggregationType::Avg,
+                        type_: Ty::Avg,
                     },
                 ]
             },
@@ -859,55 +864,55 @@ mod tests {
 
         test_case!(
             complex_with_nest:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("sales".to_string()),
                         name: "COUNT_OF_CALLS".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![3.0, 4.0],
                         metadata: None,
-                        type_: AggregationType::ValueCount,
+                        type_: Ty::ValueCount,
                     },
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("sales".to_string()),
                         name: "SUM_OF_DURATION".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![2997.0, 2196.0],
                         metadata: None,
-                        type_: AggregationType::Sum,
+                        type_: Ty::Sum,
                     },
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("sales".to_string()),
                         name: "AVG_OF_DURATION".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![999.0, 549.0],
                         metadata: None,
-                        type_: AggregationType::Avg,
+                        type_: Ty::Avg,
                     },
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("(missing)".to_string()),
                         name: "COUNT_OF_CALLS".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![4.0, 3.0],
                         metadata: None,
-                        type_: AggregationType::ValueCount,
+                        type_: Ty::ValueCount,
                     },
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("(missing)".to_string()),
                         name: "SUM_OF_DURATION".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![3_234_017.0, 2_424_018.0],
                         metadata: None,
-                        type_: AggregationType::Sum,
+                        type_: Ty::Sum,
                     },
-                    AggregationResult {
+                    ComputedResult {
                         parent: Some("(missing)".to_string()),
                         name: "AVG_OF_DURATION".to_string(),
                         fields: vec!["dallin".to_string(), "will".to_string()],
                         values: vec![808_504.25, 808_006.0],
                         metadata: None,
-                        type_: AggregationType::Avg,
+                        type_: Ty::Avg,
                     },
                 ],
             },
@@ -985,9 +990,9 @@ mod tests {
 
         test_case!(
             date_range_with_nest:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: None,
                         name: "ID_VALUE_COUNT".to_string(),
                         fields: vec![
@@ -996,7 +1001,7 @@ mod tests {
                         ],
                         values: vec![0.0, 30.0],
                         metadata: None,
-                        type_: AggregationType::ValueCount,
+                        type_: Ty::ValueCount,
                     },
                 ]
             },
@@ -1026,9 +1031,9 @@ mod tests {
 
         test_case!(
             date_histogram:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: None,
                         name: "TIMESTAMP_HISTOGRAM".to_string(),
                         fields: vec![
@@ -1040,7 +1045,7 @@ mod tests {
                         ],
                         values: vec![1.0, 2.0, 1.0, 1.0, 2.0],
                         metadata: None,
-                        type_: AggregationType::DateHistogram,
+                        type_: Ty::DateHistogram,
                     },
                 ]
             },
@@ -1085,9 +1090,9 @@ mod tests {
 
         test_case!(
             auto_date_histogram:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: None,
                         name: "TIMESTAMP_AUTO_DATE_HISTOGRAM".to_string(),
                         fields: vec![
@@ -1103,7 +1108,7 @@ mod tests {
                         ],
                         values: vec![1.0, 0.0, 2.0, 0.0, 1.0, 0.0, 1.0, 0.0, 2.0],
                         metadata: None,
-                        type_: AggregationType::AutoDateHistogram,
+                        type_: Ty::AutoDateHistogram,
                     },
                 ]
             },
@@ -1169,15 +1174,15 @@ mod tests {
 
         test_case!(
             bucketing_agg_as_leaf_node:
-            AggregationResponse {
+            Response {
                 aggregations: vec![
-                    AggregationResult {
+                    ComputedResult {
                         parent: None,
                         name: "PER_AGENT".to_string(),
                         fields: vec!["Denmark".to_string()],
                         values: vec![1.0],
                         metadata: None,
-                        type_: AggregationType::Unknown,
+                        type_: Ty::Unknown,
                     },
                 ]
             },
@@ -1202,7 +1207,7 @@ mod tests {
         );
 
         // make it so order of arrays does not matter
-        impl Ord for AggregationResult {
+        impl Ord for ComputedResult {
             fn cmp(&self, other: &Self) -> Ordering {
                 self.parent
                     .cmp(&other.parent)
@@ -1219,14 +1224,14 @@ mod tests {
             }
         }
 
-        impl PartialOrd for AggregationResult {
+        impl PartialOrd for ComputedResult {
             fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
                 Some(self.cmp(other))
             }
         }
 
         // make it so order of arrays does not matter
-        impl PartialEq for AggregationResult {
+        impl PartialEq for ComputedResult {
             fn eq(&self, other: &Self) -> bool {
                 let mut self_fields = self.fields.clone();
                 self_fields.sort();
@@ -1240,6 +1245,6 @@ mod tests {
             }
         }
 
-        impl Eq for AggregationResult {}
+        impl Eq for ComputedResult {}
     }
 }

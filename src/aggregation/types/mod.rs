@@ -3,6 +3,8 @@
 //!
 //! [aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
 
+use serde::{Deserialize, Serialize};
+
 pub use self::{
     auto_date_histogram::*, bucket_script::*, bucket_selector::*, bucket_sort::*,
     date_histogram::*, date_range::*, nested::*, range::*, reverse_nested::*, weighted_average::*,
@@ -10,8 +12,6 @@ pub use self::{
 use crate::search::Script;
 #[cfg(feature = "graphql")]
 use crate::search::ScriptInput;
-
-use super::*;
 
 mod auto_date_histogram;
 mod bucket_script;
