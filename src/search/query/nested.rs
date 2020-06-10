@@ -70,7 +70,7 @@ impl NestedQueryInput {
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 #[cfg_attr(
     feature = "graphql",
-    async_graphql::SimpleObject(name = "NestedFilterInput")
+    async_graphql::SimpleObject(name = "NestedFilter")
 )]
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
