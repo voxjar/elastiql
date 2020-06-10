@@ -20,6 +20,21 @@ We have defined types (optionally with [`builder`] methods) for most
 Elasticsearch [aggregations], [query DSL] and other miscellaneous
 request/response types.
 
+### usage
+
+This crate allows for more idiomatic request/response handling, e.g.:
+
+```rust
+let query = Request::builder()
+    .query(TermQuery::new("id", "test_user_id"))
+    .size(1)
+    .version(true)
+    .highlight(HighlightOptions::default())
+    .build();
+```
+
+For more examples, see the [examples](examples) directory.
+
 ### differences between the Elasticsearch REST API
 
 Because this project is expected to mainly be used via [GraphQL] some
