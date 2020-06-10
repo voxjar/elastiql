@@ -118,6 +118,23 @@ impl CompoundQuery {
             .as_ref()
             .map_or_else(|| true, |filter| filter.is_empty())
     }
+
+    /// Appends a `filter` on to the current list of filters.
+    #[inline]
+    pub fn push(&mut self, filter: impl Into<Query>) {
+        if let Some(ref mut boolean) = self.boolean {
+            boolean.push(filter)
+        } else {
+            self.boolean = Some(BooleanQuery {
+                must: vec![],
+                filter: vec![filter.into()],
+                should: vec![],
+                must_not: vec![],
+                minimum_should_match: None,
+                boost: None,
+            })
+        }
+    }
 }
 
 impl<T: Into<BooleanQuery>> From<T> for CompoundQuery {
@@ -334,6 +351,13 @@ impl BooleanQuery {
             && self.filter.is_empty()
             && self.should.is_empty()
             && self.must_not.is_empty()
+    }
+
+    /// Appends a `filter` to the current list of filters.
+    #[inline]
+    pub fn push(&mut self, filter: impl Into<Query>) {
+        // TODO: should we always default to `filter` context?
+        self.filter.push(filter.into())
     }
 }
 
