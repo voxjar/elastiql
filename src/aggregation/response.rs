@@ -51,7 +51,8 @@ pub struct ComputedResult {
 // TODO: generate this with proc-macro from Aggregation struct
 /// The type of aggregation.
 #[cfg_attr(feature = "graphql", async_graphql::Enum(name = "AggregationType"))]
-#[derive(Deserialize, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(Clone))]
+#[derive(Deserialize, Debug)]
 pub enum Ty {
     /// metric
     Avg,

@@ -10,7 +10,8 @@ use serde::{Deserialize, Serialize};
 ///
 /// [languages]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 pub enum ScriptLanguage {
     /// [Lucene expressions language] compile a Javascript expression to
     /// bytecode. They are designed for high-performance custom ranking and

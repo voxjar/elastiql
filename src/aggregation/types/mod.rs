@@ -95,7 +95,8 @@ impl<T: Into<String>> From<T> for InnerAggregation {
 
 /// The policy to apply when gaps are found in the data.
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum GapPolicy {
     /// Treats missing data as if the bucket does not exist. It will skip the

@@ -12,7 +12,8 @@ use serde::{
 
 /// The [sort order](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_order)
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortOrder {
     /// Sort in ascending order
@@ -24,7 +25,8 @@ pub enum SortOrder {
 
 /// The [sort mode](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_mode_option)
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortMode {
     /// Pick the lowest value.

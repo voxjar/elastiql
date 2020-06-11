@@ -115,7 +115,8 @@ impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
 /// to round at any interval lower than `minimum_interval`.
 #[allow(missing_docs)]
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum MinimumInterval {
     Second,

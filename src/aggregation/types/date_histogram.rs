@@ -166,7 +166,8 @@ impl From<DateHistogramAggregationInput> for DateHistogramAggregation {
 
 /// Calendar aware interval.
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
+#[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum CalendarInterval {
     /// One *minute* is the interval between `00` seconds of the first minute
