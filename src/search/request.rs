@@ -8,7 +8,7 @@ use serde_json::json;
 #[cfg(feature = "graphql")]
 use crate::search::{query::CompoundQueryInput, SortInput};
 use crate::{
-    scalars::NumberOrString,
+    scalars::SortedValue,
     search::{query::CompoundQuery, Sort},
 };
 
@@ -40,7 +40,7 @@ pub struct RequestInput {
     /// [pagination]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#request-body-search-search-after
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(rename = "search_after", skip_serializing_if = "Vec::is_empty")]
-    pub after: Vec<NumberOrString>,
+    pub after: Vec<SortedValue>,
 
     /// Whether or not to include the document version in the search results.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
@@ -105,7 +105,7 @@ pub struct Request {
     /// [pagination]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#request-body-search-search-after
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(rename = "search_after", skip_serializing_if = "Vec::is_empty")]
-    pub after: Vec<NumberOrString>,
+    pub after: Vec<SortedValue>,
 
     /// Whether or not to include the document version in the search results.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]

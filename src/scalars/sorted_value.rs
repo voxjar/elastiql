@@ -6,42 +6,43 @@ use serde::{Deserialize, Serialize};
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 #[serde(untagged)]
-pub enum NumberOrString {
+pub enum SortedValue {
+    Null,
     Int(i32),
     Float(f64),
     String(String),
 }
 
-impl From<i32> for NumberOrString {
+impl From<i32> for SortedValue {
     fn from(val: i32) -> Self {
-        NumberOrString::Int(val)
+        SortedValue::Int(val)
     }
 }
 
-impl From<f64> for NumberOrString {
+impl From<f64> for SortedValue {
     fn from(val: f64) -> Self {
-        NumberOrString::Float(val)
+        SortedValue::Float(val)
     }
 }
 
-impl From<String> for NumberOrString {
+impl From<String> for SortedValue {
     fn from(val: String) -> Self {
-        NumberOrString::String(val)
+        SortedValue::String(val)
     }
 }
 
 #[cfg(feature = "graphql")]
 #[cfg(feature = "graphql")]
 #[async_graphql::Scalar]
-impl async_graphql::ScalarType for NumberOrString {
+impl async_graphql::ScalarType for SortedValue {
     #[inline]
     fn parse(value: async_graphql::Value) -> async_graphql::InputValueResult<Self> {
         match value {
-            async_graphql::Value::Int(val) => Ok(NumberOrString::Int(val)),
-            async_graphql::Value::Float(val) => Ok(NumberOrString::Float(val)),
-            async_graphql::Value::String(val) => Ok(NumberOrString::String(val)),
-            async_graphql::Value::Null
-            | async_graphql::Value::Object(_)
+            async_graphql::Value::Null => Ok(SortedValue::Null),
+            async_graphql::Value::Int(val) => Ok(SortedValue::Int(val)),
+            async_graphql::Value::Float(val) => Ok(SortedValue::Float(val)),
+            async_graphql::Value::String(val) => Ok(SortedValue::String(val)),
+            async_graphql::Value::Object(_)
             | async_graphql::Value::Variable(_)
             | async_graphql::Value::Boolean(_)
             | async_graphql::Value::Enum(_)
@@ -55,9 +56,10 @@ impl async_graphql::ScalarType for NumberOrString {
     #[inline]
     fn to_value(&self) -> async_graphql::Value {
         match self {
-            NumberOrString::Int(val) => async_graphql::Value::Int(*val),
-            NumberOrString::Float(val) => async_graphql::Value::Float(*val),
-            NumberOrString::String(val) => async_graphql::Value::String(val.clone()),
+            SortedValue::Null => async_graphql::Value::Null,
+            SortedValue::Int(val) => async_graphql::Value::Int(*val),
+            SortedValue::Float(val) => async_graphql::Value::Float(*val),
+            SortedValue::String(val) => async_graphql::Value::String(val.clone()),
         }
     }
 }

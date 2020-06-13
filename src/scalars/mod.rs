@@ -1,6 +1,6 @@
 //! Primitive data types used by Elasticsearch.
 
-pub use self::{json::*, number_or_string::*};
+pub use self::{json::*, sorted_value::*};
 
 mod json;
-mod number_or_string;
+mod sorted_value;
