@@ -1,7 +1,7 @@
 # elastiql
 
-[![CI](https://github.com/mwilliammyers/elastiql/workflows/CI/badge.svg)](https://github.com/mwilliammyers/elastiql/actions)
-[![docs](https://img.shields.io/badge/docs-master-blue.svg)](https://www.mwilliammyers.com/elastiql/elastiql/index.html)
+[![CI](https://github.com/voxjar/elastiql/workflows/CI/badge.svg)](https://github.com/voxjar/elastiql/actions)
+[![docs](https://img.shields.io/badge/docs-master-blue.svg)](http://voxjar.github.io/elastiql/)
 
 > Opinionated [Elasticsearch] query language for [Rust].
 
