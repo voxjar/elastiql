@@ -4,11 +4,9 @@
 
 use std::{collections::HashMap, fmt};
 
-use serde::{
-    de::{self, Deserializer, MapAccess, Visitor},
-    ser::{SerializeMap, Serializer},
-    Deserialize, Serialize,
-};
+use serde::de::{self, Deserializer, MapAccess, Visitor};
+use serde::ser::{SerializeMap, Serializer};
+use serde::{Deserialize, Serialize};
 
 #[cfg(feature = "graphql")]
 use super::request::RequestInput as AggregationInput;

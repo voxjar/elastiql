@@ -2,10 +2,9 @@
 
 use std::fmt;
 
-use serde::{
-    de::{self, MapAccess, Visitor},
-    ser::{Serialize, SerializeMap, Serializer},
-};
+use serde::de::{self, MapAccess, Visitor};
+use serde::ser::{SerializeMap, Serializer};
+use serde::Serialize;
 
 /// A [Terms query] returns documents that contain one or more **exact** terms
 /// in a provided field.

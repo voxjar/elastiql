@@ -2,10 +2,8 @@
 
 use std::{collections::HashMap, fmt};
 
-use serde::{
-    de::{self, MapAccess, Visitor},
-    ser::{Serialize, SerializeMap, Serializer},
-};
+use serde::de::{self, MapAccess, Visitor};
+use serde::ser::{Serialize, SerializeMap, Serializer};
 
 // TODO: add additional options
 /// A [Match query] returns documents that match a provided text, number, date

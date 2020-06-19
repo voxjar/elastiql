@@ -2,11 +2,9 @@
 
 use std::fmt;
 
-use serde::{
-    de::{self, MapAccess, Visitor},
-    ser::{SerializeMap, Serializer},
-    Deserialize, Serialize,
-};
+use serde::de::{self, MapAccess, Visitor};
+use serde::ser::{SerializeMap, Serializer};
+use serde::{Deserialize, Serialize};
 
 #[allow(clippy::missing_docs_in_private_items)]
 #[derive(Serialize, Deserialize)]

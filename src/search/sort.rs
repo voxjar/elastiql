@@ -4,11 +4,9 @@
 
 use std::default::Default;
 
-use serde::{
-    de::{self, Deserializer, Visitor},
-    ser::{SerializeMap, Serializer},
-    Deserialize, Serialize,
-};
+use serde::de::{self, Deserializer, Visitor};
+use serde::ser::{SerializeMap, Serializer};
+use serde::{Deserialize, Serialize};
 
 /// The [sort order](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_order)
 #[cfg_attr(feature = "graphql", async_graphql::Enum)]
