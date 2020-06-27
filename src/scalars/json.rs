@@ -4,9 +4,9 @@
 //! [newtype struct]: https://doc.rust-lang.org/1.0.0/style/features/types/newtype.html
 //! [scalar]: https://graphql.org/learn/schema/#scalar-types
 
+use std::borrow::Borrow;
 #[cfg(feature = "graphql")]
 use std::convert::TryFrom;
-use std::borrow::Borrow;
 use std::default::Default;
 use std::hash::Hash;
 use std::str::FromStr;
