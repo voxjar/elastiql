@@ -57,7 +57,7 @@ pub(super) struct SubAggregation {
     #[serde(default, rename = "filter", skip_serializing_if = "Option::is_none")]
     filters: Option<CompoundQuery>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    terms: Option<InnerAggregation>,
+    terms: Option<TermsAggregation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     range: Option<RangeAggregation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]

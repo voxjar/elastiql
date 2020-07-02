@@ -184,7 +184,7 @@ pub struct RequestInput {
     ///
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    pub terms: Option<InnerAggregationInput>,
+    pub terms: Option<TermsAggregationInput>,
 
     /// A [`range`] ([*bucketing*]) aggregation.
     ///
@@ -464,7 +464,7 @@ pub struct Request {
     ///
     /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     #[cfg_attr(feature = "builder", builder(default))]
-    pub terms: Option<InnerAggregation>,
+    pub terms: Option<TermsAggregation>,
 
     /// A [`range`] ([*bucketing*]) aggregation.
     ///

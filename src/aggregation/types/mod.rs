@@ -7,7 +7,8 @@ use serde::{Deserialize, Serialize};
 
 pub use self::{
     auto_date_histogram::*, bucket_script::*, bucket_selector::*, bucket_sort::*,
-    date_histogram::*, date_range::*, nested::*, range::*, reverse_nested::*, weighted_average::*,
+    date_histogram::*, date_range::*, nested::*, range::*, reverse_nested::*, terms::*,
+    weighted_average::*,
 };
 use crate::search::Script;
 #[cfg(feature = "graphql")]
@@ -22,6 +23,7 @@ mod date_range;
 mod nested;
 mod range;
 mod reverse_nested;
+mod terms;
 mod weighted_average;
 
 /// A generic input for an aggregation.
