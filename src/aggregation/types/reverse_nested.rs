@@ -29,6 +29,7 @@ pub struct ReverseNestedAggregationInput {
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
 }
 
@@ -59,6 +60,7 @@ pub struct ReverseNestedAggregation {
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
 }
 
