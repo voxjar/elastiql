@@ -24,9 +24,8 @@ use super::InnerAggregationInput;
 ///
 /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct WeightedAverageAggregationInput {
     /// The configuration for the field or script that provides the values
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -64,8 +63,8 @@ pub struct WeightedAverageAggregationInput {
 /// has an implicit weight of `1`.
 ///
 /// [*metrics*]:  https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-metrics.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct WeightedAverageAggregation {

@@ -9,11 +9,9 @@ pub(crate) use super::serialization_deserialization::*;
 // TODO: rename?
 // TODO: add more fields
 /// The response from performing an aggregation.
-#[cfg_attr(
-    feature = "graphql",
-    async_graphql::SimpleObject(name = "AggregationResponse")
-)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "AggregationResponse"))]
 #[derive(Deserialize, Clone, Debug)]
 #[serde(from = "ElasticAggregationResponse")]
 pub struct Response {
@@ -22,10 +20,8 @@ pub struct Response {
 }
 
 /// An individual result from performing an aggregation/calculation.
-#[cfg_attr(
-    feature = "graphql",
-    async_graphql::SimpleObject(name = "AggregationResult")
-)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "AggregationResult"))]
 #[derive(Deserialize, Clone, Debug)]
 pub struct ComputedResult {
     /// The parent of this aggregation (if any).
@@ -50,9 +46,9 @@ pub struct ComputedResult {
 
 // TODO: generate this with proc-macro from Aggregation struct
 /// The type of aggregation.
-#[cfg_attr(feature = "graphql", async_graphql::Enum(name = "AggregationType"))]
-#[cfg_attr(not(feature = "graphql"), derive(Clone))]
-#[derive(Deserialize, Debug)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[cfg_attr(feature = "graphql", graphql(name = "AggregationType"))]
+#[derive(Deserialize, Clone, Debug)]
 pub enum Ty {
     /// metric
     Avg,

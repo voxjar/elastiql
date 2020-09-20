@@ -16,9 +16,8 @@ use serde::{Deserialize, Serialize};
 /// [`nested`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct ReverseNestedAggregationInput {
     /// Defines to what [nested] object field should be joined back. The default
     /// is empty, which means that it joins back to the root/main document
@@ -46,8 +45,8 @@ pub struct ReverseNestedAggregationInput {
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 /// [`nested`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ReverseNestedAggregation {

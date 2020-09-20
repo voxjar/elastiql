@@ -33,13 +33,15 @@ mod weighted_average;
 ///
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
-#[derive(Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct InnerAggregationInput {
     /// The field to perform the aggregation over.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub field: Option<String>,
 
     /// The script to use.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<ScriptInput>,
 
@@ -47,19 +49,23 @@ pub struct InnerAggregationInput {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }
 
 /// A generic aggregation.
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct InnerAggregation {
     /// The field to perform the aggregation over.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub field: Option<String>,
 
     /// The script to use.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
 
@@ -67,6 +73,7 @@ pub struct InnerAggregation {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }
@@ -96,9 +103,9 @@ impl<T: Into<String>> From<T> for InnerAggregation {
 }
 
 /// The policy to apply when gaps are found in the data.
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum GapPolicy {
     /// Treats missing data as if the bucket does not exist. It will skip the

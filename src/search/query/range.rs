@@ -33,9 +33,9 @@ struct InnerRangeQuery {
 ///
 /// [Range query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#query-dsl-range-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "RangeFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Clone, Debug)]
+#[derive(async_graphql::InputObject, Clone, Debug)]
+#[graphql(name = "RangeFilterInput")]
 pub struct RangeQueryInput {
     /// The name of the field to query.
     pub field: String,
@@ -106,8 +106,9 @@ impl Serialize for RangeQueryInput {
 /// A [Range query] returns documents that contain terms within a provided range.
 ///
 /// [Range query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#query-dsl-range-query
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "RangeFilter"))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "RangeFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
 pub struct RangeQuery {
@@ -236,7 +237,6 @@ impl<'de> Visitor<'de> for RangeQueryVisitor {
 }
 
 #[cfg(test)]
-#[allow(clippy::restriction)]
 mod tests {
     use super::*;
 

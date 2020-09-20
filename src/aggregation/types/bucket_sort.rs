@@ -23,9 +23,8 @@ use super::GapPolicy;
 ///
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct BucketSortInput {
     /// How to sort the data.
     #[field(default)]
@@ -36,17 +35,20 @@ pub struct BucketSortInput {
     // #[serde(default, skip_serializing_if = "Option::is_none")]
     #[field(default_with = "Some(0)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub from: Option<i32>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub size: Option<i32>,
 
     /// The policy to apply when gaps are found in the data.
     #[field(default_with = "Some(GapPolicy::Skip)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub gap_policy: Option<GapPolicy>,
 }
 
@@ -64,9 +66,10 @@ pub struct BucketSortInput {
 /// returned term buckets.
 ///
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
+#[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BucketSort {
     /// How to sort the data.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -74,16 +77,19 @@ pub struct BucketSort {
 
     /// Buckets in positions prior to the set value will be truncated.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub from: Option<i32>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub size: Option<i32>,
 
     /// The policy to apply when gaps are found in the data.
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub gap_policy: Option<GapPolicy>,
 }
 

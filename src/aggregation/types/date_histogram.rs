@@ -12,9 +12,8 @@ use serde::{Deserialize, Serialize};
 /// [histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct DateHistogramAggregationInput {
     /// The field to perform the aggregation over.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -84,9 +83,9 @@ pub struct DateHistogramAggregationInput {
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-histogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
-#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DateHistogramAggregation {
     /// The field to perform the aggregation over.
@@ -165,9 +164,9 @@ impl From<DateHistogramAggregationInput> for DateHistogramAggregation {
 }
 
 /// Calendar aware interval.
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum CalendarInterval {
     /// One *minute* is the interval between `00` seconds of the first minute

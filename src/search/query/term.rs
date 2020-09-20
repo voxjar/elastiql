@@ -18,9 +18,9 @@ struct InnerTermQuery {
 ///
 /// [Term query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#query-dsl-term-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "TermFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Clone, Debug)]
+#[derive(async_graphql::InputObject, Clone, Debug)]
+#[graphql(name = "TermFilterInput")]
 pub struct TermQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -83,8 +83,9 @@ impl Serialize for TermQueryInput {
 /// A [Term query] returns documents that contain an **exact** term in a provided field.
 ///
 /// [Term query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-term-query.html#query-dsl-term-query
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "TermFilter"))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "TermFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
 pub struct TermQuery {
@@ -196,7 +197,6 @@ impl<'de> Visitor<'de> for TermQueryVisitor {
 }
 
 #[cfg(test)]
-#[allow(clippy::restriction)]
 mod tests {
     use super::*;
 

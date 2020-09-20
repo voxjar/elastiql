@@ -6,7 +6,7 @@
 
 use std::borrow::Borrow;
 #[cfg(feature = "graphql")]
-use std::convert::TryFrom;
+use std::convert::{TryFrom, TryInto};
 use std::default::Default;
 use std::hash::Hash;
 use std::str::FromStr;
@@ -61,15 +61,22 @@ impl From<JsonValue> for Map {
 }
 
 #[cfg(feature = "graphql")]
-impl From<std::collections::BTreeMap<String, async_graphql::Value>> for Map {
+impl<T> TryFrom<std::collections::BTreeMap<T, async_graphql::Value>> for Map
+where
+    T: Into<String>,
+{
+    type Error = serde_json::Error;
+
     #[inline]
-    fn from(value: std::collections::BTreeMap<String, async_graphql::Value>) -> Self {
+    fn try_from(
+        value: std::collections::BTreeMap<T, async_graphql::Value>,
+    ) -> Result<Self, Self::Error> {
         let result = value
             .into_iter()
-            .map(|(k, v)| (k, JsonValue::from(v)))
-            .collect();
+            .map(|(k, v)| Ok((k.into(), v.try_into()?)))
+            .collect::<Result<JsonMap<String, JsonValue>, _>>()?;
 
-        Map(result)
+        Ok(Map(result))
     }
 }
 
@@ -91,9 +98,7 @@ impl async_graphql::ScalarType for Map {
             async_graphql::Value::Null => Ok(Map::default()),
             async_graphql::Value::String(val) => Ok(val.parse::<Map>()?),
             async_graphql::Value::Object(val) => Ok(Map::try_from(val)?),
-            async_graphql::Value::Variable(_)
-            | async_graphql::Value::Int(_)
-            | async_graphql::Value::Float(_)
+            async_graphql::Value::Number(_)
             | async_graphql::Value::Boolean(_)
             | async_graphql::Value::Enum(_)
             | async_graphql::Value::List(_)
@@ -105,6 +110,9 @@ impl async_graphql::ScalarType for Map {
 
     #[inline]
     fn to_value(&self) -> async_graphql::Value {
-        serde_json::json!(&self.0).into()
+        // TODO: is there a better way to do this?
+        serde_json::json!(&self.0)
+            .try_into()
+            .expect("invalid JSON object encountered when converting a `Map` to a `graphql::Value`")
     }
 }

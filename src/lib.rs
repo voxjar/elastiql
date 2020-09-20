@@ -1,6 +1,5 @@
 #![forbid(unsafe_code)]
-#![warn(missing_docs, clippy::all, clippy::restriction)]
-#![allow(clippy::implicit_return, clippy::missing_docs_in_private_items)]
+#![warn(missing_docs, clippy::all)]
 
 //! [Elasticsearch] query language.
 //!

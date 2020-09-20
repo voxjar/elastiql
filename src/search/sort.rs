@@ -9,9 +9,9 @@ use serde::ser::{SerializeMap, Serializer};
 use serde::{Deserialize, Serialize};
 
 /// The [sort order](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_order)
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortOrder {
     /// Sort in ascending order
@@ -22,9 +22,9 @@ pub enum SortOrder {
 }
 
 /// The [sort mode](https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html#_sort_mode_option)
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "snake_case")]
 pub enum SortMode {
     /// Pick the lowest value.
@@ -57,8 +57,7 @@ pub enum SortMode {
 /// **NOTE**: the `id` field will always be used as a tie breaker or a default,
 /// regardless of any value specified.
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
-#[derive(PartialEq, Clone, Debug)]
+#[derive(async_graphql::InputObject, PartialEq, Clone, Debug)]
 pub struct SortInput {
     /// The field to sort by.
     ///
@@ -121,8 +120,9 @@ impl Serialize for SortInput {
 ///
 /// **NOTE**: the `id` field will always be used as a tie breaker or a default,
 /// regardless of any value specified.
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
-#[derive(PartialEq, Clone, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject, PartialEq))]
+#[derive(Clone, Debug)]
 pub struct Sort {
     /// The field to sort by.
     ///
@@ -275,7 +275,6 @@ impl From<&Sort> for InnerSortValue {
 
 // TODO: refactor to use macro
 #[cfg(test)]
-#[allow(clippy::restriction)]
 mod tests {
     use super::*;
 

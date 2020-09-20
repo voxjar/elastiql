@@ -12,10 +12,8 @@ use serde::{Deserialize, Serialize};
 /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 #[cfg(feature = "graphql")]
-#[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct AutoDateHistogramAggregationInput {
     /// The field to perform the aggregation over.
     pub field: String,
@@ -58,8 +56,8 @@ pub struct AutoDateHistogramAggregationInput {
 ///
 /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
 /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct AutoDateHistogramAggregation {
@@ -96,7 +94,6 @@ pub struct AutoDateHistogramAggregation {
 }
 
 #[cfg(feature = "graphql")]
-#[cfg(feature = "graphql")]
 impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
     #[inline]
     fn from(input: AutoDateHistogramAggregationInput) -> Self {
@@ -114,9 +111,9 @@ impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
 /// the collection process more efficient, as the aggregation will not attempt
 /// to round at any interval lower than `minimum_interval`.
 #[allow(missing_docs)]
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "lowercase")]
 pub enum MinimumInterval {
     Second,

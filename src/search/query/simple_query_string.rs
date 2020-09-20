@@ -17,11 +17,10 @@ use serde::{Deserialize, Serialize};
 /// [Simple query string]: elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html
 /// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
 /// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
-
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "SimpleQueryStringFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[graphql(name = "SimpleQueryStringFilterInput")]
 pub struct SimpleQueryStringQueryInput {
     /// The name of the fields to query.
     ///
@@ -73,11 +72,9 @@ impl SimpleQueryStringQueryInput {
 /// [Simple query string]: elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html
 /// [simple syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax
 /// [`query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
-#[cfg_attr(
-    feature = "graphql",
-    async_graphql::SimpleObject(name = "SimpleQueryStringFilter")
-)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "SimpleQueryStringFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SimpleQueryStringQuery {

@@ -12,9 +12,8 @@ use super::GapPolicy;
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct BucketSelectorInput {
     /// The script to run for this aggregation.
     pub script: String,
@@ -27,7 +26,7 @@ pub struct BucketSelectorInput {
 
     /// The policy to apply when gaps are found in the data
     #[field(default_with = "Some(GapPolicy::Skip)")]
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }
@@ -39,9 +38,10 @@ pub struct BucketSelectorInput {
 ///
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
+#[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BucketSelector {
     /// The script to run for this aggregation.
     pub script: String,
@@ -53,7 +53,7 @@ pub struct BucketSelector {
     pub buckets_path: crate::scalars::Map,
 
     /// The policy to apply when gaps are found in the data
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }

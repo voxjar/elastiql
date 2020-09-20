@@ -7,10 +7,9 @@ use serde::{Deserialize, Serialize};
 ///
 /// [Exists query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "ExistsFilterInput")]
-#[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[graphql(name = "ExistsFilterInput")]
 pub struct ExistsQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -32,11 +31,9 @@ impl ExistsQueryInput {
 /// (e.g. `[]`) value for a field.
 ///
 /// [Exists query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-exists-query.html#query-dsl-exists-query
-#[cfg_attr(
-    feature = "graphql",
-    async_graphql::SimpleObject(name = "ExistsFilter")
-)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "ExistsFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct ExistsQuery {

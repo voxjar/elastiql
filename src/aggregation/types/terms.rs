@@ -19,9 +19,8 @@ use crate::search::ScriptInput;
 /// [Union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct TermsAggregationInput {
     /// The field to perform the aggregation over.
     pub field: Option<String>,
@@ -42,7 +41,7 @@ pub struct TermsAggregationInput {
     ///
     /// [size parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
     #[field(default_with = "Some(1_000)")]
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -50,7 +49,7 @@ pub struct TermsAggregationInput {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }
@@ -59,9 +58,9 @@ pub struct TermsAggregationInput {
 /// dynamically built - one per unique value.
 ///
 /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
-#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct TermsAggregation {
     /// The field to perform the aggregation over.
@@ -82,7 +81,7 @@ pub struct TermsAggregation {
     /// should have been in the top size buckets was not returned).
     ///
     /// [size parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -90,7 +89,7 @@ pub struct TermsAggregation {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }

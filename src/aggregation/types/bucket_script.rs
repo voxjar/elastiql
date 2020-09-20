@@ -12,9 +12,8 @@ use super::GapPolicy;
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct BucketScriptInput {
     /// The script to run for this aggregation.
     pub script: String,
@@ -46,9 +45,10 @@ pub struct BucketScriptInput {
 ///
 /// [*pipeline aggregation*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html
 /// [script]: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-scripting.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
+#[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct BucketScript {
     /// The script to run for this aggregation.
     pub script: String,

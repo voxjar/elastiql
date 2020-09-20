@@ -20,9 +20,9 @@ use crate::search::query::CompoundQueryInput;
 /// [aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
 /// [union input types]: https://github.com/graphql/graphql-spec/blob/master/rfcs/InputUnion.md
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "AggregationInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Clone, Debug)]
+#[derive(async_graphql::InputObject, Clone, Debug)]
+#[graphql(name = "AggregationInput")]
 pub struct RequestInput {
     /// The name for this aggregation.
     ///
@@ -298,9 +298,10 @@ pub struct RequestInput {
 /// information over a set of documents.
 ///
 /// [aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "Aggregation"))]
-#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "Aggregation"))]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
 pub struct Request {
     /// The name for this aggregation.

@@ -147,8 +147,9 @@ pub struct Hit<T> {
 }
 
 /// The type of count.
-#[cfg_attr(feature = "graphql", async_graphql::Enum(name = "SearchCountRelation"))]
-#[derive(Deserialize, Debug)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[cfg_attr(feature = "graphql", graphql(name = "SearchCountRelation"))]
+#[derive(Deserialize, Clone, Debug)]
 pub enum CountRelation {
     /// An exact count.
     #[serde(rename = "eq")]

@@ -18,9 +18,9 @@ use serde::{Deserialize, Serialize};
 /// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
 /// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "QueryStringFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[graphql(name = "QueryStringFilterInput")]
 pub struct QueryStringQueryInput {
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -263,11 +263,9 @@ pub struct QueryStringQueryInput {
 /// [Query string]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html
 /// [syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-syntax
 /// [analyzes]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
-#[cfg_attr(
-    feature = "graphql",
-    async_graphql::SimpleObject(name = "QueryStringFilter")
-)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "QueryStringFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct QueryStringQuery {
@@ -490,9 +488,9 @@ pub struct QueryStringQuery {
 }
 
 /// Boolean logic operator used to interpret/combine words in the query string.
-#[cfg_attr(feature = "graphql", async_graphql::Enum)]
-#[cfg_attr(not(feature = "graphql"), derive(PartialEq, Clone))]
-#[derive(Serialize, Deserialize, Debug)]
+#[cfg_attr(all(test, not(feature = "graphql")), derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum QueryStringBooleanOperator {
     /// For example, a query string of `capital of Hungary` is interpreted as

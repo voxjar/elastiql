@@ -16,9 +16,8 @@ use crate::{
 ///
 /// [request body]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct RequestInput {
     /// The query to perform in this search request.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
@@ -81,7 +80,7 @@ impl RequestInput {
 /// The [request body] for an Elasticsearch search request.
 ///
 /// [request body]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
 pub struct Request {
@@ -148,9 +147,8 @@ impl Request {
 ///
 /// [options]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#highlighting-settings
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Deserialize, Clone, Debug)]
 pub struct HighlightOptionsInput {
     // TODO: should be an enum?
     /// Set to [`styled`] to use the built-in tag schema.
@@ -171,9 +169,9 @@ pub struct HighlightOptionsInput {
 /// **TODO**: add more options...
 ///
 /// [options]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html#highlighting-settings
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Deserialize, PartialEq, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct HighlightOptions {
     // TODO: should be an enum?
     /// Set to [`styled`] to use the built-in tag schema.

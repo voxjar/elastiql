@@ -12,9 +12,8 @@ use serde::{Deserialize, Serialize};
 /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
 /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct DateRangeAggregationInput {
     /// The field to perform the aggregation over.
     pub field: String,
@@ -54,8 +53,8 @@ pub struct DateRangeAggregationInput {
 /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
 /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DateRangeAggregation {
@@ -104,9 +103,8 @@ impl From<DateRangeAggregationInput> for DateRangeAggregation {
 
 /// A range/span of dates.
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct DateRangeInput {
     /// The date to return results *from*; supports [Date Math] expressions.
     ///
@@ -124,8 +122,8 @@ pub struct DateRangeInput {
 }
 
 /// A range/span of dates.
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct DateRange {

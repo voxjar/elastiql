@@ -8,9 +8,8 @@ use serde::{Deserialize, Serialize};
 /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Serialize, Clone, Debug)]
+#[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct NestedAggregationInput {
     /// The nested path to search.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -22,8 +21,8 @@ pub struct NestedAggregationInput {
 ///
 /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
 /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject)]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct NestedAggregation {

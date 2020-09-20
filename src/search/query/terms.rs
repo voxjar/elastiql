@@ -11,9 +11,9 @@ use serde::Serialize;
 ///
 /// [Terms query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query
 #[cfg(feature = "graphql")]
-#[async_graphql::InputObject(name = "TermsFilterInput")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
-#[derive(Clone, Debug)]
+#[derive(async_graphql::InputObject, Clone, Debug)]
+#[graphql(name = "TermsFilterInput")]
 pub struct TermsQueryInput {
     /// The name of the field to query.
     #[cfg_attr(feature = "builder", builder(setter(into)))]
@@ -77,8 +77,9 @@ impl Serialize for TermsQueryInput {
 /// in a provided field.
 ///
 /// [Terms query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-terms-query.html#query-dsl-terms-query
-#[cfg_attr(feature = "graphql", async_graphql::SimpleObject(name = "TermsFilter"))]
 #[cfg_attr(test, derive(PartialEq))]
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "TermsFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
 pub struct TermsQuery {
@@ -209,7 +210,6 @@ impl<'de> Visitor<'de> for TermsQueryVisitor {
 }
 
 #[cfg(test)]
-#[allow(clippy::restriction)]
 mod tests {
     use super::*;
 

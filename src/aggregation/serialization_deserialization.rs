@@ -521,7 +521,6 @@ pub(super) mod serde_sub_aggregations {
 }
 
 #[cfg(test)]
-#[allow(clippy::restriction)]
 mod tests {
     use super::*;
 
