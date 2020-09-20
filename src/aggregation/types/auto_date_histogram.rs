@@ -23,7 +23,7 @@ pub struct AutoDateHistogramAggregationInput {
     /// returned will always be less than or equal to this target number.
     #[field(default_with = "Some(10)")]
     #[cfg_attr(feature = "builder", builder(default))]
-    pub buckets: Option<i32>,
+    pub buckets: Option<u64>,
 
     /// Specifies the minimum rounding interval that should be used. This can make
     /// the collection process more efficient, as the aggregation will not attempt
@@ -69,7 +69,7 @@ pub struct AutoDateHistogramAggregation {
     /// returned will always be less than or equal to this target number.
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub buckets: Option<i32>,
+    pub buckets: Option<u64>,
 
     /// Specifies the minimum rounding interval that should be used. This can make
     /// the collection process more efficient, as the aggregation will not attempt

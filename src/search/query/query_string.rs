@@ -5,8 +5,6 @@ use serde::{Deserialize, Serialize};
 // NOTE: some fields require `skip_serializing_if` otherwise Elasticsearch
 // will return an error if e.g. `null` is used
 
-// TODO: make all i32 types u64 once async-graphql supports it
-
 /// [Query string] returns documents based on a provided query string, using a
 /// parser with a strict syntax.
 ///
@@ -147,17 +145,17 @@ pub struct QueryStringQueryInput {
 
     /// Maximum number of terms to which the query expands for fuzzy matching.
     /// Defaults to `50`.
-    #[cfg_attr(feature = "builder", builder(default_code = "50"))]
-    #[serde(default = "default_fifty_i32")]
-    #[field(default = 50)]
-    pub fuzzy_max_expansions: i32,
+    #[cfg_attr(feature = "builder", builder(default_code = "default_fifty_u64()"))]
+    #[serde(default = "default_fifty_u64")]
+    #[field(default_with = "default_fifty_u64()")]
+    pub fuzzy_max_expansions: u64,
 
     /// Number of beginning characters left unchanged for fuzzy matching.
     /// Defaults to `0`.
-    #[cfg_attr(feature = "builder", builder(default_code = "0"))]
-    #[serde(default = "default_zero_i32")]
-    #[field(default = 0)]
-    pub fuzzy_prefix_length: i32,
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default)]
+    #[field(default)]
+    pub fuzzy_prefix_length: u64,
 
     /// If `true`, edits for fuzzy matching include transpositions of two
     /// adjacent characters (`ab` → `ba`). Defaults to `true`.
@@ -192,10 +190,13 @@ pub struct QueryStringQueryInput {
     /// [automaton states]:
     /// https://en.wikipedia.org/wiki/Deterministic_finite_automaton [Apache
     /// Lucene]: https://lucene.apache.org/core/
-    #[cfg_attr(feature = "builder", builder(default_code = "10_000"))]
-    #[serde(default = "default_ten_thousand_i32")]
-    #[field(default = 10_000)]
-    pub max_determinized_states: i32,
+    #[cfg_attr(
+        feature = "builder",
+        builder(default_code = "default_ten_thousand_u64()")
+    )]
+    #[serde(default = "default_ten_thousand_u64")]
+    #[field(default_with = "default_ten_thousand_u64()")]
+    pub max_determinized_states: u64,
 
     /// Minimum number of clauses that must match for a document to be returned.
     /// See the [`minimum_should_match` parameter] for valid values and more
@@ -208,10 +209,10 @@ pub struct QueryStringQueryInput {
     pub minimum_should_match: Option<String>,
 
     /// Maximum number of positions allowed between matching tokens for phrases. Defaults to `0`. If `0`, exact phrase matches are required. Transposed terms have a slop of `2`.
-    #[cfg_attr(feature = "builder", builder(default_code = "0"))]
-    #[serde(default = "default_zero_i32")]
-    #[field(default = 0)]
-    pub phrase_slop: i32,
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default)]
+    #[field(default)]
+    pub phrase_slop: u64,
 
     /// Suffix appended to quoted text in the query string.
     ///
@@ -388,14 +389,14 @@ pub struct QueryStringQuery {
     /// Maximum number of terms to which the query expands for fuzzy matching.
     /// Defaults to `50`.
     #[cfg_attr(feature = "builder", builder(default_code = "50"))]
-    #[serde(default = "default_fifty_i32")]
-    pub fuzzy_max_expansions: i32,
+    #[serde(default = "default_fifty_u64")]
+    pub fuzzy_max_expansions: u64,
 
     /// Number of beginning characters left unchanged for fuzzy matching.
     /// Defaults to `0`.
-    #[cfg_attr(feature = "builder", builder(default_code = "0"))]
-    #[serde(default = "default_zero_i32")]
-    pub fuzzy_prefix_length: i32,
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default)]
+    pub fuzzy_prefix_length: u64,
 
     /// If `true`, edits for fuzzy matching include transpositions of two
     /// adjacent characters (`ab` → `ba`). Defaults to `true`.
@@ -429,8 +430,8 @@ pub struct QueryStringQuery {
     /// https://en.wikipedia.org/wiki/Deterministic_finite_automaton [Apache
     /// Lucene]: https://lucene.apache.org/core/
     #[cfg_attr(feature = "builder", builder(default_code = "10_000"))]
-    #[serde(default = "default_ten_thousand_i32")]
-    pub max_determinized_states: i32,
+    #[serde(default = "default_ten_thousand_u64")]
+    pub max_determinized_states: u64,
 
     /// Minimum number of clauses that must match for a document to be returned.
     /// See the [`minimum_should_match` parameter] for valid values and more
@@ -443,9 +444,9 @@ pub struct QueryStringQuery {
     pub minimum_should_match: Option<String>,
 
     /// Maximum number of positions allowed between matching tokens for phrases. Defaults to `0`. If `0`, exact phrase matches are required. Transposed terms have a slop of `2`.
-    #[cfg_attr(feature = "builder", builder(default_code = "0"))]
-    #[serde(default = "default_zero_i32")]
-    pub phrase_slop: i32,
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default)]
+    pub phrase_slop: u64,
 
     /// Suffix appended to quoted text in the query string.
     ///
@@ -543,11 +544,7 @@ fn default_true() -> bool {
     true
 }
 
-fn default_zero_i32() -> i32 {
-    0
-}
-
-fn default_fifty_i32() -> i32 {
+fn default_fifty_u64() -> u64 {
     50
 }
 
@@ -555,6 +552,6 @@ fn default_one_f32() -> f32 {
     1.0
 }
 
-fn default_ten_thousand_i32() -> i32 {
+fn default_ten_thousand_u64() -> u64 {
     10_000
 }

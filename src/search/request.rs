@@ -32,7 +32,7 @@ pub struct RequestInput {
     /// The number of results to return.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
 
     /// The live cursor from which to search after to fascilitate [pagination].
     ///
@@ -158,7 +158,7 @@ pub struct HighlightOptionsInput {
     pub tags_schema: String,
 
     /// The maximum number of fragments to return.
-    pub number_of_fragments: i32,
+    pub number_of_fragments: u64,
 
     /// The field names and their options to highlight.
     pub fields: crate::scalars::Map,
@@ -182,7 +182,7 @@ pub struct HighlightOptions {
 
     /// The maximum number of fragments to return.
     #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
-    pub number_of_fragments: i32,
+    pub number_of_fragments: u64,
 
     /// The field names and their options to highlight.
     pub fields: crate::scalars::Map,

@@ -1,6 +1,4 @@
 use std::collections::HashMap;
-#[cfg(feature = "graphql")]
-use std::convert::TryFrom;
 
 use serde::Deserialize;
 
@@ -168,6 +166,8 @@ impl Default for CountRelation {
 }
 
 /// The total count of the hits/matches.
+#[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
+#[cfg_attr(feature = "graphql", graphql(name = "SearchCount"))]
 #[derive(Deserialize, Default, Debug)]
 pub struct Count {
     /// The type of count this is.
@@ -175,23 +175,6 @@ pub struct Count {
 
     /// The actual count.
     pub value: u64,
-}
-
-/// The total count of the hits/matches.
-#[cfg(feature = "graphql")]
-#[async_graphql::Object(name = "SearchCount")]
-impl Count {
-    /// The type of count this is.
-    async fn relation(&self) -> &CountRelation {
-        &self.relation
-    }
-
-    /// The actual count.
-    ///
-    /// **FIXME**: overflow possible; make this a custom scalar type
-    async fn value(&self) -> async_graphql::FieldResult<i32> {
-        Ok(i32::try_from(self.value)?)
-    }
 }
 
 // TODO: add tests!

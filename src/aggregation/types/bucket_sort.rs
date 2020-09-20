@@ -36,14 +36,14 @@ pub struct BucketSortInput {
     #[field(default_with = "Some(0)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    pub from: Option<i32>,
+    pub from: Option<u64>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
 
     /// The policy to apply when gaps are found in the data.
     #[field(default_with = "Some(GapPolicy::Skip)")]
@@ -78,14 +78,14 @@ pub struct BucketSort {
     /// Buckets in positions prior to the set value will be truncated.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    pub from: Option<i32>,
+    pub from: Option<u64>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
-    pub size: Option<i32>,
+    pub size: Option<u64>,
 
     /// The policy to apply when gaps are found in the data.
     #[serde(default, skip_serializing_if = "Option::is_none")]
