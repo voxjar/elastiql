@@ -259,6 +259,7 @@ impl From<&Sort> for InnerSortValue {
     #[inline]
     fn from(sort: &Sort) -> Self {
         // TODO: make it so we don't have to clone- maybe borrow data in InnerSortValue?
+        #[allow(clippy::clone_on_copy)] // necessary for TypedBuilder
         InnerSortValue {
             order: sort.order.clone(),
             mode: sort.mode.clone(),

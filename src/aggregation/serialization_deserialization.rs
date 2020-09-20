@@ -275,6 +275,7 @@ impl From<ElasticAggregationResponse> for Response {
                 let mut handle_leaf_agg = |agg: &ElasticAggregationResult| {
                     if let Some(value) = agg.value_or_doc_count() {
                         if !agg.should_skip() {
+                            #[allow(clippy::clone_on_copy)] // necessary for TypedBuilder
                             let result =
                                 results
                                     .entry((parent, name.to_string()))
