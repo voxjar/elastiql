@@ -110,9 +110,23 @@ impl async_graphql::ScalarType for Map {
 
     #[inline]
     fn to_value(&self) -> async_graphql::Value {
-        // TODO: is there a better way to do this?
-        serde_json::json!(&self.0)
-            .try_into()
-            .expect("invalid JSON object encountered when converting a `Map` to a `graphql::Value`")
+        use async_graphql::parser::types::Name;
+
+        // TODO: is there a better way to support custom raw JSON objects?
+        let val = &self.0;
+        let val: std::collections::BTreeMap<Name, async_graphql::Value> = val
+            .into_iter()
+            .map(|(k, v)| {
+                // TODO: disable `debug_assert` upstream; https://github.com/async-graphql/async-graphql/issues/273
+                // allow keys don't follow the GraphQL spec of `\w+`
+                let key = Name::new_unchecked(k.to_owned());
+                let value = v.to_owned().try_into().expect(
+                    "invalid JSON encountered when converting a `Map` to a `graphql::Value`",
+                );
+                (key, value)
+            })
+            .collect();
+
+        async_graphql::Value::Object(val)
     }
 }
