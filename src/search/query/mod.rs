@@ -29,6 +29,7 @@ mod terms;
 ///
 /// [Compound queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/compound-queries.html
 #[cfg(feature = "graphql")]
+#[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Default, Clone, Debug)]
 #[graphql(name = "CompoundFilterInput")]
 pub struct CompoundQueryInput {
@@ -37,6 +38,7 @@ pub struct CompoundQueryInput {
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
 }
