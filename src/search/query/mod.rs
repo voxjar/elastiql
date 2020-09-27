@@ -89,6 +89,16 @@ impl<T: Into<BooleanQueryInput>> From<T> for CompoundQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
+impl From<CompoundQuery> for CompoundQueryInput {
+    #[inline]
+    fn from(query: CompoundQuery) -> Self {
+        Self {
+            boolean: query.boolean.map(Into::into),
+        }
+    }
+}
+
 /// [Compound queries] wrap other compound or leaf queries, either to combine
 /// their results and scores, to change their behavior, or to switch from query
 /// to filter context.
@@ -263,6 +273,21 @@ impl<T: Into<QueryInput>> From<T> for BooleanQueryInput {
             must_not: vec![],
             minimum_should_match: None,
             boost: None,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
+impl From<BooleanQuery> for BooleanQueryInput {
+    #[inline]
+    fn from(query: BooleanQuery) -> Self {
+        Self {
+            must: query.must.into_iter().map(Into::into).collect(),
+            filter: query.filter.into_iter().map(Into::into).collect(),
+            should: query.should.into_iter().map(Into::into).collect(),
+            must_not: query.must_not.into_iter().map(Into::into).collect(),
+            minimum_should_match: query.minimum_should_match.map(Into::into),
+            boost: query.boost.map(Into::into),
         }
     }
 }
@@ -446,6 +471,25 @@ pub struct QueryInput {
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
+}
+
+#[cfg(feature = "graphql")]
+impl From<Query> for QueryInput {
+    #[inline]
+    fn from(query: Query) -> Self {
+        Self {
+            exists: query.exists.map(Into::into),
+            term: query.term.map(Into::into),
+            terms: query.terms.map(Into::into),
+            range: query.range.map(Into::into),
+            regexp: query.regexp.map(Into::into),
+            match_: query.match_.map(Into::into),
+            simple_query_string: query.simple_query_string.map(Into::into),
+            query_string: query.query_string.map(Into::into),
+            nested: query.nested.map(Into::into),
+            boolean: query.boolean.map(Into::into),
+        }
+    }
 }
 
 #[cfg(feature = "graphql")]

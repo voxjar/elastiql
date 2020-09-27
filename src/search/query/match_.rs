@@ -47,6 +47,17 @@ impl MatchQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl From<MatchQuery> for MatchQueryInput {
+    #[inline]
+    fn from(query: MatchQuery) -> Self {
+        Self {
+            field: query.field,
+            query: query.query,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for MatchQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {

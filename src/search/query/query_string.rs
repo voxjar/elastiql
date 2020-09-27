@@ -254,6 +254,37 @@ pub struct QueryStringQueryInput {
     pub time_zone: Option<String>,
 }
 
+#[cfg(feature = "graphql")]
+impl From<QueryStringQuery> for QueryStringQueryInput {
+    #[inline]
+    fn from(query: QueryStringQuery) -> Self {
+        Self {
+            query: query.query,
+            fields: query.fields,
+            default_field: query.default_field,
+            allow_leading_wildcard: query.allow_leading_wildcard,
+            analyze_wildcard: query.analyze_wildcard,
+            analyzer: query.analyzer,
+            quote_analyzer: query.quote_analyzer,
+            auto_generate_synonyms_phrase_query: query.auto_generate_synonyms_phrase_query,
+            boost: query.boost,
+            default_operator: query.default_operator,
+            enable_position_increments: query.enable_position_increments,
+            fuzziness: query.fuzziness,
+            fuzzy_max_expansions: query.fuzzy_max_expansions,
+            fuzzy_prefix_length: query.fuzzy_prefix_length,
+            fuzzy_transpositions: query.fuzzy_transpositions,
+            lenient: query.lenient,
+            max_determinized_states: query.max_determinized_states,
+            minimum_should_match: query.minimum_should_match,
+            phrase_slop: query.phrase_slop,
+            quote_field_suffix: query.quote_field_suffix,
+            rewrite: query.rewrite,
+            time_zone: query.time_zone,
+        }
+    }
+}
+
 /// [Query string] returns documents based on a provided query string, using a
 /// parser with a strict syntax.
 ///

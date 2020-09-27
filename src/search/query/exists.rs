@@ -27,6 +27,14 @@ impl ExistsQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
+impl From<ExistsQuery> for ExistsQueryInput {
+    #[inline]
+    fn from(query: ExistsQuery) -> Self {
+        Self { field: query.field }
+    }
+}
+
 /// An [Exists query] returns documents that contain a non-null or empty
 /// (e.g. `[]`) value for a field.
 ///

@@ -84,6 +84,21 @@ pub struct RangeQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl From<RangeQuery> for RangeQueryInput {
+    #[inline]
+    fn from(query: RangeQuery) -> Self {
+        Self {
+            field: query.field,
+            greater_than: query.greater_than,
+            greater_than_or_equal_to: query.greater_than_or_equal_to,
+            less_than: query.less_than,
+            less_than_or_equal_to: query.less_than_or_equal_to,
+            boost: query.boost,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for RangeQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {

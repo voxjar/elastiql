@@ -57,6 +57,17 @@ impl SimpleQueryStringQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
+impl From<SimpleQueryStringQuery> for SimpleQueryStringQueryInput {
+    #[inline]
+    fn from(query: SimpleQueryStringQuery) -> Self {
+        Self {
+            fields: query.fields,
+            query: query.query,
+        }
+    }
+}
+
 // TODO: add additional options
 /// A [Simple query string] returns documents based on a provided query string,
 /// using a parser with a limited but fault-tolerant syntax.

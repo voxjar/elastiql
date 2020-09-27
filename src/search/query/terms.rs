@@ -61,6 +61,18 @@ impl TermsQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl From<TermsQuery> for TermsQueryInput {
+    #[inline]
+    fn from(query: TermsQuery) -> Self {
+        Self {
+            field: query.field,
+            values: query.values,
+            boost: query.boost,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for TermsQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {

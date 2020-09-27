@@ -59,6 +59,18 @@ impl NestedQueryInput {
     }
 }
 
+#[cfg(feature = "graphql")]
+impl From<NestedQuery> for NestedQueryInput {
+    #[inline]
+    fn from(query: NestedQuery) -> Self {
+        Self {
+            path: query.path,
+            query: query.query.into(),
+            ignore_unmapped: query.ignore_unmapped,
+        }
+    }
+}
+
 /// A [Nested query] wraps another query to search [nested] fields.
 ///
 /// The [nested query] searches nested field objects as if they were indexed as

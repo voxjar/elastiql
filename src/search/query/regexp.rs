@@ -63,6 +63,18 @@ impl RegexpQueryInput {
 }
 
 #[cfg(feature = "graphql")]
+impl From<RegexpQuery> for RegexpQueryInput {
+    #[inline]
+    fn from(query: RegexpQuery) -> Self {
+        Self {
+            field: query.field,
+            value: query.value,
+            flags: query.flags,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
 impl Serialize for RegexpQueryInput {
     #[inline]
     fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
