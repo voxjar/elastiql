@@ -103,7 +103,7 @@ impl async_graphql::ScalarType for Map {
             | async_graphql::Value::Enum(_)
             | async_graphql::Value::List(_)
             | async_graphql::Value::Upload(_) => {
-                Err(async_graphql::InputValueError::ExpectedType(value))
+                Err(async_graphql::InputValueError::expected_type(value))
             }
         }
     }

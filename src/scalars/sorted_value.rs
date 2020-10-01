@@ -60,12 +60,12 @@ impl async_graphql::ScalarType for SortedValue {
                     Ok(v.into())
                 } else if let Some(v) = val.as_f64() {
                     if v < 0.0 {
-                        Err(async_graphql::InputValueError::ExpectedType(value))
+                        Err(async_graphql::InputValueError::expected_type(value))
                     } else {
                         Ok(v.into())
                     }
                 } else {
-                    Err(async_graphql::InputValueError::ExpectedType(value))
+                    Err(async_graphql::InputValueError::expected_type(value))
                 }
             }
             async_graphql::Value::String(val) => Ok(SortedValue::String(val)),
@@ -74,7 +74,7 @@ impl async_graphql::ScalarType for SortedValue {
             | async_graphql::Value::Enum(_)
             | async_graphql::Value::List(_)
             | async_graphql::Value::Upload(_) => {
-                Err(async_graphql::InputValueError::ExpectedType(value))
+                Err(async_graphql::InputValueError::expected_type(value))
             }
         }
     }
