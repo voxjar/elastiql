@@ -15,6 +15,9 @@ use std::string::String;
 use serde::{Deserialize, Serialize};
 use serde_json::{Map as JsonMap, Value as JsonValue};
 
+#[cfg(feature = "graphql")]
+type GraphQlObject = std::collections::BTreeMap<async_graphql::Name, async_graphql::Value>;
+
 /// A [JSON] object (`key` => `value` map).
 ///
 /// [JSON]: https://tools.ietf.org/html/rfc8259#section-3
@@ -61,19 +64,14 @@ impl From<JsonValue> for Map {
 }
 
 #[cfg(feature = "graphql")]
-impl<T> TryFrom<std::collections::BTreeMap<T, async_graphql::Value>> for Map
-where
-    T: Into<String>,
-{
+impl TryFrom<GraphQlObject> for Map {
     type Error = serde_json::Error;
 
     #[inline]
-    fn try_from(
-        value: std::collections::BTreeMap<T, async_graphql::Value>,
-    ) -> Result<Self, Self::Error> {
+    fn try_from(value: GraphQlObject) -> Result<Self, Self::Error> {
         let result = value
             .into_iter()
-            .map(|(k, v)| Ok((k.into(), v.try_into()?)))
+            .map(|(k, v)| Ok((k.to_string(), v.try_into()?)))
             .collect::<Result<JsonMap<String, JsonValue>, _>>()?;
 
         Ok(Map(result))
@@ -101,8 +99,7 @@ impl async_graphql::ScalarType for Map {
             async_graphql::Value::Number(_)
             | async_graphql::Value::Boolean(_)
             | async_graphql::Value::Enum(_)
-            | async_graphql::Value::List(_)
-            | async_graphql::Value::Upload(_) => {
+            | async_graphql::Value::List(_) => {
                 Err(async_graphql::InputValueError::expected_type(value))
             }
         }
@@ -110,16 +107,12 @@ impl async_graphql::ScalarType for Map {
 
     #[inline]
     fn to_value(&self) -> async_graphql::Value {
-        use async_graphql::parser::types::Name;
-
         // TODO: is there a better way to support custom raw JSON objects?
         let val = &self.0;
-        let val: std::collections::BTreeMap<Name, async_graphql::Value> = val
+        let val: GraphQlObject = val
             .into_iter()
             .map(|(k, v)| {
-                // TODO: disable `debug_assert` upstream; https://github.com/async-graphql/async-graphql/issues/273
-                // allow keys don't follow the GraphQL spec of `\w+`
-                let key = Name::new_unchecked(k.to_owned());
+                let key = async_graphql::Name::new(k);
                 let value = v.to_owned().try_into().expect(
                     "invalid JSON encountered when converting a `Map` to a `graphql::Value`",
                 );
