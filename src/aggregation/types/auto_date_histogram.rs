@@ -21,14 +21,14 @@ pub struct AutoDateHistogramAggregationInput {
     /// Target number of buckets needed; the interval of the buckets is
     /// automatically chosen to best achieve this target. The number of buckets
     /// returned will always be less than or equal to this target number.
-    #[field(default_with = "Some(10)")]
+    #[graphql(default_with = "Some(10)")]
     #[cfg_attr(feature = "builder", builder(default))]
     pub buckets: Option<u64>,
 
     /// Specifies the minimum rounding interval that should be used. This can make
     /// the collection process more efficient, as the aggregation will not attempt
     /// to round at any interval lower than `minimum_interval`.
-    #[field(default_with = "Some(MinimumInterval::Day)")]
+    #[graphql(default_with = "Some(MinimumInterval::Day)")]
     #[cfg_attr(feature = "builder", builder(default))]
     pub minimum_interval: Option<MinimumInterval>,
 

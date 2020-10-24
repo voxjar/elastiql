@@ -178,7 +178,7 @@ impl From<CompoundQueryInput> for CompoundQuery {
 pub struct BooleanQueryInput {
     /// The clause (query) must appear in matching documents and will
     /// contribute to the score of this query.
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub must: Vec<QueryInput>,
@@ -189,13 +189,13 @@ pub struct BooleanQueryInput {
     /// considered for caching.
     ///
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub filter: Vec<QueryInput>,
 
     /// The clause (query) should appear in the matching document.
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub should: Vec<QueryInput>,
@@ -206,7 +206,7 @@ pub struct BooleanQueryInput {
     /// of 0 for all documents is returned.
     ///
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub must_not: Vec<QueryInput>,

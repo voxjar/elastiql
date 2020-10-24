@@ -40,7 +40,7 @@ pub struct TermsAggregationInput {
     /// should have been in the top size buckets was not returned).
     ///
     /// [size parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
-    #[field(default_with = "Some(1_000)")]
+    #[graphql(default_with = "Some(1_000)")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,

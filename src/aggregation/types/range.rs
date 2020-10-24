@@ -34,7 +34,7 @@ pub struct RangeAggregationInput {
     pub script: Option<ScriptInput>,
 
     /// The ranges to use for the aggregation.
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default)]
     pub ranges: Vec<RangeInput>,

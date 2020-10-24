@@ -65,7 +65,7 @@ pub struct ScriptInput {
     source: String,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     params: Option<crate::scalars::Map>,
-    // #[field(default]
+    // #[graphql(default]
     // #[serde(default, skip_serializing_if = "Option::is_none")]
     // lang: Option<ScriptLanguage>,
 }

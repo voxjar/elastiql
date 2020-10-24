@@ -31,7 +31,7 @@ pub struct SimpleQueryStringQueryInput {
     /// [Wildcards and per-field boosts in the fields parameter] for examples.
     ///
     /// [Wildcards and per-field boosts in the fields parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-boost
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<String>,

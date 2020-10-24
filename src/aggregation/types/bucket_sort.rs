@@ -27,13 +27,13 @@ use super::GapPolicy;
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 pub struct BucketSortInput {
     /// How to sort the data.
-    #[field(default)]
+    #[graphql(default)]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sort: Vec<SortInput>,
 
     /// Buckets in positions prior to the set value will be truncated.
     // #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[field(default_with = "Some(0)")]
+    #[graphql(default_with = "Some(0)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub from: Option<u64>,
@@ -46,7 +46,7 @@ pub struct BucketSortInput {
     pub size: Option<u64>,
 
     /// The policy to apply when gaps are found in the data.
-    #[field(default_with = "Some(GapPolicy::Skip)")]
+    #[graphql(default_with = "Some(GapPolicy::Skip)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub gap_policy: Option<GapPolicy>,

@@ -37,7 +37,7 @@ pub struct NestedQueryInput {
 
     /// Indicates whether to ignore an unmapped path and not return any
     /// documents instead of an error.
-    #[field(default)]
+    #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default))]
     pub ignore_unmapped: bool,
 }

@@ -66,14 +66,14 @@ pub struct QueryStringQueryInput {
     /// character of the query string. Defaults to `true`.
     #[cfg_attr(feature = "builder", builder(default_code = "true"))]
     #[serde(default = "default_true")]
-    #[field(default = true)]
+    #[graphql(default = true)]
     pub allow_leading_wildcard: bool,
 
     /// If `true`, the query attempts to analyze wildcard terms in the query
     /// string. Defaults to `false`.
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
-    #[field(default)]
+    #[graphql(default)]
     pub analyze_wildcard: bool,
 
     /// [Analyzer] used to convert text in the query string into tokens.
@@ -104,7 +104,7 @@ pub struct QueryStringQueryInput {
     /// [Synonyms and the `query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-synonyms
     #[cfg_attr(feature = "builder", builder(default_code = "true"))]
     #[serde(default = "default_true")]
-    #[field(default = true)]
+    #[graphql(default = true)]
     pub auto_generate_synonyms_phrase_query: bool,
 
     /// Floating point number used to decrease or increase the [relevance
@@ -117,22 +117,22 @@ pub struct QueryStringQueryInput {
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
     #[cfg_attr(feature = "builder", builder(default_code = "1.0"))]
     #[serde(default = "default_one_f32")]
-    // TODO: report bug upstream, cannot be `#[field(default = 1.0f32)]
-    #[field(default_with = "default_one_f32()")]
+    // TODO: report bug upstream, cannot be `#[graphql(default = 1.0f32)]
+    #[graphql(default_with = "default_one_f32()")]
     pub boost: f32,
 
     /// Default boolean logic used to interpret text in the query string if no
     /// operators are specified. Defaults to `OR`.
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
-    #[field(default)]
+    #[graphql(default)]
     pub default_operator: QueryStringBooleanOperator,
 
     /// If `true`, enable position increments in queries constructed from a
     /// `query_string` search. Defaults to `true`.
     #[cfg_attr(feature = "builder", builder(default_code = "true"))]
     #[serde(default = "default_true")]
-    #[field(default = true)]
+    #[graphql(default = true)]
     pub enable_position_increments: bool,
 
     /// Maximum edit distance allowed for matching. See [Fuzziness] for valid
@@ -147,21 +147,21 @@ pub struct QueryStringQueryInput {
     /// Defaults to `50`.
     #[cfg_attr(feature = "builder", builder(default_code = "default_fifty_u64()"))]
     #[serde(default = "default_fifty_u64")]
-    #[field(default_with = "default_fifty_u64()")]
+    #[graphql(default_with = "default_fifty_u64()")]
     pub fuzzy_max_expansions: u64,
 
     /// Number of beginning characters left unchanged for fuzzy matching.
     /// Defaults to `0`.
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
-    #[field(default)]
+    #[graphql(default)]
     pub fuzzy_prefix_length: u64,
 
     /// If `true`, edits for fuzzy matching include transpositions of two
     /// adjacent characters (`ab` → `ba`). Defaults to `true`.
     #[cfg_attr(feature = "builder", builder(default_code = "true"))]
     #[serde(default = "default_true")]
-    #[field(default = true)]
+    #[graphql(default = true)]
     pub fuzzy_transpositions: bool,
 
     /// If `true`, format-based errors, such as providing a text value for a
@@ -170,7 +170,7 @@ pub struct QueryStringQueryInput {
     /// [numeric]: https://www.elastic.co/guide/en/elasticsearch/reference/current/number.html
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
-    #[field(default)]
+    #[graphql(default)]
     pub lenient: bool,
 
     /// Maximum number of [automaton states] required for the query. Default is
@@ -195,7 +195,7 @@ pub struct QueryStringQueryInput {
         builder(default_code = "default_ten_thousand_u64()")
     )]
     #[serde(default = "default_ten_thousand_u64")]
-    #[field(default_with = "default_ten_thousand_u64()")]
+    #[graphql(default_with = "default_ten_thousand_u64()")]
     pub max_determinized_states: u64,
 
     /// Minimum number of clauses that must match for a document to be returned.
@@ -211,7 +211,7 @@ pub struct QueryStringQueryInput {
     /// Maximum number of positions allowed between matching tokens for phrases. Defaults to `0`. If `0`, exact phrase matches are required. Transposed terms have a slop of `2`.
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
-    #[field(default)]
+    #[graphql(default)]
     pub phrase_slop: u64,
 
     /// Suffix appended to quoted text in the query string.

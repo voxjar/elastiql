@@ -27,7 +27,7 @@ pub struct BucketScriptInput {
     pub buckets_path: Option<crate::scalars::Map>,
 
     /// The policy to apply when gaps are found in the data
-    #[field(default_with = "Some(GapPolicy::Skip)")]
+    #[graphql(default_with = "Some(GapPolicy::Skip)")]
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
