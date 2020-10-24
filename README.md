@@ -3,7 +3,7 @@
 [![CI](https://github.com/voxjar/elastiql/workflows/CI/badge.svg)](https://github.com/voxjar/elastiql/actions)
 [![docs](https://img.shields.io/badge/docs-master-blue.svg)](http://voxjar.github.io/elastiql/)
 
-> Opinionated [Elasticsearch] query language for [Rust].
+> An opinionated [Elasticsearch] query language for [Rust].
 
 This library pairs nicely with the official Elasticsearch [crate] and the
 [async-graphql] crate. It is meant to be a more batteries included approach to
