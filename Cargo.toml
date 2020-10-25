@@ -25,5 +25,12 @@ elasticsearch = "7.9.0-alpha.1"
 tokio = { version = "0.2", default-features = false, features = ["macros", "tcp", "time"] }
 
 [package.metadata.release]
-consolidate-commits = true
-pre-release-commit-message = "chore: release {{version}}"
+no-dev-version = true
+pre-release-commit-message = "chore: release v{{version}}"
+tag-message = "{{crate_name}} v{{version}}"
+# IMPORTANT: remember to update the changelog before releasing
+pre-release-replacements = [
+    { file = "CHANGELOG.md", search = '## \[Unreleased\].*', replace = "### [v{{version}}](https://github.com/voxjar/elastiql/compare/v{{prev_version}}...v{{version}}) ({{date}})", prerelease = true },
+    { file = "CHANGELOG.md", search = '#{2,4} Fixes', replace = "#### Fixes", prerelease = true },
+    { file = "CHANGELOG.md", search = '#{2,4} Features', replace = "#### Features", prerelease = true },
+]
