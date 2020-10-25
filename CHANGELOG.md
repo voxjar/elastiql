@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.2...HEAD) (2020-10-24)
+### [v0.3.3](https://github.com/voxjar/elastiql/compare/v0.3.2...v0.3.3) (2020-10-24)
 
-### Fixes
+#### Fixes
 
 * fix graphql default values f96b633
 

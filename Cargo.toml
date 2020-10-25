@@ -1,6 +1,6 @@
 [package]
 name = "elastiql"
-version = "0.3.2"
+version = "0.3.3"
 description = "An opinionated Elasticsearch query language for Rust."
 repository = "https://github.com/voxjar/elastiql"
 authors = ["William Myers <mwilliammyers@gmail.com>"]
