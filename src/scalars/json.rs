@@ -13,6 +13,10 @@ use std::str::FromStr;
 use std::string::String;
 
 use serde::{Deserialize, Serialize};
+use serde_json::map::{
+    Entry as JsonMapEntry, Iter as JsonMapIter, IterMut as JsonMapIterMut, Keys as JsonMapKeys,
+    Values as JsonMapValues, ValuesMut as JsonMapValuesMut,
+};
 use serde_json::{Map as JsonMap, Value as JsonValue};
 
 #[cfg(feature = "graphql")]
@@ -24,11 +28,30 @@ type GraphQlObject = std::collections::BTreeMap<async_graphql::Name, async_graph
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
 pub struct Map(JsonMap<String, JsonValue>);
 
+// documentation taken from `serde_json::Map`
 impl Map {
+    /// Makes a new empty Map.
+    #[inline]
+    pub fn new() -> Self {
+        Map(JsonMap::<String, JsonValue>::new())
+    }
+
+    /// Makes a new empty Map with the given initial capacity.
+    #[inline]
+    pub fn with_capacity(capacity: usize) -> Self {
+        Map(JsonMap::<String, JsonValue>::with_capacity(capacity))
+    }
+
+    /// Clears the map, removing all values.
+    #[inline]
+    pub fn clear(&mut self) {
+        self.0.clear()
+    }
+
     /// Returns a reference to the value corresponding to the key.
     ///
     /// The key may be any borrowed form of the map's key type, but the ordering
-    /// on the borrowed form must match the ordering on the key type.
+    /// on the borrowed form *must* match the ordering on the key type.
     #[inline]
     pub fn get<Q>(&self, key: &Q) -> Option<&JsonValue>
     where
@@ -38,10 +61,125 @@ impl Map {
         self.0.get(key)
     }
 
+    /// Returns true if the map contains a value for the specified key.
+    ///
+    /// The key may be any borrowed form of the map's key type, but the ordering
+    /// on the borrowed form *must* match the ordering on the key type.
+    #[inline]
+    pub fn contains_key<Q>(&self, key: &Q) -> bool
+    where
+        String: Borrow<Q>,
+        Q: ?Sized + Ord + Eq + Hash,
+    {
+        self.0.contains_key(key)
+    }
+
+    /// Returns a mutable reference to the value corresponding to the key.
+    ///
+    /// The key may be any borrowed form of the map's key type, but the ordering
+    /// on the borrowed form *must* match the ordering on the key type.
+    #[inline]
+    pub fn get_mut<Q>(&mut self, key: &Q) -> Option<&mut JsonValue>
+    where
+        String: Borrow<Q>,
+        Q: ?Sized + Ord + Eq + Hash,
+    {
+        self.0.get_mut(key)
+    }
+
+    /// Inserts a key-value pair into the map.
+    ///
+    /// If the map did not have this key present, `None` is returned.
+    ///
+    /// If the map did have this key present, the value is updated, and the old
+    /// value is returned.
+    #[inline]
+    pub fn insert(&mut self, k: String, v: JsonValue) -> Option<JsonValue> {
+        self.0.insert(k, v)
+    }
+
+    /// Removes a key from the map, returning the value at the key if the key
+    /// was previously in the map.
+    ///
+    /// The key may be any borrowed form of the map's key type, but the ordering
+    /// on the borrowed form *must* match the ordering on the key type.
+    #[inline]
+    pub fn remove<Q>(&mut self, key: &Q) -> Option<JsonValue>
+    where
+        String: Borrow<Q>,
+        Q: ?Sized + Ord + Eq + Hash,
+    {
+        self.0.remove(key)
+    }
+
+    /// Removes a key from the map, returning the stored key and value if the
+    /// key was previously in the map.
+    ///
+    /// The key may be any borrowed form of the map's key type, but the ordering
+    /// on the borrowed form *must* match the ordering on the key type.
+    pub fn remove_entry<Q>(&mut self, key: &Q) -> Option<(String, JsonValue)>
+    where
+        String: Borrow<Q>,
+        Q: ?Sized + Ord + Eq + Hash,
+    {
+        self.0.remove_entry(key)
+    }
+
+    /// Moves all elements from other into Self, leaving other empty.
+    #[inline]
+    pub fn append(&mut self, other: &mut Self) {
+        self.0.append(&mut other.0)
+    }
+
+    /// Gets the given key's corresponding entry in the map for in-place
+    /// manipulation.
+    pub fn entry<S>(&mut self, key: S) -> JsonMapEntry
+    where
+        S: Into<String>,
+    {
+        self.0.entry(key)
+    }
+
+    /// Returns the number of elements in the map.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+
     /// Returns true if the map contains no elements.
     #[inline]
     pub fn is_empty(&self) -> bool {
         self.0.is_empty()
+    }
+
+    /// Gets an iterator over the entries of the map.
+    #[inline]
+    pub fn iter(&self) -> JsonMapIter {
+        self.0.iter()
+    }
+
+    /// Gets a mutable iterator over the entries of the map.
+    #[inline]
+    pub fn iter_mut(&mut self) -> JsonMapIterMut {
+        self.0.iter_mut()
+    }
+
+    /// Gets an iterator over the keys of the map.
+    #[inline]
+    pub fn keys(&self) -> JsonMapKeys {
+        self.0.keys()
+    }
+
+    /// Gets an iterator over the values of the map.
+    #[inline]
+    pub fn values(&self) -> JsonMapValues {
+        self.0.values()
+    }
+
+    /// Gets an iterator over mutable values of the map.
+    #[inline]
+    pub fn values_mut(&mut self) -> JsonMapValuesMut {
+        self.0.values_mut()
     }
 }
 
@@ -60,6 +198,13 @@ impl From<JsonValue> for Map {
             None if value.is_null() => Self::default(),
             None => panic!("invalid JSON object: `{}`", &value),
         }
+    }
+}
+
+impl From<JsonMap<String, JsonValue>> for Map {
+    #[inline]
+    fn from(value: JsonMap<String, JsonValue>) -> Self {
+        Map(value)
     }
 }
 
