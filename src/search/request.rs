@@ -2,7 +2,9 @@
 //!
 //! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 
-use serde::{Deserialize, Serialize};
+use std::time::Duration;
+
+use serde::{Deserialize, Serialize, Serializer};
 use serde_json::json;
 
 #[cfg(feature = "graphql")]
@@ -33,6 +35,14 @@ pub struct RequestInput {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
+
+    /// The maximum number of documents to collect for each shard, upon reaching
+    /// which the query execution will terminate early.
+    ///
+    /// Defaults to `0`, which does not terminate query execution early.
+    #[graphql(default)]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub terminate_after: u64,
 
     /// The live cursor from which to search after to fascilitate [pagination].
     ///
@@ -98,6 +108,13 @@ pub struct Request {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
+
+    /// The maximum number of documents to collect for each shard, upon reaching
+    /// which the query execution will terminate early.
+    ///
+    /// Defaults to `0`, which does not terminate query execution early.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub terminate_after: u64,
 
     /// The live cursor from which to search after to fascilitate [pagination].
     ///
