@@ -1,6 +1,14 @@
 # Changelog
 
-### [v0.3.3](https://github.com/voxjar/elastiql/compare/v0.3.2...v0.3.3) (2020-10-24)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-04)
+
+### Features
+
+* **search:** add terminate_after field to Request 600b8c3
+* add methods from serde_json to scalar Map 92acd64
+
+
+### [v0.3.3](https://github.com/voxjar/elastiql/compare/v0.3.2...v0.3.3) (2020-10-25)
 
 #### Fixes
 
