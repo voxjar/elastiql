@@ -2,9 +2,7 @@
 //!
 //! [Search request]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html
 
-use std::time::Duration;
-
-use serde::{Deserialize, Serialize, Serializer};
+use serde::{Deserialize, Serialize};
 use serde_json::json;
 
 #[cfg(feature = "graphql")]
@@ -167,18 +165,57 @@ impl Request {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Deserialize, Clone, Debug)]
 pub struct HighlightOptionsInput {
+    /// The field names and their options to highlight.
+    pub fields: crate::scalars::Map,
+
+    /// The highligher type to use.
+    #[graphql(name = "type", default)]
+    #[serde(rename = "type")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub ty: HighlighterType,
+
+    /// The maximum number of fragments to return.
+    #[graphql(default_with = "5")]
+    #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
+    pub number_of_fragments: u64,
+
+    /// The size of the highlighted fragment in characters.
+    #[graphql(default_with = "100")]
+    #[cfg_attr(feature = "builder", builder(default = 100, setter(into)))]
+    pub fragment_size: u32,
+
+    /// How far to scan for boundary characters.
+    #[graphql(default_with = "20")]
+    #[cfg_attr(feature = "builder", builder(default = 20, setter(into)))]
+    pub boundary_max_scan: u32,
+
     // TODO: should be an enum?
     /// Set to [`styled`] to use the built-in tag schema.
     ///
     /// [`styled`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
-    pub tags_schema: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub tags_schema: Option<String>,
 
-    /// The maximum number of fragments to return.
-    pub number_of_fragments: u64,
+    /// Use in conjunction with `post_tags` to define the HTML tags to use for
+    /// the highlighted text. By default, highlighted text is wrapped in `<em>`
+    /// and `</em>` tags.
+    #[graphql(default)]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub pre_tags: Vec<String>,
 
-    /// The field names and their options to highlight.
-    pub fields: crate::scalars::Map,
+    /// Use in conjunction with `pre_tags` to define the HTML tags to use for
+    /// the highlighted text. By default, highlighted text is wrapped in `<em>`
+    /// and `</em>` tags.
+    #[graphql(default)]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub post_tags: Vec<String>,
+
+    /// By default, only fields that contains a query match are highlighted. Set
+    /// `require_field_match` to `false` to highlight all fields.
+    #[graphql(default = true)]
+    #[cfg_attr(feature = "builder", builder(default = true, setter(into)))]
+    pub require_field_match: bool,
 }
 
 /// The [options] for highlighting.
@@ -190,28 +227,105 @@ pub struct HighlightOptionsInput {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct HighlightOptions {
-    // TODO: should be an enum?
-    /// Set to [`styled`] to use the built-in tag schema.
-    ///
-    /// [`styled`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
-    pub tags_schema: String,
+    /// The field names and their options to highlight.
+    pub fields: crate::scalars::Map,
+
+    /// The highligher type to use.
+    #[serde(rename = "type")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub ty: HighlighterType,
 
     /// The maximum number of fragments to return.
     #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
     pub number_of_fragments: u64,
 
-    /// The field names and their options to highlight.
-    pub fields: crate::scalars::Map,
+    /// The size of the highlighted fragment in characters.
+    #[cfg_attr(feature = "builder", builder(default = 100, setter(into)))]
+    pub fragment_size: u32,
+
+    /// How far to scan for boundary characters.
+    #[cfg_attr(feature = "builder", builder(default = 20, setter(into)))]
+    pub boundary_max_scan: u32,
+
+    // TODO: should be an enum?
+    /// Set to [`styled`] to use the built-in tag schema.
+    ///
+    /// [`styled`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
+    #[serde(skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub tags_schema: Option<String>,
+
+    /// Use in conjunction with `post_tags` to define the HTML tags to use for
+    /// the highlighted text. By default, highlighted text is wrapped in `<em>`
+    /// and `</em>` tags.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub pre_tags: Vec<String>,
+
+    /// Use in conjunction with `pre_tags` to define the HTML tags to use for
+    /// the highlighted text. By default, highlighted text is wrapped in `<em>`
+    /// and `</em>` tags.
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub post_tags: Vec<String>,
+
+    /// By default, only fields that contains a query match are highlighted. Set
+    /// `require_field_match` to `false` to highlight all fields.
+    #[cfg_attr(feature = "builder", builder(default = true, setter(into)))]
+    pub require_field_match: bool,
 }
 
 impl Default for HighlightOptions {
     #[inline]
     fn default() -> Self {
         HighlightOptions {
-            tags_schema: "styled".to_string(),
-            number_of_fragments: 5,
             fields: json!({ "*": {} }).into(),
+            ty: HighlighterType::default(),
+            number_of_fragments: 5,
+            fragment_size: 100,
+            boundary_max_scan: 20,
+            tags_schema: Some("styled".to_string()),
+            pre_tags: vec![],
+            post_tags: vec![],
+            require_field_match: true,
         }
+    }
+}
+
+/// The different supported highlighter types/algorithm.
+#[cfg_attr(feature = "graphql", derive(async_graphql::Enum, Eq, PartialEq, Copy))]
+#[derive(Serialize, Deserialize, Clone, Debug)]
+#[serde(rename_all = "lowercase")]
+pub enum HighlighterType {
+    /// The `unified` highlighter uses the Lucene Unified Highlighter. This
+    /// highlighter breaks the text into sentences and uses the BM25 algorithm
+    /// to score individual sentences as if they were documents in the corpus.
+    /// It also supports accurate phrase and multi-term (fuzzy, prefix, regex)
+    /// highlighting. This is the default highlighter.
+    Unified,
+
+    /// The `plain` highlighter uses the standard Lucene highlighter. It
+    /// attempts to reflect the query matching logic in terms of understanding
+    /// word importance and any word positioning criteria in phrase queries.
+    Plain,
+
+    /// The `fvh` highlighter uses the Lucene Fast Vector highlighter. This
+    /// highlighter can be used on fields with term_vector set to
+    /// `with_positions_offsets` in the mapping. The fast vector highlighter:
+    ///
+    /// - Can be customized with a `boundary_scanner`.
+    /// - Requires setting term_vector to with_positions_offsets which increases
+    ///   the size of the index
+    /// - Can combine matches from multiple fields into one result. See
+    ///   `matched_fields`
+    /// - Can assign different weights to matches at different positions
+    ///   allowing for things like phrase matches being sorted above term
+    ///   matches when highlighting a Boosting Query that boosts phrase matches
+    ///   over term matches
+    Fvh,
+}
+
+impl Default for HighlighterType {
+    #[inline]
+    fn default() -> Self {
+        Self::Unified
     }
 }
