@@ -1,9 +1,14 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-04)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-07)
+
+### ⚠ BREAKING CHANGE
+
+* **search:** HighlightOptions.tags_schema is now optional
 
 ### Features
 
+* **search:** add more fields to HighlightOptions 5591ca5
 * **search:** add terminate_after field to Request 600b8c3
 * add methods from serde_json to scalar Map 92acd64
 
