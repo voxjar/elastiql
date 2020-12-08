@@ -202,6 +202,7 @@ pub struct HighlightOptionsInput {
     /// and `</em>` tags.
     #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub pre_tags: Vec<String>,
 
     /// Use in conjunction with `pre_tags` to define the HTML tags to use for
@@ -209,6 +210,7 @@ pub struct HighlightOptionsInput {
     /// and `</em>` tags.
     #[graphql(default)]
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub post_tags: Vec<String>,
 
     /// By default, only fields that contains a query match are highlighted. Set
@@ -259,12 +261,14 @@ pub struct HighlightOptions {
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub pre_tags: Vec<String>,
 
     /// Use in conjunction with `pre_tags` to define the HTML tags to use for
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub post_tags: Vec<String>,
 
     /// By default, only fields that contains a query match are highlighted. Set
