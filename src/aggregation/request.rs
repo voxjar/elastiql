@@ -231,6 +231,16 @@ pub struct RequestInput {
     #[cfg_attr(feature = "builder", builder(default))]
     pub histogram: Option<HistogramAggregationInput>,
 
+    /// [Variable width histogram] is a [*multi-bucket*] aggregation similar to
+    /// [histogram]. However, the width of each bucket is not specified. Rather, a
+    /// target number of buckets is provided and bucket intervals are dynamically
+    /// determined based on the document distribution.
+    ///
+    /// [Variable width histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/latest/search-aggregations-bucket-variablewidthhistogram-aggregation.html
+    /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub variable_width_histogram: Option<VariableWidthHistogramInput>,
+
     /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
@@ -521,6 +531,16 @@ pub struct Request {
     #[cfg_attr(feature = "builder", builder(default))]
     pub histogram: Option<HistogramAggregation>,
 
+    /// [Variable width histogram] is a [*multi-bucket*] aggregation similar to
+    /// [histogram]. However, the width of each bucket is not specified. Rather, a
+    /// target number of buckets is provided and bucket intervals are dynamically
+    /// determined based on the document distribution.
+    ///
+    /// [Variable width histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/latest/search-aggregations-bucket-variablewidthhistogram-aggregation.html
+    /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub variable_width_histogram: Option<VariableWidthHistogram>,
+
     /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
@@ -619,6 +639,7 @@ impl From<RequestInput> for Request {
             date_histogram: aggregation.date_histogram.map(Into::into),
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
+            variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),
