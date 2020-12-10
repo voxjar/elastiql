@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-07)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-10)
 
 ### ⚠ BREAKING CHANGE
 
@@ -8,9 +8,16 @@
 
 ### Features
 
-* **search:** add more fields to HighlightOptions 5591ca5
+* **search:** add prefix query 10e2211
+* **agg:** add variable_width_histogram agg d828bc7
+* **agg:** add histogram agg 0044292
+* **search:** add more fields to HighlightOptions e9a0b35
 * **search:** add terminate_after field to Request 600b8c3
 * add methods from serde_json to scalar Map 92acd64
+
+### Fixes
+
+* **search:** do not serialize empty pre/post_tags 45d5fc3
 
 
 ### [v0.3.3](https://github.com/voxjar/elastiql/compare/v0.3.2...v0.3.3) (2020-10-25)
