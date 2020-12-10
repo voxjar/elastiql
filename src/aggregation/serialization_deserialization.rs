@@ -66,6 +66,8 @@ pub(super) struct SubAggregation {
     date_histogram: Option<DateHistogramAggregation>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     auto_date_histogram: Option<AutoDateHistogramAggregation>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    histogram: Option<HistogramAggregation>,
 
     // Pipeline aggregations
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -115,6 +117,7 @@ impl From<AggregationInput> for SubAggregation {
             date_range: aggregation.date_range.map(Into::into),
             date_histogram: aggregation.date_histogram.map(Into::into),
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
+            histogram: aggregation.histogram.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),
@@ -151,6 +154,7 @@ impl From<Aggregation> for SubAggregation {
             date_range: aggregation.date_range.map(Into::into),
             date_histogram: aggregation.date_histogram.map(Into::into),
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
+            histogram: aggregation.histogram.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),
@@ -187,6 +191,7 @@ impl Aggregation {
             date_range: aggregation.date_range.map(Into::into),
             date_histogram: aggregation.date_histogram.map(Into::into),
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
+            histogram: aggregation.histogram.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),

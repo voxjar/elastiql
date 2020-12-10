@@ -222,6 +222,15 @@ pub struct RequestInput {
     #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
 
+    /// A [*multi-bucketing*] values source based aggregation that can be
+    /// applied on numeric values or numeric range values extracted from the
+    /// documents. It dynamically builds fixed size (a.k.a. interval) buckets
+    /// over the values.
+    ///
+    /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub histogram: Option<HistogramAggregationInput>,
+
     /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
@@ -500,8 +509,17 @@ pub struct Request {
     ///
     /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
     /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregation>,
+
+    /// A [*multi-bucketing*] values source based aggregation that can be
+    /// applied on numeric values or numeric range values extracted from the
+    /// documents. It dynamically builds fixed size (a.k.a. interval) buckets
+    /// over the values.
+    ///
+    /// [*multi-bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub histogram: Option<HistogramAggregation>,
 
     /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
@@ -600,6 +618,7 @@ impl From<RequestInput> for Request {
             date_range: aggregation.date_range.map(Into::into),
             date_histogram: aggregation.date_histogram.map(Into::into),
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
+            histogram: aggregation.histogram.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),

@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 
 pub use self::{
     auto_date_histogram::*, bucket_script::*, bucket_selector::*, bucket_sort::*,
-    date_histogram::*, date_range::*, nested::*, range::*, reverse_nested::*, terms::*,
-    weighted_average::*,
+    date_histogram::*, date_range::*, histogram::*, nested::*, range::*, reverse_nested::*,
+    terms::*, weighted_average::*,
 };
 use crate::search::Script;
 #[cfg(feature = "graphql")]
@@ -20,6 +20,7 @@ mod bucket_selector;
 mod bucket_sort;
 mod date_histogram;
 mod date_range;
+mod histogram;
 mod nested;
 mod range;
 mod reverse_nested;
