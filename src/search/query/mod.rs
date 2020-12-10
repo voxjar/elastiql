@@ -7,13 +7,14 @@ use std::default::Default;
 use serde::{Deserialize, Serialize};
 
 pub use self::{
-    exists::*, match_::*, nested::*, query_string::*, range::*, regexp::*, simple_query_string::*,
-    term::*, terms::*,
+    exists::*, match_::*, nested::*, prefix::*, query_string::*, range::*, regexp::*,
+    simple_query_string::*, term::*, terms::*,
 };
 
 mod exists;
 mod match_;
 mod nested;
+mod prefix;
 mod query_string;
 mod range;
 mod regexp;
@@ -449,6 +450,10 @@ pub struct QueryInput {
 
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub prefix: Option<PrefixQueryInput>,
+
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub regexp: Option<RegexpQueryInput>,
 
     #[cfg_attr(feature = "builder", builder(default))]
@@ -482,6 +487,7 @@ impl From<Query> for QueryInput {
             term: query.term.map(Into::into),
             terms: query.terms.map(Into::into),
             range: query.range.map(Into::into),
+            prefix: query.prefix.map(Into::into),
             regexp: query.regexp.map(Into::into),
             match_: query.match_.map(Into::into),
             simple_query_string: query.simple_query_string.map(Into::into),
@@ -501,6 +507,7 @@ impl From<ExistsQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -520,6 +527,7 @@ impl From<TermQueryInput> for QueryInput {
             term: Some(filter),
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -539,6 +547,7 @@ impl From<TermsQueryInput> for QueryInput {
             term: None,
             terms: Some(filter),
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -558,6 +567,27 @@ impl From<RangeQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: Some(filter),
+            prefix: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
+impl From<PrefixQueryInput> for QueryInput {
+    #[inline]
+    fn from(filter: PrefixQueryInput) -> QueryInput {
+        QueryInput {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            prefix: Some(filter),
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -577,6 +607,7 @@ impl From<RegexpQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: Some(filter),
             match_: None,
             simple_query_string: None,
@@ -596,6 +627,7 @@ impl From<MatchQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: Some(filter),
             simple_query_string: None,
@@ -615,6 +647,7 @@ impl From<SimpleQueryStringQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: Some(filter),
@@ -634,6 +667,7 @@ impl From<QueryStringQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -653,6 +687,7 @@ impl From<NestedQueryInput> for QueryInput {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -691,6 +726,10 @@ pub struct Query {
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub prefix: Option<PrefixQuery>,
+
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub regexp: Option<RegexpQuery>,
 
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
@@ -724,6 +763,7 @@ impl From<QueryInput> for Query {
             term: input.term.map(Into::into),
             terms: input.terms.map(Into::into),
             range: input.range.map(Into::into),
+            prefix: input.prefix.map(Into::into),
             regexp: input.regexp.map(Into::into),
             match_: input.match_.map(Into::into),
             simple_query_string: input.simple_query_string.map(Into::into),
@@ -742,6 +782,7 @@ impl From<ExistsQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -760,6 +801,7 @@ impl From<TermQuery> for Query {
             term: Some(filter),
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -778,6 +820,7 @@ impl From<TermsQuery> for Query {
             term: None,
             terms: Some(filter),
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -796,6 +839,27 @@ impl From<RangeQuery> for Query {
             term: None,
             terms: None,
             range: Some(filter),
+            prefix: None,
+            regexp: None,
+            match_: None,
+            simple_query_string: None,
+            query_string: None,
+            nested: None,
+            boolean: None,
+        }
+    }
+}
+
+#[cfg(feature = "graphql")]
+impl From<PrefixQuery> for Query {
+    #[inline]
+    fn from(filter: PrefixQuery) -> Query {
+        Query {
+            exists: None,
+            term: None,
+            terms: None,
+            range: None,
+            prefix: Some(filter),
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -814,6 +878,7 @@ impl From<RegexpQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: Some(filter),
             match_: None,
             simple_query_string: None,
@@ -832,7 +897,9 @@ impl From<MatchQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
+
             match_: Some(filter),
             simple_query_string: None,
             query_string: None,
@@ -850,6 +917,7 @@ impl From<SimpleQueryStringQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: Some(filter),
@@ -868,6 +936,7 @@ impl From<QueryStringQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
@@ -886,6 +955,7 @@ impl From<NestedQuery> for Query {
             term: None,
             terms: None,
             range: None,
+            prefix: None,
             regexp: None,
             match_: None,
             simple_query_string: None,
