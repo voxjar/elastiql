@@ -222,6 +222,11 @@ pub struct RequestInput {
     #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
 
+    /// A filtering aggregation used to limit any sub aggregations' processing
+    /// to a sample of the top-scoring documents.
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub sampler: Option<SamplerAggregationInput>,
+
     /// An aggregation that returns interesting or unusual occurrences of
     /// free-text terms in a set.
     ///
@@ -551,6 +556,11 @@ pub struct Request {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub variable_width_histogram: Option<VariableWidthHistogram>,
 
+    /// A filtering aggregation used to limit any sub aggregations' processing
+    /// to a sample of the top-scoring documents.
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub sampler: Option<SamplerAggregation>,
+
     /// An aggregation that returns interesting or unusual occurrences of
     /// free-text terms in a set.
     ///
@@ -660,6 +670,7 @@ impl From<RequestInput> for Request {
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
             variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
+            sampler: aggregation.sampler.map(Into::into),
             significant_text: aggregation.significant_text.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),

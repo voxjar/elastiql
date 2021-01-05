@@ -71,6 +71,8 @@ pub(super) struct SubAggregation {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     variable_width_histogram: Option<VariableWidthHistogram>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    sampler: Option<SamplerAggregation>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     significant_text: Option<SignificantTextAggregation>,
 
     // Pipeline aggregations
@@ -123,6 +125,7 @@ impl From<AggregationInput> for SubAggregation {
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
             variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
+            sampler: aggregation.sampler.map(Into::into),
             significant_text: aggregation.significant_text.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
@@ -162,6 +165,7 @@ impl From<Aggregation> for SubAggregation {
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
             variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
+            sampler: aggregation.sampler.map(Into::into),
             significant_text: aggregation.significant_text.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
@@ -201,6 +205,7 @@ impl Aggregation {
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
             variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
+            sampler: aggregation.sampler.map(Into::into),
             significant_text: aggregation.significant_text.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
