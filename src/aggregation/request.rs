@@ -222,6 +222,16 @@ pub struct RequestInput {
     #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregationInput>,
 
+    /// An aggregation that returns interesting or unusual occurrences of
+    /// free-text terms in a set.
+    ///
+    /// See the official documentation for [significant text] for more
+    /// information.
+    ///
+    /// [significant text]: https://www.elastic.co/guide/en/elasticsearch/reference/7.x/search-aggregations-bucket-significanttext-aggregation.html
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub significant_text: Option<SignificantTextAggregationInput>,
+
     /// A [*multi-bucketing*] values source based aggregation that can be
     /// applied on numeric values or numeric range values extracted from the
     /// documents. It dynamically builds fixed size (a.k.a. interval) buckets
@@ -541,6 +551,16 @@ pub struct Request {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub variable_width_histogram: Option<VariableWidthHistogram>,
 
+    /// An aggregation that returns interesting or unusual occurrences of
+    /// free-text terms in a set.
+    ///
+    /// See the official documentation for [significant text] for more
+    /// information.
+    ///
+    /// [significant text]: https://www.elastic.co/guide/en/elasticsearch/reference/7.x/search-aggregations-bucket-significanttext-aggregation.html
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub significant_text: Option<SignificantTextAggregation>,
+
     /// A parent [*pipeline aggregation*] which executes a [script] which can
     /// perform per bucket computations on specified metrics in the parent
     /// multi-bucket aggregation. The specified metric must be numeric and the
@@ -640,6 +660,7 @@ impl From<RequestInput> for Request {
             auto_date_histogram: aggregation.auto_date_histogram.map(Into::into),
             histogram: aggregation.histogram.map(Into::into),
             variable_width_histogram: aggregation.variable_width_histogram.map(Into::into),
+            significant_text: aggregation.significant_text.map(Into::into),
             bucket_script: aggregation.bucket_script.map(Into::into),
             bucket_selector: aggregation.bucket_selector.map(Into::into),
             bucket_sort: aggregation.bucket_sort.map(Into::into),
