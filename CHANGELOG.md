@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2020-12-10)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2021-01-05)
 
 ### ⚠ BREAKING CHANGE
 
@@ -8,6 +8,8 @@
 
 ### Features
 
+* **agg:** add sampler agg a20192e
+* **agg:** add significant_text agg 9ba505d
 * **search:** add prefix query 10e2211
 * **agg:** add variable_width_histogram agg d828bc7
 * **agg:** add histogram agg 0044292
