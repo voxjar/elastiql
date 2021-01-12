@@ -429,11 +429,21 @@ impl<'de> serde::Deserialize<'de> for ElasticAggregationResult {
 
                 while let Some(k) = map.next_key::<String>()? {
                     match k.as_str() {
-                        "key" => {
-                            if let Value::String(val) = map.next_value()? {
+                        "key" => match map.next_value()? {
+                            Value::Bool(val) => {
+                                result.key = Some(val.to_string());
+                            }
+                            Value::Int(val) => {
+                                result.key = Some(val.to_string());
+                            }
+                            Value::Float(val) => {
+                                result.key = Some(val.to_string());
+                            }
+                            Value::String(val) => {
                                 result.key = Some(val);
                             }
-                        }
+                            _ => {}
+                        },
                         "key_as_string" => result.key = Some(map.next_value()?),
                         "value" => result.value = Some(map.next_value()?),
                         "buckets" => result.buckets = map.next_value()?,
