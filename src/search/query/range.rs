@@ -26,6 +26,9 @@ struct InnerRangeQuery {
     less_than_or_equal_to: Option<String>,
 
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    time_zone: Option<String>,
+
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     boost: Option<f64>,
 }
 
@@ -68,6 +71,25 @@ pub struct RangeQueryInput {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than_or_equal_to: Option<String>,
 
+    // TODO: #breaking make this a Rust newtype/GraphQL custom scalar ?
+    /// [Coordinated Universal Time (UTC) offset] or [IANA time zone] used to
+    /// convert date values in the query to UTC.
+    ///
+    /// Valid values are [ISO 8601] UTC offsets, such as `+01:00` or `-08:00`,
+    /// and [IANA time zone] IDs, such as `America/Los_Angeles`.
+    ///
+    /// **Note**: This parameter does not affect the date math value of `now`.
+    /// `now` is always the current system time in UTC. However, this parameter
+    /// does convert dates calculated using now and date math rounding. For
+    /// example, it will convert a value of `now/d` or `now-7d/d`.
+    ///
+    /// [Coordinated Universal Time (UTC) offset]: https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+    /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
+    /// [IANA time zone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    /// [Time zone in range queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-time-zone
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub time_zone: Option<String>,
+
     /// Floating point number used to decrease or increase the
     /// [relevance scores] of a query. (Defaults to `1.0`.)
     ///
@@ -93,6 +115,7 @@ impl From<RangeQuery> for RangeQueryInput {
             greater_than_or_equal_to: query.greater_than_or_equal_to,
             less_than: query.less_than,
             less_than_or_equal_to: query.less_than_or_equal_to,
+            time_zone: query.time_zone,
             boost: query.boost,
         }
     }
@@ -109,6 +132,7 @@ impl Serialize for RangeQueryInput {
             greater_than_or_equal_to: self.greater_than_or_equal_to.as_ref().map(|v| v.to_owned()),
             less_than: self.less_than.as_ref().map(|v| v.to_owned()),
             less_than_or_equal_to: self.less_than_or_equal_to.as_ref().map(|v| v.to_owned()),
+            time_zone: self.time_zone.as_ref().map(|v| v.to_owned()),
             boost: self.boost,
         };
 
@@ -158,6 +182,25 @@ pub struct RangeQuery {
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     pub less_than_or_equal_to: Option<String>,
 
+    // TODO: #breaking make this a Rust newtype/GraphQL custom scalar ?
+    /// [Coordinated Universal Time (UTC) offset] or [IANA time zone] used to
+    /// convert date values in the query to UTC.
+    ///
+    /// Valid values are [ISO 8601] UTC offsets, such as `+01:00` or `-08:00`,
+    /// and [IANA time zone] IDs, such as `America/Los_Angeles`.
+    ///
+    /// **Note**: This parameter does not affect the date math value of `now`.
+    /// `now` is always the current system time in UTC. However, this parameter
+    /// does convert dates calculated using now and date math rounding. For
+    /// example, it will convert a value of `now/d` or `now-7d/d`.
+    ///
+    /// [Coordinated Universal Time (UTC) offset]: https://en.wikipedia.org/wiki/List_of_UTC_time_offsets
+    /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
+    /// [IANA time zone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+    /// [Time zone in range queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-time-zone
+    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    pub time_zone: Option<String>,
+
     /// Floating point number used to decrease or increase the
     /// [relevance scores] of a query. (Defaults to `1.0`.)
     ///
@@ -183,6 +226,7 @@ impl From<RangeQueryInput> for RangeQuery {
             greater_than_or_equal_to: input.greater_than_or_equal_to,
             less_than: input.less_than,
             less_than_or_equal_to: input.less_than_or_equal_to,
+            time_zone: input.time_zone,
             boost: input.boost,
         }
     }
@@ -199,6 +243,7 @@ impl Serialize for RangeQuery {
             greater_than_or_equal_to: self.greater_than_or_equal_to.as_ref().map(|v| v.to_owned()),
             less_than: self.less_than.as_ref().map(|v| v.to_owned()),
             less_than_or_equal_to: self.less_than_or_equal_to.as_ref().map(|v| v.to_owned()),
+            time_zone: self.time_zone.as_ref().map(|v| v.to_owned()),
             boost: self.boost,
         };
 
@@ -244,6 +289,7 @@ impl<'de> Visitor<'de> for RangeQueryVisitor {
             greater_than_or_equal_to: inner.greater_than_or_equal_to,
             less_than: inner.less_than,
             less_than_or_equal_to: inner.less_than_or_equal_to,
+            time_zone: inner.time_zone,
             boost: inner.boost,
         };
 
@@ -283,9 +329,24 @@ mod tests {
             greater_than_or_equal_to: Some("10".to_string()),
             less_than: None,
             less_than_or_equal_to: Some("20".to_string()),
+            time_zone: None,
             boost: None,
         },
         json!({ "currentAge": { "gte": "10", "lte": "20" } })
+    );
+
+    test_case!(
+        with_time_zone:
+        RangeQuery {
+            field: "age".to_string(),
+            greater_than: None,
+            greater_than_or_equal_to: Some("10".to_string()),
+            less_than: None,
+            less_than_or_equal_to: Some("20".to_string()),
+            time_zone: Some("America/Los_Angeles".into()),
+            boost: None,
+        },
+        json!({ "age": { "gte": "10", "lte": "20", "time_zone": "America/Los_Angeles" } })
     );
 
     test_case!(
@@ -296,6 +357,7 @@ mod tests {
             greater_than_or_equal_to: Some("10".to_string()),
             less_than: None,
             less_than_or_equal_to: Some("20".to_string()),
+            time_zone: None,
             boost: Some(2.0),
         },
         json!({ "age": { "gte": "10", "lte": "20", "boost": 2.0 } })
@@ -309,6 +371,7 @@ mod tests {
             greater_than_or_equal_to: Some("10".to_string()),
             less_than: None,
             less_than_or_equal_to: Some("20".to_string()),
+            time_zone: None,
             boost: None,
         },
         json!({ "age": { "gte": "10", "lte": "20" } })
