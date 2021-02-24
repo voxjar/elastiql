@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 /// An int, float or a string value.
 #[allow(missing_docs)]
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Description))]
 #[serde(untagged)]
 pub enum SortedValue {
     Null,
@@ -49,7 +50,7 @@ impl From<String> for SortedValue {
 }
 
 #[cfg(feature = "graphql")]
-#[async_graphql::Scalar]
+#[async_graphql::Scalar(use_type_description)]
 impl async_graphql::ScalarType for SortedValue {
     #[inline]
     fn parse(value: async_graphql::Value) -> async_graphql::InputValueResult<Self> {

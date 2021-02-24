@@ -26,6 +26,7 @@ type GraphQlObject = std::collections::BTreeMap<async_graphql::Name, async_graph
 ///
 /// [JSON]: https://tools.ietf.org/html/rfc8259#section-3
 #[derive(Serialize, Deserialize, Clone, PartialEq, Debug)]
+#[cfg_attr(feature = "graphql", derive(async_graphql::Description))]
 pub struct Map(JsonMap<String, JsonValue>);
 
 // documentation taken from `serde_json::Map`
@@ -233,7 +234,7 @@ impl FromStr for Map {
 }
 
 #[cfg(feature = "graphql")]
-#[async_graphql::Scalar]
+#[async_graphql::Scalar(use_type_description)]
 impl async_graphql::ScalarType for Map {
     #[inline]
     fn parse(value: async_graphql::Value) -> async_graphql::InputValueResult<Self> {

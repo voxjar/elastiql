@@ -62,7 +62,7 @@ pub struct DateRangeAggregation {
     #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
-    /// Converts from another time zone to UTC.ƒ
+    /// Converts from another time zone to UTC.
     #[cfg_attr(feature = "builder", builder(default, setter(into)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
