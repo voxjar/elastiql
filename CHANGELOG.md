@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2021-01-05)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2021-02-24)
 
 ### ⚠ BREAKING CHANGE
 
@@ -8,6 +8,7 @@
 
 ### Features
 
+* **search:** add time_zone field to RangeQuery fd3a871
 * **agg:** add sampler agg a20192e
 * **agg:** add significant_text agg 9ba505d
 * **search:** add prefix query 10e2211
@@ -19,6 +20,7 @@
 
 ### Fixes
 
+* **agg:** support non string agg keys aabef92
 * **search:** do not serialize empty pre/post_tags 45d5fc3
 
 
