@@ -617,7 +617,7 @@ mod tests {
             Aggregation::builder()
                 .name("hasMetadata")
                 .terms(Some("id".into()))
-                .metadata(Some(json!({"test": true}).into()))
+                .metadata(Some([("test".to_string(), json!(true).into())].iter().cloned().collect()))
                 .build(),
             json!({
                 "hasMetadata": {
@@ -766,7 +766,7 @@ mod tests {
                     name: "AVG_DURATION".to_string(),
                     fields: vec![],
                     values: vec![3.0, 4.0],
-                    metadata: Some(json!({"test": true}).into()),
+                    metadata: Some([("test".to_string(), json!(true).into())].iter().cloned().collect()),
                     type_: Ty::Avg,
                 }],
             },

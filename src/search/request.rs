@@ -280,8 +280,13 @@ pub struct HighlightOptions {
 impl Default for HighlightOptions {
     #[inline]
     fn default() -> Self {
+        let fields = [("*".to_string(), json!({}).into())]
+            .iter()
+            .cloned()
+            .collect();
+
         HighlightOptions {
-            fields: json!({ "*": {} }).into(),
+            fields,
             ty: HighlighterType::default(),
             number_of_fragments: 5,
             fragment_size: 100,
