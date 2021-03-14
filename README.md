@@ -1,7 +1,13 @@
 # elastiql
 
-[![CI](https://github.com/voxjar/elastiql/workflows/CI/badge.svg)](https://github.com/voxjar/elastiql/actions)
-[![docs](https://img.shields.io/badge/docs-master-blue.svg)](http://voxjar.github.io/elastiql/)
+[![Latest Version]][crates.io] [![Docs]][docs.rs] [![CI]][github-actions]
+
+[CI]: https://github.com/voxjar/elastiql/workflows/CI/badge.svg
+[github-actions]: https://github.com/voxjar/elastiql/actions
+[latest version]: https://img.shields.io/crates/v/elastiql.svg
+[crates.io]: https://crates.io/crates/elastiql
+[docs]: https://docs.rs/elastiql/badge.svg
+[docs.rs]: https://docs.rs/elastiql
 
 > An opinionated [Elasticsearch] query language for [Rust].
 

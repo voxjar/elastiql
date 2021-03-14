@@ -2,10 +2,11 @@
 name = "elastiql"
 version = "0.3.3"
 description = "An opinionated Elasticsearch query language for Rust."
-repository = "https://github.com/voxjar/elastiql"
 authors = ["William Myers <mwilliammyers@gmail.com>"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/voxjar/elastiql"
+keywords = ["elasticsearch", "graphql"]
 edition = "2018"
-publish = false
 
 [features]
 default = ["builder"]
