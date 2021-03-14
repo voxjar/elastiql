@@ -1,13 +1,16 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2021-02-24)
+## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.3.3...HEAD) (2021-03-14)
 
 ### ⚠ BREAKING CHANGE
 
+* add strip_option and into to builder fields
+* Map no longer implements From<JsonValue>
 * **search:** HighlightOptions.tags_schema is now optional
 
 ### Features
 
+* improve builder ergonomics cc175f8
 * **search:** add time_zone field to RangeQuery fd3a871
 * **agg:** add sampler agg a20192e
 * **agg:** add significant_text agg 9ba505d
