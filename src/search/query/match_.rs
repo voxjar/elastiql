@@ -17,9 +17,9 @@ use serde::ser::{Serialize, SerializeMap, Serializer};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "MatchFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct MatchQueryInput {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Text, number, boolean value or date you wish to find in the provided
@@ -30,7 +30,6 @@ pub struct MatchQueryInput {
     /// rather than an exact term.
     ///
     /// [match query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 }
 
@@ -85,9 +84,9 @@ impl Serialize for MatchQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "MatchFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct MatchQuery {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Text, number, boolean value or date you wish to find in the provided
@@ -98,7 +97,6 @@ pub struct MatchQuery {
     /// rather than an exact term.
     ///
     /// [match query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query.html#query-dsl-match-query
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 }
 

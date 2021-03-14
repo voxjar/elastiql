@@ -18,9 +18,9 @@ use super::super::query::CompoundQueryInput;
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 #[graphql(name = "NestedFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct NestedQueryInput {
     /// Path to the nested object to search.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 
     /// Query to run on nested objects in the path. If an object
@@ -32,7 +32,6 @@ pub struct NestedQueryInput {
     /// Multi-level nesting is automatically supported, and detected, resulting
     /// in an inner nested query to automatically match the relevant nesting
     /// level, rather than root, if it exists within another nested query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: CompoundQueryInput,
 
     /// Indicates whether to ignore an unmapped path and not return any
@@ -84,9 +83,9 @@ impl From<NestedQuery> for NestedQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "NestedFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct NestedQuery {
     /// Path to the nested object to search.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 
     /// Query to run on nested objects in the path. If an object
@@ -98,7 +97,6 @@ pub struct NestedQuery {
     /// Multi-level nesting is automatically supported, and detected, resulting
     /// in an inner nested query to automatically match the relevant nesting
     /// level, rather than root, if it exists within another nested query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: CompoundQuery,
 
     /// Indicates whether to ignore an unmapped path and not return any

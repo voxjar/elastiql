@@ -14,6 +14,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct AutoDateHistogramAggregationInput {
     /// The field to perform the aggregation over.
     pub field: String,
@@ -60,6 +61,7 @@ pub struct AutoDateHistogramAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct AutoDateHistogramAggregation {
     /// The field to perform the aggregation over.
     pub field: String,

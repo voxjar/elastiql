@@ -21,6 +21,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 #[graphql(name = "SimpleQueryStringFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct SimpleQueryStringQueryInput {
     /// The name of the fields to query.
     ///
@@ -32,12 +33,10 @@ pub struct SimpleQueryStringQueryInput {
     ///
     /// [Wildcards and per-field boosts in the fields parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-boost
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<String>,
 
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 }
 
@@ -88,6 +87,7 @@ impl From<SimpleQueryStringQuery> for SimpleQueryStringQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "SimpleQueryStringFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct SimpleQueryStringQuery {
     /// The name of the fields to query.
     ///
@@ -98,12 +98,10 @@ pub struct SimpleQueryStringQuery {
     /// [Wildcards and per-field boosts in the fields parameter] for examples.
     ///
     /// [Wildcards and per-field boosts in the fields parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-boost
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<String>,
 
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 }
 

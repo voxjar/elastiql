@@ -19,9 +19,9 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 #[graphql(name = "QueryStringFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct QueryStringQueryInput {
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 
     /// The name of the fields to query.
@@ -33,7 +33,7 @@ pub struct QueryStringQueryInput {
     /// [Wildcards and per-field boosts in the fields parameter] for examples.
     ///
     /// [Wildcards and per-field boosts in the fields parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-boost
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<String>,
 
@@ -58,15 +58,14 @@ pub struct QueryStringQueryInput {
     /// [nested documents]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`nested` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html
     /// [search setting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-settings.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub default_field: Option<String>,
 
     /// If `true`, the wildcard characters `*` and `?` are allowed as the first
     /// character of the query string. Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
-    #[graphql(default = true)]
     pub allow_leading_wildcard: bool,
 
     /// If `true`, the query attempts to analyze wildcard terms in the query
@@ -82,7 +81,7 @@ pub struct QueryStringQueryInput {
     ///
     /// [Analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
     /// [index-time analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/specify-analyzer.html#specify-index-time-analyzer
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub analyzer: Option<String>,
 
@@ -92,7 +91,7 @@ pub struct QueryStringQueryInput {
     ///
     /// [Analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
     /// [`search_quote_analyzer`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer.html#search-quote-analyzer
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quote_analyzer: Option<String>,
 
@@ -102,7 +101,7 @@ pub struct QueryStringQueryInput {
     ///
     /// [match phrase]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html
     /// [Synonyms and the `query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-synonyms
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     #[graphql(default = true)]
     pub auto_generate_synonyms_phrase_query: bool,
@@ -130,7 +129,7 @@ pub struct QueryStringQueryInput {
 
     /// If `true`, enable position increments in queries constructed from a
     /// `query_string` search. Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     #[graphql(default = true)]
     pub enable_position_increments: bool,
@@ -139,7 +138,7 @@ pub struct QueryStringQueryInput {
     /// values and more information.
     ///
     /// [Fuzziness]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fuzziness: Option<String>,
 
@@ -158,8 +157,8 @@ pub struct QueryStringQueryInput {
     pub fuzzy_prefix_length: u64,
 
     /// If `true`, edits for fuzzy matching include transpositions of two
-    /// adjacent characters (`ab` → `ba`). Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    /// adjacent characters (`ab` -> `ba`). Defaults to `true`.
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     #[graphql(default = true)]
     pub fuzzy_transpositions: bool,
@@ -204,7 +203,7 @@ pub struct QueryStringQueryInput {
     ///
     /// [`minimum_should_match` parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
     /// [How `minimum_should_match` works]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-min-should-match
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub minimum_should_match: Option<String>,
 
@@ -218,7 +217,7 @@ pub struct QueryStringQueryInput {
     ///
     /// You can use this suffix to use a different analysis method for exact
     /// matches. See [Mixing exact search with stemming](https://www.elastic.co/guide/en/elasticsearch/reference/current/mixing-exact-search-with-stemming.html).
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quote_field_suffix: Option<String>,
 
@@ -226,7 +225,7 @@ pub struct QueryStringQueryInput {
     /// see the [`rewrite` parameter].
     ///
     /// [`rewrite` parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-term-rewrite.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rewrite: Option<String>,
 
@@ -249,7 +248,7 @@ pub struct QueryStringQueryInput {
     /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
     /// [date math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
     /// [date math rounding]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 }
@@ -300,9 +299,9 @@ impl From<QueryStringQuery> for QueryStringQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "QueryStringFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct QueryStringQuery {
     /// The query to run in the [simple query string syntax](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-syntax).
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub query: String,
 
     /// The name of the fields to query.
@@ -314,7 +313,7 @@ pub struct QueryStringQuery {
     /// [Wildcards and per-field boosts in the fields parameter] for examples.
     ///
     /// [Wildcards and per-field boosts in the fields parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-simple-query-string-query.html#simple-query-string-boost
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fields: Vec<String>,
 
@@ -339,13 +338,13 @@ pub struct QueryStringQuery {
     /// [nested documents]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`nested` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-nested-query.html
     /// [search setting]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-settings.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub default_field: Option<String>,
 
     /// If `true`, the wildcard characters `*` and `?` are allowed as the first
     /// character of the query string. Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     pub allow_leading_wildcard: bool,
 
@@ -361,7 +360,7 @@ pub struct QueryStringQuery {
     ///
     /// [Analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
     /// [index-time analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/specify-analyzer.html#specify-index-time-analyzer
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub analyzer: Option<String>,
 
@@ -371,7 +370,7 @@ pub struct QueryStringQuery {
     ///
     /// [Analyzer]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analysis.html
     /// [`search_quote_analyzer`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/analyzer.html#search-quote-analyzer
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quote_analyzer: Option<String>,
 
@@ -381,7 +380,7 @@ pub struct QueryStringQuery {
     ///
     /// [match phrase]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-match-query-phrase.html
     /// [Synonyms and the `query_string` query]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-synonyms
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     pub auto_generate_synonyms_phrase_query: bool,
 
@@ -405,7 +404,7 @@ pub struct QueryStringQuery {
 
     /// If `true`, enable position increments in queries constructed from a
     /// `query_string` search. Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     pub enable_position_increments: bool,
 
@@ -413,13 +412,13 @@ pub struct QueryStringQuery {
     /// values and more information.
     ///
     /// [Fuzziness]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#fuzziness
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fuzziness: Option<String>,
 
     /// Maximum number of terms to which the query expands for fuzzy matching.
     /// Defaults to `50`.
-    #[cfg_attr(feature = "builder", builder(default_code = "50"))]
+    #[cfg_attr(feature = "builder", builder(default_code = "default_fifty_u64()"))]
     #[serde(default = "default_fifty_u64")]
     pub fuzzy_max_expansions: u64,
 
@@ -430,8 +429,8 @@ pub struct QueryStringQuery {
     pub fuzzy_prefix_length: u64,
 
     /// If `true`, edits for fuzzy matching include transpositions of two
-    /// adjacent characters (`ab` → `ba`). Defaults to `true`.
-    #[cfg_attr(feature = "builder", builder(default_code = "true"))]
+    /// adjacent characters (`ab` -> `ba`). Defaults to `true`.
+    #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
     pub fuzzy_transpositions: bool,
 
@@ -460,7 +459,10 @@ pub struct QueryStringQuery {
     /// [automaton states]:
     /// https://en.wikipedia.org/wiki/Deterministic_finite_automaton [Apache
     /// Lucene]: https://lucene.apache.org/core/
-    #[cfg_attr(feature = "builder", builder(default_code = "10_000"))]
+    #[cfg_attr(
+        feature = "builder",
+        builder(default_code = "default_ten_thousand_u64()")
+    )]
     #[serde(default = "default_ten_thousand_u64")]
     pub max_determinized_states: u64,
 
@@ -470,7 +472,7 @@ pub struct QueryStringQuery {
     ///
     /// [`minimum_should_match` parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
     /// [How `minimum_should_match` works]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-query-string-query.html#query-string-min-should-match
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub minimum_should_match: Option<String>,
 
@@ -483,7 +485,7 @@ pub struct QueryStringQuery {
     ///
     /// You can use this suffix to use a different analysis method for exact
     /// matches. See [Mixing exact search with stemming](https://www.elastic.co/guide/en/elasticsearch/reference/current/mixing-exact-search-with-stemming.html).
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub quote_field_suffix: Option<String>,
 
@@ -491,7 +493,7 @@ pub struct QueryStringQuery {
     /// see the [`rewrite` parameter].
     ///
     /// [`rewrite` parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-multi-term-rewrite.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub rewrite: Option<String>,
 
@@ -514,7 +516,7 @@ pub struct QueryStringQuery {
     /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
     /// [date math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
     /// [date math rounding]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 }

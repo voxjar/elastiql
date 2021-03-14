@@ -14,6 +14,7 @@ use super::GapPolicy;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketSelectorInput {
     /// The script to run for this aggregation.
     pub script: String,
@@ -21,12 +22,13 @@ pub struct BucketSelectorInput {
     /// A map of script variables and their associated path to the buckets to
     /// use for the variable (see [`buckets_path` Syntax] for more details)
     ///
-    /// [`buckets_path` Syntax]: /// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html#buckets-path-syntax
+    /// [`buckets_path` Syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html#buckets-path-syntax
+    #[cfg_attr(feature = "builder", builder(default))]
     pub buckets_path: crate::scalars::Map,
 
     /// The policy to apply when gaps are found in the data
     #[graphql(default_with = "Some(GapPolicy::Skip)")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }
@@ -42,6 +44,7 @@ pub struct BucketSelectorInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketSelector {
     /// The script to run for this aggregation.
     pub script: String,
@@ -49,11 +52,12 @@ pub struct BucketSelector {
     /// A map of script variables and their associated path to the buckets to
     /// use for the variable (see [`buckets_path` Syntax] for more details)
     ///
-    /// [`buckets_path` Syntax]: /// https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html#buckets-path-syntax
+    /// [`buckets_path` Syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-pipeline.html#buckets-path-syntax
+    #[cfg_attr(feature = "builder", builder(default))]
     pub buckets_path: crate::scalars::Map,
 
     /// The policy to apply when gaps are found in the data
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub gap_policy: Option<GapPolicy>,
 }

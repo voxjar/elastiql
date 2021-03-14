@@ -14,9 +14,9 @@ use serde::Serialize;
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "TermsFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct TermsQueryInput {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// A list of terms you wish to find in the provided field. To return a
@@ -25,7 +25,7 @@ pub struct TermsQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `["1.2"]` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub values: Vec<String>,
 
     /// Floating point number used to decrease or increase the
@@ -39,7 +39,7 @@ pub struct TermsQueryInput {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub boost: Option<f64>,
 }
 
@@ -94,9 +94,9 @@ impl Serialize for TermsQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "TermsFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct TermsQuery {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// A list of terms you wish to find in the provided field. To return a
@@ -105,7 +105,7 @@ pub struct TermsQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `["1.2"]` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub values: Vec<String>,
 
     /// Floating point number used to decrease or increase the
@@ -119,7 +119,7 @@ pub struct TermsQuery {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub boost: Option<f64>,
 }
 

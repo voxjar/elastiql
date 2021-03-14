@@ -14,32 +14,33 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateRangeAggregationInput {
     /// The field to perform the aggregation over.
     pub field: String,
 
     /// Converts from another time zone to UTC.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 
     /// How the returned date should be [formatted].
     ///
     /// [formatted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// The `missing` parameter defines how documents that are missing a value
     /// should be treated. By default they will be ignored but it is also
     /// possible to treat them as if they had a value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 
     /// The ranges to use for the aggregation.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
     pub ranges: Vec<DateRangeInput>,
 }
@@ -57,32 +58,32 @@ pub struct DateRangeAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateRangeAggregation {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Converts from another time zone to UTC.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 
     /// How the returned date should be [formatted].
     ///
     /// [formatted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// The `missing` parameter defines how documents that are missing a value
     /// should be treated. By default they will be ignored but it is also
     /// possible to treat them as if they had a value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 
     /// The ranges to use for the aggregation.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
     pub ranges: Vec<DateRange>,
 }
@@ -105,18 +106,19 @@ impl From<DateRangeAggregationInput> for DateRangeAggregation {
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateRangeInput {
     /// The date to return results *from*; supports [Date Math] expressions.
     ///
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub from: Option<String>,
 
     /// The date to return results up *to*; supports [Date Math] expressions.
     ///
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to: Option<String>,
 }
@@ -126,18 +128,19 @@ pub struct DateRangeInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateRange {
     /// The date to return results *from*; supports [Date Math] expressions.
     ///
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub from: Option<String>,
 
     /// The date to return results up *to*; supports [Date Math] expressions.
     ///
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub to: Option<String>,
 }

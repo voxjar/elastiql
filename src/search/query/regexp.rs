@@ -21,16 +21,15 @@ use serde::{
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "RegexpFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RegexpQueryInput {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Regular expression for terms you wish to find in the provided `field`.
     /// For a list of supported operators, see [Regular expression syntax].
     ///
     /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html#regexp-syntax
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: String,
 
     /// Enables optional operators for the regular expression. For valid values
@@ -41,7 +40,7 @@ pub struct RegexpQueryInput {
     /// operators.
     ///
     /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html#regexp-optional-operators
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub flags: Option<String>,
 }
 
@@ -109,16 +108,15 @@ impl Serialize for RegexpQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "RegexpFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RegexpQuery {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Regular expression for terms you wish to find in the provided `field`.
     /// For a list of supported operators, see [Regular expression syntax].
     ///
     /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html#regexp-syntax
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: String,
 
     /// Enables optional operators for the regular expression. For valid values
@@ -129,7 +127,7 @@ pub struct RegexpQuery {
     /// operators.
     ///
     /// [Regular expression syntax]: https://www.elastic.co/guide/en/elasticsearch/reference/current/regexp-syntax.html#regexp-optional-operators
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub flags: Option<String>,
 }
 

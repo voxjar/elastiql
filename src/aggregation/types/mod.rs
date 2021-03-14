@@ -39,13 +39,14 @@ mod weighted_average;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct InnerAggregationInput {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub field: Option<String>,
 
     /// The script to use.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<ScriptInput>,
 
@@ -53,7 +54,7 @@ pub struct InnerAggregationInput {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }
@@ -63,13 +64,14 @@ pub struct InnerAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct InnerAggregation {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub field: Option<String>,
 
     /// The script to use.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
 
@@ -77,7 +79,7 @@ pub struct InnerAggregation {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }

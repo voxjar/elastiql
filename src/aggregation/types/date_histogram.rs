@@ -14,15 +14,15 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateHistogramAggregationInput {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Calendar-aware intervals understand that daylight savings changes the
     /// length of specific days, months have different amounts of days, and leap
     /// seconds can be tacked onto a particular year.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub calendar_interval: Option<CalendarInterval>,
 
@@ -30,7 +30,7 @@ pub struct DateHistogramAggregationInput {
     /// number of SI units and never deviate, regardless of where they fall on
     /// the calendar. One second is always composed of `1000ms`. This allows
     /// fixed intervals to be specified in any multiple of the supported units.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fixed_interval: Option<String>,
 
@@ -43,7 +43,7 @@ pub struct DateHistogramAggregationInput {
     ///
     /// [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
     /// [IANA timezone database]: https://www.iana.org/time-zones
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 
@@ -55,21 +55,21 @@ pub struct DateHistogramAggregationInput {
     /// `timeZone` adjustments have been made.
     ///
     /// [Time units]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub offset: Option<String>,
 
     /// How the returned date should be [formatted].
     ///
     /// [formatted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// Defines how documents that are missing a value should be treated. By
     /// default they will be ignored but it is also possible to treat them as if
     /// they had a value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 }
@@ -87,15 +87,15 @@ pub struct DateHistogramAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct DateHistogramAggregation {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Calendar-aware intervals understand that daylight savings changes the
     /// length of specific days, months have different amounts of days, and leap
     /// seconds can be tacked onto a particular year.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub calendar_interval: Option<CalendarInterval>,
 
@@ -103,7 +103,7 @@ pub struct DateHistogramAggregation {
     /// number of SI units and never deviate, regardless of where they fall on
     /// the calendar. One second is always composed of `1000ms`. This allows
     /// fixed intervals to be specified in any multiple of the supported units.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub fixed_interval: Option<String>,
 
@@ -116,7 +116,7 @@ pub struct DateHistogramAggregation {
     ///
     /// [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
     /// [IANA timezone database]: https://www.iana.org/time-zones
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub time_zone: Option<String>,
 
@@ -128,21 +128,21 @@ pub struct DateHistogramAggregation {
     /// `timeZone` adjustments have been made.
     ///
     /// [Time units]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#time-units
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub offset: Option<String>,
 
     /// How the returned date should be [formatted].
     ///
     /// [formatted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-daterange-aggregation.html#date-format-pattern
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// Defines how documents that are missing a value should be treated. By
     /// default they will be ignored but it is also possible to treat them as if
     /// they had a value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
 }

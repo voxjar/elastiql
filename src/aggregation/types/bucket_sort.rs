@@ -25,6 +25,7 @@ use super::GapPolicy;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketSortInput {
     /// How to sort the data.
     #[graphql(default)]
@@ -35,20 +36,20 @@ pub struct BucketSortInput {
     // #[serde(default, skip_serializing_if = "Option::is_none")]
     #[graphql(default_with = "Some(0)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub from: Option<u64>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub size: Option<u64>,
 
     /// The policy to apply when gaps are found in the data.
     #[graphql(default_with = "Some(GapPolicy::Skip)")]
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub gap_policy: Option<GapPolicy>,
 }
 
@@ -70,6 +71,7 @@ pub struct BucketSortInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketSort {
     /// How to sort the data.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
@@ -77,19 +79,19 @@ pub struct BucketSort {
 
     /// Buckets in positions prior to the set value will be truncated.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub from: Option<u64>,
 
     /// The number of buckets to return.
     ///
     /// Defaults to all buckets of the parent aggregation.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub size: Option<u64>,
 
     /// The policy to apply when gaps are found in the data.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub gap_policy: Option<GapPolicy>,
 }
 

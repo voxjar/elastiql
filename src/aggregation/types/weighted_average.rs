@@ -26,22 +26,21 @@ use super::InnerAggregationInput;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct WeightedAverageAggregationInput {
     /// The configuration for the field or script that provides the values
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: InnerAggregationInput,
 
     /// The configuration for the field or script that provides the weights
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub weight: InnerAggregationInput,
 
     /// The numeric response formatter
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// A hint about the values for pure scripts or unmapped fields
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value_type: Option<String>,
 }
@@ -67,22 +66,21 @@ pub struct WeightedAverageAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct WeightedAverageAggregation {
     /// The configuration for the field or script that provides the values
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: InnerAggregation,
 
     /// The configuration for the field or script that provides the weights
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub weight: InnerAggregation,
 
     /// The numeric response formatter
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub format: Option<String>,
 
     /// A hint about the values for pure scripts or unmapped fields
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub value_type: Option<String>,
 }

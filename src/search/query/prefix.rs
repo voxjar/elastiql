@@ -22,20 +22,19 @@ struct InnerPrefixQuery {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "PrefixFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct PrefixQueryInput {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Beginning characters of terms you wish to find in the provided `field`.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: String,
 
     /// Allows ASCII case insensitive matching of the value with the indexed
     /// field values when set to true. Default is false which means the case
     /// sensitivity of matching depends on the underlying field’s mapping.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub case_insensitive: bool,
 }
 
@@ -90,19 +89,18 @@ impl Serialize for PrefixQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "PrefixFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct PrefixQuery {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 
     /// Beginning characters of terms you wish to find in the provided `field`.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub value: String,
 
     /// Allows ASCII case insensitive matching of the value with the indexed
     /// field values when set to true. Default is false which means the case
     /// sensitivity of matching depends on the underlying field’s mapping.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub case_insensitive: bool,
 }
 

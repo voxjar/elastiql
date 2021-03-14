@@ -21,6 +21,7 @@ use crate::search::ScriptInput;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct TermsAggregationInput {
     /// The field to perform the aggregation over.
     pub field: Option<String>,
@@ -41,7 +42,7 @@ pub struct TermsAggregationInput {
     ///
     /// [size parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
     #[graphql(default_with = "Some(1_000)")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -49,7 +50,7 @@ pub struct TermsAggregationInput {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }
@@ -62,6 +63,7 @@ pub struct TermsAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct TermsAggregation {
     /// The field to perform the aggregation over.
     pub field: Option<String>,
@@ -81,7 +83,7 @@ pub struct TermsAggregation {
     /// should have been in the top size buckets was not returned).
     ///
     /// [size parameter]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-terms-aggregation.html#search-aggregations-bucket-terms-aggregation-size
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -89,7 +91,7 @@ pub struct TermsAggregation {
     ///
     /// By default they will be ignored, but it is also possible to treat them
     /// as if they had the value.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<f64>,
 }

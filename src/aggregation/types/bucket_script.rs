@@ -14,6 +14,7 @@ use super::GapPolicy;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketScriptInput {
     /// The script to run for this aggregation.
     pub script: String,
@@ -49,6 +50,7 @@ pub struct BucketScriptInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BucketScript {
     /// The script to run for this aggregation.
     pub script: String,

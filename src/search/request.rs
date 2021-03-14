@@ -18,19 +18,20 @@ use crate::{
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RequestInput {
     /// The query to perform in this search request.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "CompoundQueryInput::is_empty")]
     pub query: CompoundQueryInput,
 
     /// Sorts the results.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub sort: Vec<SortInput>,
 
     /// The number of results to return.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -39,30 +40,30 @@ pub struct RequestInput {
     ///
     /// Defaults to `0`, which does not terminate query execution early.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub terminate_after: u64,
 
     /// The live cursor from which to search after to fascilitate [pagination].
     ///
     /// [pagination]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#request-body-search-search-after
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(rename = "search_after", skip_serializing_if = "Vec::is_empty")]
     pub after: Vec<SortedValue>,
 
     /// Whether or not to include the document version in the search results.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub version: bool,
 
     /// Whether or not to include the [sequence number & primary term] in the
     /// search results.
     ///
     /// [sequence number & primary term]: https://www.elastic.co/guide/en/elasticsearch/reference/current/optimistic-concurrency-control.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub seq_no_primary_term: bool,
 
     // TODO: could also be a bool...
     /// The lower bound for the number of hits to track
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub track_total_hits: Option<u64>,
 
@@ -71,7 +72,7 @@ pub struct RequestInput {
     /// search query.
     ///
     /// [highlighted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub highlight: Option<HighlightOptionsInput>,
 }
@@ -91,19 +92,20 @@ impl RequestInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct Request {
     /// The query to perform in this search request.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "CompoundQuery::is_empty")]
     pub query: CompoundQuery,
 
     /// Sorts the results.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")]
     pub sort: Vec<Sort>,
 
     /// The number of results to return.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub size: Option<u64>,
 
@@ -111,30 +113,30 @@ pub struct Request {
     /// which the query execution will terminate early.
     ///
     /// Defaults to `0`, which does not terminate query execution early.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub terminate_after: u64,
 
     /// The live cursor from which to search after to fascilitate [pagination].
     ///
     /// [pagination]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-body.html#request-body-search-search-after
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(rename = "search_after", skip_serializing_if = "Vec::is_empty")]
     pub after: Vec<SortedValue>,
 
     /// Whether or not to include the document version in the search results.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub version: bool,
 
     /// Whether or not to include the [sequence number & primary term] in the
     /// search results.
     ///
     /// [sequence number & primary term]: https://www.elastic.co/guide/en/elasticsearch/reference/current/optimistic-concurrency-control.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub seq_no_primary_term: bool,
 
     // TODO: could also be a bool...
     /// The lower bound for the number of hits to track
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub track_total_hits: Option<u64>,
 
@@ -143,7 +145,7 @@ pub struct Request {
     /// search query.
     ///
     /// [highlighted]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Option::is_none")]
     pub highlight: Option<HighlightOptions>,
 }
@@ -164,6 +166,7 @@ impl Request {
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct HighlightOptionsInput {
     /// The field names and their options to highlight.
     pub fields: crate::scalars::Map,
@@ -171,22 +174,22 @@ pub struct HighlightOptionsInput {
     /// The highligher type to use.
     #[graphql(name = "type", default)]
     #[serde(rename = "type")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub ty: HighlighterType,
 
     /// The maximum number of fragments to return.
     #[graphql(default_with = "5")]
-    #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 5))]
     pub number_of_fragments: u64,
 
     /// The size of the highlighted fragment in characters.
     #[graphql(default_with = "100")]
-    #[cfg_attr(feature = "builder", builder(default = 100, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 100))]
     pub fragment_size: u32,
 
     /// How far to scan for boundary characters.
     #[graphql(default_with = "20")]
-    #[cfg_attr(feature = "builder", builder(default = 20, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 20))]
     pub boundary_max_scan: u32,
 
     // TODO: should be an enum?
@@ -194,14 +197,14 @@ pub struct HighlightOptionsInput {
     ///
     /// [`styled`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub tags_schema: Option<String>,
 
     /// Use in conjunction with `post_tags` to define the HTML tags to use for
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub pre_tags: Vec<String>,
 
@@ -209,14 +212,14 @@ pub struct HighlightOptionsInput {
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub post_tags: Vec<String>,
 
     /// By default, only fields that contains a query match are highlighted. Set
     /// `require_field_match` to `false` to highlight all fields.
     #[graphql(default = true)]
-    #[cfg_attr(feature = "builder", builder(default = true, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     pub require_field_match: bool,
 }
 
@@ -228,25 +231,26 @@ pub struct HighlightOptionsInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct HighlightOptions {
     /// The field names and their options to highlight.
     pub fields: crate::scalars::Map,
 
     /// The highligher type to use.
     #[serde(rename = "type")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub ty: HighlighterType,
 
     /// The maximum number of fragments to return.
-    #[cfg_attr(feature = "builder", builder(default = 5, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 5))]
     pub number_of_fragments: u64,
 
     /// The size of the highlighted fragment in characters.
-    #[cfg_attr(feature = "builder", builder(default = 100, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 100))]
     pub fragment_size: u32,
 
     /// How far to scan for boundary characters.
-    #[cfg_attr(feature = "builder", builder(default = 20, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = 20))]
     pub boundary_max_scan: u32,
 
     // TODO: should be an enum?
@@ -254,26 +258,26 @@ pub struct HighlightOptions {
     ///
     /// [`styled`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-highlighting.html
     #[serde(skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub tags_schema: Option<String>,
 
     /// Use in conjunction with `post_tags` to define the HTML tags to use for
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub pre_tags: Vec<String>,
 
     /// Use in conjunction with `pre_tags` to define the HTML tags to use for
     /// the highlighted text. By default, highlighted text is wrapped in `<em>`
     /// and `</em>` tags.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(skip_serializing_if = "Vec::is_empty")] // es errors without this
     pub post_tags: Vec<String>,
 
     /// By default, only fields that contains a query match are highlighted. Set
     /// `require_field_match` to `false` to highlight all fields.
-    #[cfg_attr(feature = "builder", builder(default = true, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default = true))]
     pub require_field_match: bool,
 }
 

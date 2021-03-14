@@ -40,6 +40,7 @@ pub struct SignificantTextAggregationInput {
 #[cfg_attr(test, derive(PartialEq))]
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct SignificantTextAggregation {
     /// The field to perform the aggregation over.

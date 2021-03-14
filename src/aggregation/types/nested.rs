@@ -10,9 +10,9 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct NestedAggregationInput {
     /// The nested path to search.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 }
 
@@ -25,9 +25,9 @@ pub struct NestedAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct NestedAggregation {
     /// The nested path to search.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub path: String,
 }
 

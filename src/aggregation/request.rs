@@ -23,12 +23,12 @@ use crate::search::query::CompoundQueryInput;
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "AggregationInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RequestInput {
     /// The name for this aggregation.
     ///
     /// **NOTE**: this must be unique otherwise the query will only return
     /// results for the last one with this name.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub name: String,
 
     /// A `single-value` [*metrics*] aggregation that computes the average of
@@ -337,12 +337,12 @@ pub struct RequestInput {
 #[cfg_attr(feature = "graphql", graphql(name = "Aggregation"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct Request {
     /// The name for this aggregation.
     ///
     /// **NOTE**: this must be unique otherwise the query will only return
     /// results for the last one with this name.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub name: String,
 
     /// A `single-value` [*metrics*] aggregation that computes the average of
@@ -514,7 +514,7 @@ pub struct Request {
     /// [*bucketing*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
     /// [`range`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html
     /// [Date Math]: https://www.elastic.co/guide/en/elasticsearch/reference/current/common-options.html#date-math
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub date_range: Option<DateRangeAggregation>,
 
     /// A [*multi-bucketing*] aggregation similar to the normal [histogram
@@ -534,7 +534,7 @@ pub struct Request {
     ///
     /// [Date histogram aggregation]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-datehistogram-aggregation.html
     /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub auto_date_histogram: Option<AutoDateHistogramAggregation>,
 
     /// A [*multi-bucketing*] values source based aggregation that can be
@@ -553,7 +553,7 @@ pub struct Request {
     ///
     /// [Variable width histogram]: https://www.elastic.co/guide/en/elasticsearch/reference/latest/search-aggregations-bucket-variablewidthhistogram-aggregation.html
     /// [*multi-bucket*]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub variable_width_histogram: Option<VariableWidthHistogram>,
 
     /// A filtering aggregation used to limit any sub aggregations' processing
@@ -639,7 +639,7 @@ pub struct Request {
     pub metadata: Option<crate::scalars::Map>,
 
     /// The sub aggregation, if any.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub aggregations: Option<Vec<Request>>,
 }
 

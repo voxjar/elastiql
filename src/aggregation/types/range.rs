@@ -23,19 +23,20 @@ use crate::search::ScriptInput;
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RangeAggregationInput {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub field: Option<String>,
 
     /// A script used to calculate the field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<ScriptInput>,
 
     /// The ranges to use for the aggregation.
     #[graphql(default)]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
     pub ranges: Vec<RangeInput>,
 }
@@ -57,19 +58,20 @@ pub struct RangeAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RangeAggregation {
     /// The field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub field: Option<String>,
 
     /// A script used to calculate the field to perform the aggregation over.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub script: Option<Script>,
 
     /// The ranges to use for the aggregation.
     #[cfg_attr(feature = "builder", builder(default))]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default)]
     pub ranges: Vec<Range>,
 }
@@ -90,15 +92,16 @@ impl From<RangeAggregationInput> for RangeAggregation {
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RangeInput {
     /// The value to return results *from* and including.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     from: Option<f64>,
 
     /// The value to return results up *to* but *not* including.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     to: Option<f64>,
 }
 
@@ -107,14 +110,15 @@ pub struct RangeInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct Range {
     /// The value to return results *from* and including.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     from: Option<f64>,
 
     /// The value to return results up *to* but *not* including.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     to: Option<f64>,
 }

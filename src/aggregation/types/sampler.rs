@@ -23,6 +23,7 @@ pub struct SamplerAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct SamplerAggregation {
     #[allow(missing_docs)]
     #[serde(default, skip_serializing_if = "Option::is_none")]

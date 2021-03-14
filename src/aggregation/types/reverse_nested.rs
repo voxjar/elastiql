@@ -18,6 +18,7 @@ use serde::{Deserialize, Serialize};
 #[cfg(feature = "graphql")]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct ReverseNestedAggregationInput {
     /// Defines to what [nested] object field should be joined back. The default
     /// is empty, which means that it joins back to the root/main document
@@ -27,7 +28,7 @@ pub struct ReverseNestedAggregationInput {
     ///
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
 }
@@ -49,6 +50,7 @@ pub struct ReverseNestedAggregationInput {
 #[cfg_attr(feature = "graphql", derive(async_graphql::SimpleObject))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct ReverseNestedAggregation {
     /// Defines to what [nested] object field should be joined back. The default
     /// is empty, which means that it joins back to the root/main document
@@ -58,7 +60,7 @@ pub struct ReverseNestedAggregation {
     ///
     /// [nested]: https://www.elastic.co/guide/en/elasticsearch/reference/current/nested.html
     /// [`ReverseNestedAggregation`]: https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations-bucket-reverse-nested-aggregation.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub path: Option<String>,
 }

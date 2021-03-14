@@ -10,9 +10,9 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 #[graphql(name = "ExistsFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct ExistsQueryInput {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 }
 
@@ -44,9 +44,9 @@ impl From<ExistsQuery> for ExistsQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "ExistsFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct ExistsQuery {
     /// The name of the field to query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     pub field: String,
 }
 

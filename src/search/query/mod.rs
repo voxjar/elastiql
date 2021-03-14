@@ -33,13 +33,14 @@ mod terms;
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Default, Clone, Debug)]
 #[graphql(name = "CompoundFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct CompoundQueryInput {
     /// The default query for combining multiple leaf or compound query clauses,
     /// as must, should, must_not, or filter clauses. The must and should
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
 }
@@ -110,13 +111,14 @@ impl From<CompoundQuery> for CompoundQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "CompoundFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Default, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct CompoundQuery {
     /// The default query for combining multiple leaf or compound query clauses,
     /// as must, should, must_not, or filter clauses. The must and should
     /// clauses have their scores combined — the more matching clauses, the
     /// better — while the must_not and filter clauses are executed in filter
     /// context.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "bool", skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQuery>,
 }
@@ -176,6 +178,7 @@ impl From<CompoundQueryInput> for CompoundQuery {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Default, Clone, Debug)]
 #[graphql(name = "BooleanFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BooleanQueryInput {
     /// The clause (query) must appear in matching documents and will
     /// contribute to the score of this query.
@@ -224,7 +227,7 @@ pub struct BooleanQueryInput {
     /// | `2<-25% 9<-3` | *e.g.*: if there are 1 or 2 clauses both are required, if there are 3-9 clauses all but 25% are required, and if there are more than 9 clauses, all but three are required.                   |
     ///
     /// [Controls]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub minimum_should_match: Option<String>,
 
@@ -239,7 +242,7 @@ pub struct BooleanQueryInput {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default))]
+    #[cfg_attr(feature = "builder", builder(default, setter(strip_option)))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub boost: Option<f64>,
 }
@@ -303,10 +306,11 @@ impl From<BooleanQuery> for BooleanQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "BooleanFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct BooleanQuery {
     /// The clause (query) **must** appear in matching documents and *will
     /// contribute to the score* of this query.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub must: Vec<Query>,
 
@@ -316,12 +320,12 @@ pub struct BooleanQuery {
     /// clauses are considered for caching.
     ///
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub filter: Vec<Query>,
 
     /// The clause (query) **should** appear in the matching document.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub should: Vec<Query>,
 
@@ -331,7 +335,7 @@ pub struct BooleanQuery {
     /// of 0 for all documents is returned.
     ///
     /// [filter context]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub must_not: Vec<Query>,
 
@@ -347,7 +351,7 @@ pub struct BooleanQuery {
     /// | `2<-25% 9<-3` | *e.g.*: if there are 1 or 2 clauses both are required, if there are 3-9 clauses all but 25% are required, and if there are more than 9 clauses, all but three are required.                   |
     ///
     /// [Controls]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-minimum-should-match.html
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub minimum_should_match: Option<String>,
 
@@ -362,7 +366,7 @@ pub struct BooleanQuery {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub boost: Option<f64>,
 }
@@ -431,6 +435,7 @@ impl<T: Into<Query>> From<T> for BooleanQuery {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Serialize, Clone, Debug)]
 #[graphql(name = "FilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct QueryInput {
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -473,7 +478,6 @@ pub struct QueryInput {
     pub nested: Option<NestedQueryInput>,
 
     /// A nested bool query.
-    #[cfg_attr(feature = "builder", builder(setter(into)))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQueryInput>,
 }
@@ -707,49 +711,50 @@ impl From<NestedQueryInput> for QueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "Filter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Serialize, Deserialize, Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct Query {
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exists: Option<ExistsQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub term: Option<TermQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub terms: Option<TermsQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub range: Option<RangeQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub prefix: Option<PrefixQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub regexp: Option<RegexpQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, rename = "match", skip_serializing_if = "Option::is_none")]
     pub match_: Option<MatchQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub simple_query_string: Option<SimpleQueryStringQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub query_string: Option<QueryStringQuery>,
 
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub nested: Option<NestedQuery>,
 
     /// A nested bool query.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     #[serde(rename = "bool", default, skip_serializing_if = "Option::is_none")]
     pub boolean: Option<BooleanQuery>,
 }

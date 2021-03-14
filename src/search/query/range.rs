@@ -39,6 +39,7 @@ struct InnerRangeQuery {
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(async_graphql::InputObject, Clone, Debug)]
 #[graphql(name = "RangeFilterInput")]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RangeQueryInput {
     /// The name of the field to query.
     pub field: String,
@@ -47,28 +48,28 @@ pub struct RangeQueryInput {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub greater_than: Option<String>,
 
     /// Greater than or equal to.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub greater_than_or_equal_to: Option<String>,
 
     /// Less than.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub less_than: Option<String>,
 
     /// Less than or equal to.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub less_than_or_equal_to: Option<String>,
 
     // TODO: #breaking make this a Rust newtype/GraphQL custom scalar ?
@@ -87,7 +88,7 @@ pub struct RangeQueryInput {
     /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
     /// [IANA time zone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     /// [Time zone in range queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-time-zone
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub time_zone: Option<String>,
 
     /// Floating point number used to decrease or increase the
@@ -101,7 +102,7 @@ pub struct RangeQueryInput {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub boost: Option<f64>,
 }
 
@@ -150,6 +151,7 @@ impl Serialize for RangeQueryInput {
 #[cfg_attr(feature = "graphql", graphql(name = "RangeFilter"))]
 #[cfg_attr(feature = "builder", derive(typed_builder::TypedBuilder))]
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "builder", builder(field_defaults(setter(into))))]
 pub struct RangeQuery {
     /// The name of the field to query.
     pub field: String,
@@ -158,28 +160,28 @@ pub struct RangeQuery {
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub greater_than: Option<String>,
 
     /// Greater than or equal to.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub greater_than_or_equal_to: Option<String>,
 
     /// Less than.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub less_than: Option<String>,
 
     /// Less than or equal to.
     ///
     /// Although this field is a `String`, it will match `numerical` fields; e.g.
     /// `"1.2"` will match fields containing the floating point value `1.2`.
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub less_than_or_equal_to: Option<String>,
 
     // TODO: #breaking make this a Rust newtype/GraphQL custom scalar ?
@@ -198,7 +200,7 @@ pub struct RangeQuery {
     /// [ISO 8601]: https://en.wikipedia.org/wiki/ISO_8601
     /// [IANA time zone]: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
     /// [Time zone in range queries]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-range-query.html#range-query-time-zone
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub time_zone: Option<String>,
 
     /// Floating point number used to decrease or increase the
@@ -212,7 +214,7 @@ pub struct RangeQuery {
     /// than  `1.0` increases the relevance score.
     ///
     /// [relevance scores]: https://www.elastic.co/guide/en/elasticsearch/reference/current/query-filter-context.html#relevance-scores
-    #[cfg_attr(feature = "builder", builder(default, setter(into)))]
+    #[cfg_attr(feature = "builder", builder(default))]
     pub boost: Option<f64>,
 }
 
