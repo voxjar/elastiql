@@ -1,8 +1,8 @@
 # Changelog
 
-## [Unreleased](https://github.com/voxjar/elastiql/compare/v0.4.0...HEAD) (2021-03-15)
+### [v0.4.1](https://github.com/voxjar/elastiql/compare/v0.4.0...v0.4.1) (2021-03-14)
 
-### Fixes
+#### Fixes
 
 * **search:** add allow_leading_wildcard default 4d50d94
 
@@ -15,7 +15,7 @@
 * Map no longer implements From<JsonValue>
 * **search:** HighlightOptions.tags_schema is now optional
 
-### Features
+#### Features
 
 * improve builder ergonomics cc175f8
 * **search:** add time_zone field to RangeQuery fd3a871
@@ -28,7 +28,7 @@
 * **search:** add terminate_after field to Request 600b8c3
 * add methods from serde_json to scalar Map 92acd64
 
-### Fixes
+#### Fixes
 
 * **agg:** support non string agg keys aabef92
 * **search:** do not serialize empty pre/post_tags 45d5fc3
