@@ -66,6 +66,7 @@ pub struct QueryStringQueryInput {
     /// character of the query string. Defaults to `true`.
     #[cfg_attr(feature = "builder", builder(default = true))]
     #[serde(default = "default_true")]
+    #[graphql(default = true)]
     pub allow_leading_wildcard: bool,
 
     /// If `true`, the query attempts to analyze wildcard terms in the query
