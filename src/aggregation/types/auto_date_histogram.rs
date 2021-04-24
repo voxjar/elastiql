@@ -46,6 +46,19 @@ pub struct AutoDateHistogramAggregationInput {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     #[cfg_attr(feature = "builder", builder(default))]
     pub missing: Option<String>,
+
+    /// Indicates that bucketing and rounding should use a different timezone
+    /// than the default UTC.
+    ///
+    /// Accepts either an [ISO 8601] UTC offset (e.g. `+01:00` or `-08:00`) or as
+    /// a timezone ID as specified in the [IANA timezone database], such as
+    /// `America/Los_Angeles`.
+    ///
+    /// [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
+    /// [IANA timezone database]: https://www.iana.org/time-zones
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[cfg_attr(feature = "builder", builder(default))]
+    pub time_zone: Option<String>,
 }
 
 /// A [*multi-bucket*] aggregation similar to the [Date histogram aggregation]
@@ -93,6 +106,19 @@ pub struct AutoDateHistogramAggregation {
     #[cfg_attr(feature = "builder", builder(default))]
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub missing: Option<String>,
+
+    /// Indicates that bucketing and rounding should use a different timezone
+    /// than the default UTC.
+    ///
+    /// Accepts either an [ISO 8601] UTC offset (e.g. `+01:00` or `-08:00`) or as
+    /// a timezone ID as specified in the [IANA timezone database], such as
+    /// `America/Los_Angeles`.
+    ///
+    /// [ISO 8601]: https://www.iso.org/iso-8601-date-and-time-format.html
+    /// [IANA timezone database]: https://www.iana.org/time-zones
+    #[cfg_attr(feature = "builder", builder(default))]
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub time_zone: Option<String>,
 }
 
 #[cfg(feature = "graphql")]
@@ -105,6 +131,7 @@ impl From<AutoDateHistogramAggregationInput> for AutoDateHistogramAggregation {
             minimum_interval: input.minimum_interval,
             format: input.format,
             missing: input.missing,
+            time_zone: input.time_zone,
         }
     }
 }
