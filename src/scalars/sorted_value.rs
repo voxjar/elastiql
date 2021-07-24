@@ -71,6 +71,7 @@ impl async_graphql::ScalarType for SortedValue {
             }
             async_graphql::Value::String(val) => Ok(SortedValue::String(val)),
             async_graphql::Value::Object(_)
+            | async_graphql::Value::Binary(_)
             | async_graphql::Value::Boolean(_)
             | async_graphql::Value::Enum(_)
             | async_graphql::Value::List(_) => {
